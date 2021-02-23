@@ -23,3 +23,6 @@ indent_style = tab
 
 [*.{js,json,yml}]
 indent_size = 2
+
+[*.tsx]
+indent_size = 2
