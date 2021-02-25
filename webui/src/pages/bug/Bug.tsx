@@ -1,7 +1,10 @@
 import React from 'react';
 
+import { Icon, InputAdornment, TextField } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import { AccountCircle } from '@material-ui/icons';
+import SearchIcon from '@material-ui/icons/Search';
 
 import Author from 'src/components/Author';
 import Date from 'src/components/Date';
@@ -99,6 +102,23 @@ function Bug({ bug }: Props) {
         </div>
         <div className={classes.sidebar}>
           <span className={classes.sidebarTitle}>Labels</span>
+          <input type="text" aria-label="Search" />
+          <div className={'searchbar'}>
+            <SearchIcon></SearchIcon>
+            <TextField
+              id="outlined-basic"
+              label="Search"
+              variant="outlined"
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <AccountCircle />
+                  </InputAdornment>
+                ),
+              }}
+            />
+          </div>
+
           <ul className={classes.labelList}>
             {bug.labels.length === 0 && (
               <span className={classes.noLabel}>None yet</span>
