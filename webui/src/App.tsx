@@ -6,10 +6,11 @@ import Themer from './components/Themer';
 import Layout from './layout';
 import BugPage from './pages/bug';
 import ListPage from './pages/list';
+import { defaultLightTheme, defaultDarkTheme } from './theme';
 
 export default function App() {
   return (
-    <Themer>
+    <Themer lightTheme={defaultLightTheme} darkTheme={defaultDarkTheme}>
       <BrowserRouter>
         <Layout>
           <Switch>
