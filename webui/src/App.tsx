@@ -6,7 +6,7 @@ import Themer from './components/Themer';
 import Layout from './layout';
 import BugPage from './pages/bug';
 import ListPage from './pages/list';
-import { defaultLightTheme, defaultDarkTheme } from './theme';
+import { defaultLightTheme, defaultDarkTheme } from './themes/index';
 
 export default function App() {
   return (
