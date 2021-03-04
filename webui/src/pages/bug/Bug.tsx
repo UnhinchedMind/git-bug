@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 
-import { InputAdornment, TextField } from '@material-ui/core';
+import { IconButton, InputAdornment, TextField } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import AddIcon from '@material-ui/icons/Add';
 import SearchIcon from '@material-ui/icons/Search';
 
 import Author from 'src/components/Author';
@@ -73,13 +74,6 @@ type Props = {
   bug: BugFragment;
 };
 
-function searchLabel(bug: BugFragment, search: string): Array<any> {
-  if (search === '') return bug.labels;
-  return bug.labels.filter((label) =>
-    label.name.toLowerCase().includes(search.toLocaleLowerCase())
-  );
-}
-
 function Bug({ bug }: Props) {
   let [searchInput, setSearch] = useState('');
 
@@ -89,6 +83,17 @@ function Bug({ bug }: Props) {
     setSearch(event.target.value);
   };
   const classes = useStyles();
+
+  function searchLabel(bug: BugFragment, search: string): Array<any> {
+    if (search === '') return bug.labels;
+    return bug.labels.filter((label) =>
+      label.name.toLowerCase().includes(search.toLocaleLowerCase())
+    );
+  }
+
+  function clickAddLabel() {
+    console.log('ADD Label');
+  }
   return (
     <main className={classes.main}>
       <div className={classes.header}>
@@ -115,9 +120,7 @@ function Bug({ bug }: Props) {
         </div>
         <div className={classes.sidebar}>
           <span className={classes.sidebarTitle}>Labels</span>
-          <input type="text" aria-label="Search" />
           <div className={'searchbar'}>
-            <SearchIcon></SearchIcon>
             <TextField
               value={searchInput}
               onChange={onChange}
@@ -127,13 +130,21 @@ function Bug({ bug }: Props) {
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
-                    <SearchIcon />
+                    {/* <SearchIcon color={'action'} /> */}
+                    <SearchIcon fontSize={'small'} />
+                  </InputAdornment>
+                ),
+                endAdornment: (
+                  <InputAdornment position="end">
+                    {/*  <IconButton color={'primary'} onClick={clickAddLabel}> */}
+                    <IconButton onClick={clickAddLabel}>
+                      <AddIcon />
+                    </IconButton>
                   </InputAdornment>
                 ),
               }}
             />
           </div>
-
           <ul className={classes.labelList}>
             {bug.labels.length === 0 && (
               <span className={classes.noLabel}>None yet</span>
