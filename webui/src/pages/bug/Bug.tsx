@@ -1,9 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-import { Icon, InputAdornment, TextField } from '@material-ui/core';
+import { InputAdornment, TextField } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import { AccountCircle } from '@material-ui/icons';
 import SearchIcon from '@material-ui/icons/Search';
 
 import Author from 'src/components/Author';
@@ -74,7 +73,21 @@ type Props = {
   bug: BugFragment;
 };
 
+function searchLabel(bug: BugFragment, search: string): Array<any> {
+  if (search === '') return bug.labels;
+  return bug.labels.filter((label) =>
+    label.name.toLowerCase().includes(search.toLocaleLowerCase())
+  );
+}
+
 function Bug({ bug }: Props) {
+  let [searchInput, setSearch] = useState('');
+
+  const onChange = (event: {
+    target: { value: React.SetStateAction<string> };
+  }) => {
+    setSearch(event.target.value);
+  };
   const classes = useStyles();
   return (
     <main className={classes.main}>
@@ -106,13 +119,15 @@ function Bug({ bug }: Props) {
           <div className={'searchbar'}>
             <SearchIcon></SearchIcon>
             <TextField
+              value={searchInput}
+              onChange={onChange}
               id="outlined-basic"
-              label="Search"
+              label="Labels"
               variant="outlined"
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
-                    <AccountCircle />
+                    <SearchIcon />
                   </InputAdornment>
                 ),
               }}
@@ -123,7 +138,7 @@ function Bug({ bug }: Props) {
             {bug.labels.length === 0 && (
               <span className={classes.noLabel}>None yet</span>
             )}
-            {bug.labels.map((l) => (
+            {searchLabel(bug, searchInput).map((l) => (
               <li className={classes.label} key={l.name}>
                 <Label label={l} key={l.name} />
               </li>
