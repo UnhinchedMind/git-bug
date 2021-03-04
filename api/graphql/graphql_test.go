@@ -43,7 +43,7 @@ func TestQueries(t *testing.T) {
                 email
                 avatarUrl
               }
-      
+
               createdAt
               humanId
               id
@@ -80,7 +80,7 @@ func TestQueries(t *testing.T) {
                   displayName
                 }
               }
-      
+
               comments(first: 2) {
                 pageInfo {
                   endCursor
@@ -93,7 +93,7 @@ func TestQueries(t *testing.T) {
                   message
                 }
               }
-      
+
               operations(first: 20) {
                 pageInfo {
                   endCursor

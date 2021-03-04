@@ -5,6 +5,7 @@ import Typography from '@material-ui/core/Typography/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import AddIcon from '@material-ui/icons/Add';
 import SearchIcon from '@material-ui/icons/Search';
+import SettingsIcon from '@material-ui/icons/Settings';
 
 import Author from 'src/components/Author';
 import Date from 'src/components/Date';
@@ -13,6 +14,7 @@ import IfLoggedIn from 'src/layout/IfLoggedIn';
 
 import { BugFragment } from './Bug.generated';
 import CommentForm from './CommentForm';
+import ManageLabelsQuery from './ManageLabelsQuery';
 import TimelineQuery from './TimelineQuery';
 
 const useStyles = makeStyles((theme) => ({
@@ -84,7 +86,7 @@ function Bug({ bug }: Props) {
   };
   const classes = useStyles();
 
-  function searchLabel(bug: BugFragment, search: string): Array<any> {
+  function searchLabel(search: string): Array<any> {
     if (search === '') return bug.labels;
     return bug.labels.filter((label) =>
       label.name.toLowerCase().includes(search.toLocaleLowerCase())
@@ -119,7 +121,15 @@ function Bug({ bug }: Props) {
           </IfLoggedIn>
         </div>
         <div className={classes.sidebar}>
-          <span className={classes.sidebarTitle}>Labels</span>
+          <span className={classes.sidebarTitle}>
+            Labels
+            <IconButton onClick={clickAddLabel}>
+              <SettingsIcon fontSize={'small'} />
+            </IconButton>
+          </span>
+          <ManageLabelsQuery />
+
+          <br />
           <div className={'searchbar'}>
             <TextField
               value={searchInput}
@@ -149,7 +159,7 @@ function Bug({ bug }: Props) {
             {bug.labels.length === 0 && (
               <span className={classes.noLabel}>None yet</span>
             )}
-            {searchLabel(bug, searchInput).map((l) => (
+            {searchLabel(searchInput).map((l) => (
               <li className={classes.label} key={l.name}>
                 <Label label={l} key={l.name} />
               </li>

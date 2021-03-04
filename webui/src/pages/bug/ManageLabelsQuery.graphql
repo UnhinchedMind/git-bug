@@ -1,0 +1,13 @@
+query getLabels{
+    repository
+    {
+        validLabels{
+            nodes{
+                name,
+                color{R}
+                color{G},
+                color{B}
+            }
+        }
+    }
+}
