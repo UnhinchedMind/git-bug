@@ -268,6 +268,8 @@ function ListQuery() {
     history.push(queryLocation(input));
   };
 
+  console.log(params);
+
   return (
     <Paper className={classes.main}>
       <header className={classes.header}>
