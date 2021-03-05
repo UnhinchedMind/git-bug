@@ -13,7 +13,7 @@ type Props = {
 function ManageLabelsUI({ queriedlabels }: Props) {
   let [searchInput, setSearch] = useState('');
   let [isExisting, setIsExisting] = useState(false);
-  let [labels, setLabels] = useState(
+  let [labels] = useState(
     queriedlabels.map((l: any) => {
       return {
         name: l.name,
