@@ -83,7 +83,7 @@ function ManageLabelsUI({ queriedlabels }: Props) {
         </div>
       );
     });
-    if (!isExisting)
+    if (!isExisting && searchInput !== '')
       list.push(
         <div
           onClick={clickAddLabel}
