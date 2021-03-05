@@ -14,8 +14,8 @@ import IfLoggedIn from 'src/layout/IfLoggedIn';
 
 import { BugFragment } from './Bug.generated';
 import CommentForm from './CommentForm';
-import ManageLabelsQuery from './ManageLabelsQuery';
 import TimelineQuery from './TimelineQuery';
+import ManageLabelsQuery from './labels/ManageLabelsQuery';
 
 const useStyles = makeStyles((theme) => ({
   main: {
