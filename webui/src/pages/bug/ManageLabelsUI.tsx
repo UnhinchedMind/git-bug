@@ -30,6 +30,7 @@ function ManageLabelsUI({ queriedlabels }: Props) {
     setSearch(event.target.value);
     testIfExisting(event.target.value.toString());
   };
+
   const handleDelete = () => {
     console.info('You clicked the delete icon.');
   };
@@ -38,16 +39,16 @@ function ManageLabelsUI({ queriedlabels }: Props) {
     const tmp = labels.filter((l: any) => {
       return l.name.trim().toLowerCase() === input.trim().toLowerCase();
     });
-    if (tmp.length > 0) setIsExisting(true);
-    else setIsExisting(false);
-    console.log(isExisting);
+    tmp.length > 0 ? setIsExisting(true) : setIsExisting(false);
   }
+
   function searchLabel(labels: string[], search: string): Array<any> {
     if (search === '') return labels;
     return labels.filter((l: any) =>
       l.name.trim().toLowerCase().includes(search.trim().toLowerCase())
     );
   }
+
   function getLabellist() {
     const _rgb = (color: Color) =>
       'rgb(' + color.R + ',' + color.G + ',' + color.B + ')';
