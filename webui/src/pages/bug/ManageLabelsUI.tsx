@@ -35,6 +35,10 @@ function ManageLabelsUI({ queriedlabels }: Props) {
     console.info('You clicked the delete icon.');
   };
 
+  const clickAddLabel = () => {
+    console.log('ADD LABEL' + searchInput);
+  };
+
   function testIfExisting(input: string) {
     const tmp = labels.filter((l: any) => {
       return l.name.trim().toLowerCase() === input.trim().toLowerCase();
@@ -81,7 +85,10 @@ function ManageLabelsUI({ queriedlabels }: Props) {
     });
     if (!isExisting)
       list.push(
-        <div>
+        <div
+          onClick={clickAddLabel}
+          style={{ cursor: 'pointer', border: '1px solid black' }}
+        >
           <p>Create new label "{searchInput}"</p>
         </div>
       );
