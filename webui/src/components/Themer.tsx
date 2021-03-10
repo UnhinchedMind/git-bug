@@ -9,6 +9,7 @@ import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import Tooltip from '@material-ui/core/Tooltip/Tooltip';
 import { Theme } from '@material-ui/core/styles';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { NightsStayRounded, WbSunnyRounded } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/styles';
 
@@ -77,6 +78,10 @@ const Themer = ({ children, lightTheme, darkTheme }: Props) => {
 
 const ThemeSwitcher = () => {
   const { mode, switchMode } = useContext(ThemeContext);
+  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+  const systemMode = prefersDarkMode ? 'dark' : 'light';
+  const savedMode = localStorage.getItem('themeMode');
+  const preferedMode = savedMode != null ? savedMode : systemMode;
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedMode = event.target.value;
@@ -91,13 +96,13 @@ const ThemeSwitcher = () => {
         row
         aria-label="Theme"
         name="Themeswitcher"
-        value={mode}
+        value={preferedMode}
         onChange={handleChange}
       >
         <FormControlLabel
-          value="system"
+          value={systemMode}
           control={<Radio />}
-          label="System default (light/dark)"
+          label={`System default ${systemMode}`}
         />
         <FormControlLabel
           value="light"
