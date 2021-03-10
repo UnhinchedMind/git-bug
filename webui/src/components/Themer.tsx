@@ -1,7 +1,12 @@
 import React, { createContext, useContext, useState } from 'react';
 
 import { fade, ThemeProvider } from '@material-ui/core';
+import FormControl from '@material-ui/core/FormControl';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+//import FormLabel from '@material-ui/core/FormLabel';
 import IconButton from '@material-ui/core/IconButton/IconButton';
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
 import Tooltip from '@material-ui/core/Tooltip/Tooltip';
 import { Theme } from '@material-ui/core/styles';
 import { NightsStayRounded, WbSunnyRounded } from '@material-ui/icons';
@@ -62,4 +67,39 @@ const Themer = ({ children, lightTheme, darkTheme }: Props) => {
   );
 };
 
-export { Themer as default, LightSwitch };
+const ThemeSwitcher = () => {
+  const [value, setValue] = React.useState('Light');
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedMode = event.target.value;
+    setValue(selectedMode);
+    console.log(selectedMode);
+  };
+
+  return (
+    <FormControl component="fieldset">
+      {/*<FormLabel component="legend">Prefered Theme</FormLabel>*/}
+      <RadioGroup
+        row
+        aria-label="Theme"
+        name="Themeswitcher"
+        value={value}
+        onChange={handleChange}
+      >
+        <FormControlLabel
+          value="System default"
+          control={<Radio />}
+          label="System default (light/dark)"
+        />
+        <FormControlLabel
+          value="Light"
+          control={<Radio />}
+          label="Light Theme"
+        />
+        <FormControlLabel value="Dark" control={<Radio />} label="Dark Theme" />
+      </RadioGroup>
+    </FormControl>
+  );
+};
+
+export { Themer as default, LightSwitch, ThemeSwitcher };

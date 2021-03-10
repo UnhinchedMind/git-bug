@@ -5,7 +5,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import { makeStyles } from '@material-ui/core/styles';
 
-import { LightSwitch } from '../../components/Themer';
+import { LightSwitch, ThemeSwitcher } from '../../components/Themer';
 import CurrentIdentity from '../CurrentIdentity/CurrentIdentity';
 
 const useStyles = makeStyles((theme) => ({
@@ -43,6 +43,9 @@ function Header() {
             git-bug
           </Link>
           <div className={classes.filler}></div>
+          <div className={classes.lightSwitch}>
+            <ThemeSwitcher />
+          </div>
           <div className={classes.lightSwitch}>
             <LightSwitch />
           </div>
