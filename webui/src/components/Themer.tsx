@@ -15,6 +15,7 @@ import { makeStyles } from '@material-ui/styles';
 const ThemeContext = createContext({
   toggleMode: () => {},
   mode: '',
+  switchMode: (mode: string) => {},
 });
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -58,21 +59,28 @@ const Themer = ({ children, lightTheme, darkTheme }: Props) => {
     setMode(preferedMode);
   };
 
+  const switchMode = (mode: string) => {
+    localStorage.setItem('themeMode', mode);
+    setMode(mode);
+  };
+
   const preferedTheme = mode === 'dark' ? darkTheme : lightTheme;
 
   return (
-    <ThemeContext.Provider value={{ toggleMode: toggleMode, mode: mode }}>
+    <ThemeContext.Provider
+      value={{ toggleMode: toggleMode, mode: mode, switchMode: switchMode }}
+    >
       <ThemeProvider theme={preferedTheme}>{children}</ThemeProvider>
     </ThemeContext.Provider>
   );
 };
 
 const ThemeSwitcher = () => {
-  const [value, setValue] = React.useState('Light');
+  const { mode, switchMode } = useContext(ThemeContext);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedMode = event.target.value;
-    setValue(selectedMode);
+    switchMode(selectedMode);
     console.log(selectedMode);
   };
 
@@ -83,20 +91,20 @@ const ThemeSwitcher = () => {
         row
         aria-label="Theme"
         name="Themeswitcher"
-        value={value}
+        value={mode}
         onChange={handleChange}
       >
         <FormControlLabel
-          value="System default"
+          value="system"
           control={<Radio />}
           label="System default (light/dark)"
         />
         <FormControlLabel
-          value="Light"
+          value="light"
           control={<Radio />}
           label="Light Theme"
         />
-        <FormControlLabel value="Dark" control={<Radio />} label="Dark Theme" />
+        <FormControlLabel value="dark" control={<Radio />} label="Dark Theme" />
       </RadioGroup>
     </FormControl>
   );
