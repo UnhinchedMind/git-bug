@@ -13,20 +13,24 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { NightsStayRounded, WbSunnyRounded } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/styles';
 
-const ThemeContext = createContext({
-  toggleMode: () => {},
-  mode: '',
-  switchMode: (mode: string) => {},
-});
-
 const useStyles = makeStyles((theme: Theme) => ({
   iconButton: {
     color: fade(theme.palette.primary.contrastText, 0.5),
   },
 }));
 
+type Mode = 'light' | 'dark' | 'system';
+
+interface IModeContext {
+  mode: Mode;
+  switchMode: (mode: Mode) => void;
+}
+
+const ThemeContext = createContext<IModeContext>({} as IModeContext);
+
 const LightSwitch = () => {
-  const { mode, toggleMode } = useContext(ThemeContext);
+  //TODO system mode won't change sun/moon icon
+  const { mode, switchMode } = useContext(ThemeContext);
   const nextMode = mode === 'light' ? 'dark' : 'light';
   const description = `Switch to ${nextMode} theme`;
   const classes = useStyles();
@@ -34,7 +38,9 @@ const LightSwitch = () => {
   return (
     <Tooltip title={description}>
       <IconButton
-        onClick={toggleMode}
+        onClick={() => {
+          switchMode(nextMode as Mode);
+        }}
         aria-label={description}
         className={classes.iconButton}
       >
@@ -50,43 +56,41 @@ type Props = {
   darkTheme: Theme;
 };
 const Themer = ({ children, lightTheme, darkTheme }: Props) => {
-  const savedMode = localStorage.getItem('themeMode');
-  const preferedMode = savedMode != null ? savedMode : 'light';
-  const [mode, setMode] = useState(preferedMode);
+  const [mode, setMode] = useState<Mode>('system');
 
-  const toggleMode = () => {
-    const preferedMode = mode === 'light' ? 'dark' : 'light';
+  const switchMode = (preferedMode: Mode) => {
     localStorage.setItem('themeMode', preferedMode);
     setMode(preferedMode);
   };
 
-  const switchMode = (mode: string) => {
-    localStorage.setItem('themeMode', mode);
-    setMode(mode);
+  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+  const preferedTheme = (mode: Mode): Theme => {
+    const systemMode = prefersDarkMode ? 'dark' : 'light';
+    switch (mode) {
+      case 'light':
+        return lightTheme;
+      case 'dark':
+        return darkTheme;
+      case 'system':
+        return preferedTheme(systemMode);
+      default:
+        return lightTheme;
+    }
   };
 
-  const preferedTheme = mode === 'dark' ? darkTheme : lightTheme;
-
   return (
-    <ThemeContext.Provider
-      value={{ toggleMode: toggleMode, mode: mode, switchMode: switchMode }}
-    >
-      <ThemeProvider theme={preferedTheme}>{children}</ThemeProvider>
+    <ThemeContext.Provider value={{ mode: mode, switchMode: switchMode }}>
+      <ThemeProvider theme={preferedTheme(mode)}>{children}</ThemeProvider>
     </ThemeContext.Provider>
   );
 };
 
 const ThemeSwitcher = () => {
   const { mode, switchMode } = useContext(ThemeContext);
-  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
-  const systemMode = prefersDarkMode ? 'dark' : 'light';
-  const savedMode = localStorage.getItem('themeMode');
-  const preferedMode = savedMode != null ? savedMode : systemMode;
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedMode = event.target.value;
-    switchMode(selectedMode);
-    console.log(selectedMode);
+    switchMode(selectedMode as Mode);
   };
 
   return (
@@ -96,13 +100,13 @@ const ThemeSwitcher = () => {
         row
         aria-label="Theme"
         name="Themeswitcher"
-        value={preferedMode}
+        value={mode}
         onChange={handleChange}
       >
         <FormControlLabel
-          value={systemMode}
+          value="system"
           control={<Radio />}
-          label={`System default ${systemMode}`}
+          label={'System default'}
         />
         <FormControlLabel
           value="light"
