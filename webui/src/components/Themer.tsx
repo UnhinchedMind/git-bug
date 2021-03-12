@@ -19,27 +19,37 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
+//TODO change green button hover effect to darker green
+//TODO change LightSwitch to not show the state but the action which to be
+//     invoked
+//TODO code in comments is still required or can be removed
+//TODO check persistense of modes
+
 type Mode = 'light' | 'dark' | 'system';
 
 interface IModeContext {
   mode: Mode;
+  isSystemMode: boolean;
   switchMode: (mode: Mode) => void;
 }
 
 const ThemeContext = createContext<IModeContext>({} as IModeContext);
 
 const LightSwitch = () => {
-  //TODO system mode won't change sun/moon icon
-  const { mode, switchMode } = useContext(ThemeContext);
+  const { mode, isSystemMode, switchMode } = useContext(ThemeContext);
   const nextMode = mode === 'light' ? 'dark' : 'light';
   const description = `Switch to ${nextMode} theme`;
   const classes = useStyles();
+
+  console.log('mode: ' + mode + ' nextMode: ' + nextMode);
+  console.log('isSystem: ' + isSystemMode);
 
   return (
     <Tooltip title={description}>
       <IconButton
         onClick={() => {
-          switchMode(nextMode as Mode);
+          switchMode(nextMode);
+          console.log('clicked');
         }}
         aria-label={description}
         className={classes.iconButton}
@@ -56,16 +66,21 @@ type Props = {
   darkTheme: Theme;
 };
 const Themer = ({ children, lightTheme, darkTheme }: Props) => {
-  const [mode, setMode] = useState<Mode>('system');
+  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+  const systemMode = prefersDarkMode ? 'dark' : 'light';
 
-  const switchMode = (preferedMode: Mode) => {
-    localStorage.setItem('themeMode', preferedMode);
-    setMode(preferedMode);
+  //const userMode = localStorage.getItem('themeMode');
+  //const useUserMode = userMode === 'light' || userMode === 'dark';
+  //const preferedMode = useUserMode ? userMode : systemMode;
+
+  const [curMode, setMode] = useState<Mode>('light');
+
+  const switchMode = (mode: Mode) => {
+    localStorage.setItem('themeMode', mode);
+    setMode(mode);
   };
 
-  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
   const preferedTheme = (mode: Mode): Theme => {
-    const systemMode = prefersDarkMode ? 'dark' : 'light';
     switch (mode) {
       case 'light':
         return lightTheme;
@@ -79,14 +94,20 @@ const Themer = ({ children, lightTheme, darkTheme }: Props) => {
   };
 
   return (
-    <ThemeContext.Provider value={{ mode: mode, switchMode: switchMode }}>
-      <ThemeProvider theme={preferedTheme(mode)}>{children}</ThemeProvider>
+    <ThemeContext.Provider
+      value={{
+        mode: curMode === 'system' ? systemMode : curMode,
+        isSystemMode: curMode === 'system',
+        switchMode: switchMode,
+      }}
+    >
+      <ThemeProvider theme={preferedTheme(curMode)}>{children}</ThemeProvider>
     </ThemeContext.Provider>
   );
 };
 
 const ThemeSwitcher = () => {
-  const { mode, switchMode } = useContext(ThemeContext);
+  const { mode, isSystemMode, switchMode } = useContext(ThemeContext);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedMode = event.target.value;
@@ -100,7 +121,7 @@ const ThemeSwitcher = () => {
         row
         aria-label="Theme"
         name="Themeswitcher"
-        value={mode}
+        value={isSystemMode ? 'system' : mode}
         onChange={handleChange}
       >
         <FormControlLabel
