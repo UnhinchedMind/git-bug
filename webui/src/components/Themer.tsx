@@ -20,8 +20,6 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 //TODO change green button hover effect to darker green
-//TODO code in comments is still required or can be removed
-//TODO check persistense of modes
 
 type Mode = 'light' | 'dark' | 'system';
 
@@ -67,11 +65,19 @@ const Themer = ({ children, lightTheme, darkTheme }: Props) => {
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
   const systemMode = prefersDarkMode ? 'dark' : 'light';
 
-  //const userMode = localStorage.getItem('themeMode');
-  //const useUserMode = userMode === 'light' || userMode === 'dark';
-  //const preferedMode = useUserMode ? userMode : systemMode;
+  const preferedMode = (): Mode => {
+    const userMode = localStorage.getItem('themeMode');
+    switch (userMode) {
+      case 'light':
+      case 'dark':
+      case 'system':
+        return userMode;
+      default:
+        return 'light';
+    }
+  };
 
-  const [curMode, setMode] = useState<Mode>('light');
+  const [curMode, setMode] = useState<Mode>(preferedMode());
 
   const switchMode = (mode: Mode) => {
     localStorage.setItem('themeMode', mode);
