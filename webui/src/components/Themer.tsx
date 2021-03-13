@@ -20,8 +20,6 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 //TODO change green button hover effect to darker green
-//TODO change LightSwitch to not show the state but the action which to be
-//     invoked
 //TODO code in comments is still required or can be removed
 //TODO check persistense of modes
 
@@ -54,7 +52,7 @@ const LightSwitch = () => {
         aria-label={description}
         className={classes.iconButton}
       >
-        {mode === 'light' ? <WbSunnyRounded /> : <NightsStayRounded />}
+        {mode === 'light' ? <NightsStayRounded /> : <WbSunnyRounded />}
       </IconButton>
     </Tooltip>
   );
