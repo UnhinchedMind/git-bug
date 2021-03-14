@@ -3,7 +3,7 @@ import React, { createContext, useContext, useState } from 'react';
 import { fade, ThemeProvider } from '@material-ui/core';
 import FormControl from '@material-ui/core/FormControl';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-//import FormLabel from '@material-ui/core/FormLabel';
+import FormLabel from '@material-ui/core/FormLabel';
 import IconButton from '@material-ui/core/IconButton/IconButton';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
@@ -16,6 +16,9 @@ import { makeStyles } from '@material-ui/styles';
 const useStyles = makeStyles((theme: Theme) => ({
   iconButton: {
     color: fade(theme.palette.primary.contrastText, 0.5),
+  },
+  legend: {
+    color: theme.palette.text.primary,
   },
 }));
 
@@ -73,7 +76,7 @@ const Themer = ({ children, lightTheme, darkTheme }: Props) => {
       case 'system':
         return userMode;
       default:
-        return 'light';
+        return 'system';
     }
   };
 
@@ -112,6 +115,7 @@ const Themer = ({ children, lightTheme, darkTheme }: Props) => {
 
 const ThemeSwitcher = () => {
   const { mode, isSystemMode, switchMode } = useContext(ThemeContext);
+  const classes = useStyles();
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedMode = event.target.value;
@@ -120,7 +124,9 @@ const ThemeSwitcher = () => {
 
   return (
     <FormControl component="fieldset">
-      {/*<FormLabel component="legend">Prefered Theme</FormLabel>*/}
+      <FormLabel component="legend" className={classes.legend}>
+        Select prefered Theme
+      </FormLabel>
       <RadioGroup
         row
         aria-label="Theme"
