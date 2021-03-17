@@ -79,7 +79,7 @@ function ManageLabelsUI({ queriedlabels, isLabelSettingsOpen }: Props) {
         color: getTextColor(_rgb(labelcolor)),
       };
 
-      return <div>{label.name}</div>;
+      return <div> FarbPunkt + {label.name}</div>;
     });
 
     if (!isExisting && searchInput !== '')

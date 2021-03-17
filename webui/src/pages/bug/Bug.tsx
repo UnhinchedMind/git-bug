@@ -130,11 +130,11 @@ function Bug({ bug }: Props) {
               <SettingsIcon fontSize={'small'} />
             </IconButton>
           </span>
-          <ManageLabelsQuery isLabelSettingsOpen={isLabelSettingsOpen} />
           <div>
             {bug.labels.map((label) => (
               <NewLabel label={label} />
             ))}
+            <ManageLabelsQuery isLabelSettingsOpen={isLabelSettingsOpen} />
           </div>
           <br />
           <br />
