@@ -97,6 +97,7 @@ function Bug({ bug }: Props) {
     isLabelSettingsOpen
       ? setIsLabelSettingsOpen(false)
       : setIsLabelSettingsOpen(true);
+
     console.log('Label Settings ' + isLabelSettingsOpen);
   }
   return (

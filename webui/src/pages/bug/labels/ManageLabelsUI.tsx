@@ -14,6 +14,7 @@ type Props = {
 function ManageLabelsUI({ queriedlabels, isLabelSettingsOpen }: Props) {
   let [searchInput, setSearch] = useState('');
   let [isExisting, setIsExisting] = useState(false);
+
   let [labels] = useState(
     queriedlabels.map((l: any) => {
       return {
@@ -75,11 +76,31 @@ function ManageLabelsUI({ queriedlabels, isLabelSettingsOpen }: Props) {
         B: label.B,
       };
       const style = {
+        width: '15px',
+        height: '15px',
+        display: 'flex',
         backgroundColor: _rgb(labelcolor),
         color: getTextColor(_rgb(labelcolor)),
+        borderRadius: '0.25rem',
+        marginRight: '5px',
       };
 
-      return <div> FarbPunkt + {label.name}</div>;
+      return (
+        <li
+          className={'labelListelem'}
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+            cursor: 'pointer',
+            padding: '3px',
+            border: '1px solid',
+          }}
+        >
+          <div className={'labelcolor'} style={style} />
+          <div className={'labelname'}> {label.name}</div>
+        </li>
+      );
     });
 
     if (!isExisting && searchInput !== '')
@@ -96,7 +117,7 @@ function ManageLabelsUI({ queriedlabels, isLabelSettingsOpen }: Props) {
 
   if (isLabelSettingsOpen) {
     return (
-      <div>
+      <div style={{ border: '1px solid black', padding: '10px' }}>
         <div>
           <p>Apply labels to this issue</p>
         </div>
@@ -108,7 +129,14 @@ function ManageLabelsUI({ queriedlabels, isLabelSettingsOpen }: Props) {
             placeholder={'Filter Labels'}
           />
         </div>
-        <div>{getLabellist()}</div>
+        <ul
+          style={{
+            listStyle: 'none',
+            paddingLeft: '0',
+          }}
+        >
+          {getLabellist()}
+        </ul>
       </div>
     );
   } else return null;
