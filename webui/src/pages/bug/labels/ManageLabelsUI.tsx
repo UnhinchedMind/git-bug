@@ -1,9 +1,5 @@
 import React, { useState } from 'react';
 
-import { Chip } from '@material-ui/core';
-import { common } from '@material-ui/core/colors';
-import { getContrastRatio } from '@material-ui/core/styles/colorManipulator';
-
 import { Color } from 'src/gqlTypes';
 
 type Props = {
@@ -59,14 +55,6 @@ function ManageLabelsUI({ queriedlabels, isLabelSettingsOpen }: Props) {
     const _rgb = (color: Color) =>
       'rgb(' + color.R + ',' + color.G + ',' + color.B + ')';
 
-    // Minimum contrast between the background and the text color
-    const contrastThreshold = 2.5;
-    // Guess the text color based on the background color
-    const getTextColor = (background: string) =>
-      getContrastRatio(background, common.white) >= contrastThreshold
-        ? common.white // White on dark backgrounds
-        : common.black; // And black on light ones
-
     const labelslist = searchLabel(labels, searchInput);
 
     let list = labelslist.map((label) => {
@@ -80,7 +68,6 @@ function ManageLabelsUI({ queriedlabels, isLabelSettingsOpen }: Props) {
         height: '15px',
         display: 'flex',
         backgroundColor: _rgb(labelcolor),
-        color: getTextColor(_rgb(labelcolor)),
         borderRadius: '0.25rem',
         marginRight: '5px',
       };

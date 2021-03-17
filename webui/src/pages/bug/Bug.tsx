@@ -137,41 +137,6 @@ function Bug({ bug }: Props) {
             ))}
             <ManageLabelsQuery isLabelSettingsOpen={isLabelSettingsOpen} />
           </div>
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-
-          <ul className={classes.labelList}>
-            {bug.labels.length === 0 && (
-              <span className={classes.noLabel}>None yet</span>
-            )}
-            {searchLabel(searchInput).map((l) => (
-              <li className={classes.label} key={l.name}>
-                <Label label={l} key={l.name} />
-              </li>
-            ))}
-          </ul>
-
-          <br />
-          <br />
-          <br />
-
-          <ul className={classes.labelList}>
-            {bug.labels.length === 0 && (
-              <span className={classes.noLabel}>None yet</span>
-            )}
-            {bug.labels.map((l) => (
-              <li className={classes.label} key={l.name}>
-                <Label label={l} key={l.name} />
-              </li>
-            ))}
-          </ul>
         </div>
       </div>
     </main>
