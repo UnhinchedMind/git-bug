@@ -1,4 +1,4 @@
-# Label.tsx
+# NewLabel.tsx
 fragment Label on Label {
   name
   color {

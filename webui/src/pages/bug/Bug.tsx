@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
 
-import { IconButton, InputAdornment, TextField } from '@material-ui/core';
+import { Chip, IconButton } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import AddIcon from '@material-ui/icons/Add';
-import SearchIcon from '@material-ui/icons/Search';
 import SettingsIcon from '@material-ui/icons/Settings';
 
 import Author from 'src/components/Author';
@@ -16,6 +14,7 @@ import { BugFragment } from './Bug.generated';
 import CommentForm from './CommentForm';
 import TimelineQuery from './TimelineQuery';
 import ManageLabelsQuery from './labels/ManageLabelsQuery';
+import NewLabel from './labels/NewLabel';
 
 const useStyles = makeStyles((theme) => ({
   main: {
@@ -78,6 +77,7 @@ type Props = {
 
 function Bug({ bug }: Props) {
   let [searchInput, setSearch] = useState('');
+  let [isLabelSettingsOpen, setIsLabelSettingsOpen] = useState(false);
 
   const onChange = (event: {
     target: { value: React.SetStateAction<string> };
@@ -93,8 +93,11 @@ function Bug({ bug }: Props) {
     );
   }
 
-  function clickAddLabel() {
-    console.log('ADD Label');
+  function clickLabelSettings() {
+    isLabelSettingsOpen
+      ? setIsLabelSettingsOpen(false)
+      : setIsLabelSettingsOpen(true);
+    console.log('Label Settings ' + isLabelSettingsOpen);
   }
   return (
     <main className={classes.main}>
@@ -123,43 +126,46 @@ function Bug({ bug }: Props) {
         <div className={classes.sidebar}>
           <span className={classes.sidebarTitle}>
             Labels
-            <IconButton onClick={clickAddLabel}>
+            <IconButton onClick={clickLabelSettings}>
               <SettingsIcon fontSize={'small'} />
             </IconButton>
           </span>
-          <ManageLabelsQuery />
-
-          <br />
-          <div className={'searchbar'}>
-            <TextField
-              value={searchInput}
-              onChange={onChange}
-              id="outlined-basic"
-              label="Labels"
-              variant="outlined"
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    {/* <SearchIcon color={'action'} /> */}
-                    <SearchIcon fontSize={'small'} />
-                  </InputAdornment>
-                ),
-                endAdornment: (
-                  <InputAdornment position="end">
-                    {/*  <IconButton color={'primary'} onClick={clickAddLabel}> */}
-                    <IconButton onClick={clickAddLabel}>
-                      <AddIcon />
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }}
-            />
+          <ManageLabelsQuery isLabelSettingsOpen={isLabelSettingsOpen} />
+          <div>
+            {bug.labels.map((label) => (
+              <NewLabel label={label} />
+            ))}
           </div>
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+
           <ul className={classes.labelList}>
             {bug.labels.length === 0 && (
               <span className={classes.noLabel}>None yet</span>
             )}
             {searchLabel(searchInput).map((l) => (
+              <li className={classes.label} key={l.name}>
+                <Label label={l} key={l.name} />
+              </li>
+            ))}
+          </ul>
+
+          <br />
+          <br />
+          <br />
+
+          <ul className={classes.labelList}>
+            {bug.labels.length === 0 && (
+              <span className={classes.noLabel}>None yet</span>
+            )}
+            {bug.labels.map((l) => (
               <li className={classes.label} key={l.name}>
                 <Label label={l} key={l.name} />
               </li>

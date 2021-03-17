@@ -8,9 +8,10 @@ import { Color } from 'src/gqlTypes';
 
 type Props = {
   queriedlabels: any;
+  isLabelSettingsOpen: boolean;
 };
 
-function ManageLabelsUI({ queriedlabels }: Props) {
+function ManageLabelsUI({ queriedlabels, isLabelSettingsOpen }: Props) {
   let [searchInput, setSearch] = useState('');
   let [isExisting, setIsExisting] = useState(false);
   let [labels] = useState(
@@ -77,12 +78,10 @@ function ManageLabelsUI({ queriedlabels }: Props) {
         backgroundColor: _rgb(labelcolor),
         color: getTextColor(_rgb(labelcolor)),
       };
-      return (
-        <div>
-          <Chip label={label.name} onDelete={handleDelete} style={style} />
-        </div>
-      );
+
+      return <div>{label.name}</div>;
     });
+
     if (!isExisting && searchInput !== '')
       list.push(
         <div
@@ -95,17 +94,24 @@ function ManageLabelsUI({ queriedlabels }: Props) {
     return list;
   }
 
-  return (
-    <div>
+  if (isLabelSettingsOpen) {
+    return (
       <div>
-        <p>Apply labels to this issue</p>
+        <div>
+          <p>Apply labels to this issue</p>
+        </div>
+        <div>
+          <input
+            type="text"
+            value={searchInput}
+            onChange={onChange}
+            placeholder={'Filter Labels'}
+          />
+        </div>
+        <div>{getLabellist()}</div>
       </div>
-      <div>
-        <input type="text" value={searchInput} onChange={onChange} />
-      </div>
-      <div>{getLabellist()}</div>
-    </div>
-  );
+    );
+  } else return null;
 }
 
 export default ManageLabelsUI;
