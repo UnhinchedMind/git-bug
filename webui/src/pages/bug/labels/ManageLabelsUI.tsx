@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 
-import { AccordionDetails } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import CancelIcon from '@material-ui/icons/Cancel';
 import CheckIcon from '@material-ui/icons/Check';
@@ -23,7 +22,7 @@ function ManageLabelsUI({
 
   let [labels] = useState(buglabels.concat(queriedlabels));
 
-  const onChange = (event: {
+  const onSearchChange = (event: {
     target: { value: React.SetStateAction<string> };
   }) => {
     setSearch(event.target.value);
@@ -42,6 +41,7 @@ function ManageLabelsUI({
     console.log('ADD LABEL' + searchInput);
   };
 
+  //Helperfunction for SearchLabelfunction (to dont be able to add existing labels)
   function testIfExisting(input: string) {
     const tmp = labels.filter((l: any) => {
       return l.name.trim().toLowerCase() === input.trim().toLowerCase();
@@ -56,10 +56,12 @@ function ManageLabelsUI({
     );
   }
 
+  // Construct HTML Elements for all Labels
   function getLabellist() {
     const _rgb = (color: Color) =>
       'rgb(' + color.R + ',' + color.G + ',' + color.B + ')';
 
+    //only display searched labels (or all if no search)
     const labelslist = searchLabel(labels, searchInput);
 
     let list = labelslist.map((label) => {
@@ -148,6 +150,7 @@ function ManageLabelsUI({
     return list;
   }
 
+  //Display List of All Labels
   if (isLabelSettingsOpen) {
     return (
       <div style={{ border: '1px solid black', padding: '10px' }}>
@@ -158,7 +161,7 @@ function ManageLabelsUI({
           <input
             type="text"
             value={searchInput}
-            onChange={onChange}
+            onChange={onSearchChange}
             placeholder={'Filter Labels'}
           />
         </div>

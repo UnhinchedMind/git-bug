@@ -37,6 +37,7 @@ function NewLabel({ label }: Props) {
   return (
     <div>
       <Chip
+        size={'small'}
         label={label.name}
         style={createStyle(label.color)}
         onDelete={handleDelete}
