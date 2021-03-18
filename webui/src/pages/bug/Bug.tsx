@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 
-import { Chip, IconButton } from '@material-ui/core';
+import { IconButton } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import SettingsIcon from '@material-ui/icons/Settings';
 
+import Label from '../../components/Label';
 import Author from 'src/components/Author';
 import Date from 'src/components/Date';
 import IfLoggedIn from 'src/layout/IfLoggedIn';
@@ -13,7 +14,6 @@ import { BugFragment } from './Bug.generated';
 import CommentForm from './CommentForm';
 import TimelineQuery from './TimelineQuery';
 import ManageLabelsQuery from './labels/ManageLabelsQuery';
-import NewLabel from './labels/NewLabel';
 
 const useStyles = makeStyles((theme) => ({
   main: {
@@ -130,8 +130,8 @@ function Bug({ bug }: Props) {
             </IconButton>
           </span>
           <div>
-            {bug.labels.map((label) => (
-              <NewLabel label={label} />
+            {bug.labels.map((label, index) => (
+              <Label key={index} label={label} />
             ))}
             <ManageLabelsQuery
               bug={bug}
