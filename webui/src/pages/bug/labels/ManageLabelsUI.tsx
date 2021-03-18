@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import CancelIcon from '@material-ui/icons/Cancel';
 import CheckIcon from '@material-ui/icons/Check';
 
-import { BugFragment } from '../Bug.generated';
 import { Color } from 'src/gqlTypes';
 
 type Props = {
@@ -27,6 +26,10 @@ function ManageLabelsUI({
   }) => {
     setSearch(event.target.value);
     testIfExisting(event.target.value.toString());
+  };
+
+  const handleLabelClick = () => {
+    console.log('Label in List Clicked');
   };
 
   const handleDelete = () => {
@@ -76,6 +79,7 @@ function ManageLabelsUI({
       if (label.isActive) {
         return (
           <li
+            onClick={handleLabelClick}
             className={'labelListelem'}
             style={{
               display: 'flex',

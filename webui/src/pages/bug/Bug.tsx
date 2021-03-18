@@ -7,7 +7,6 @@ import SettingsIcon from '@material-ui/icons/Settings';
 
 import Author from 'src/components/Author';
 import Date from 'src/components/Date';
-import Label from 'src/components/Label';
 import IfLoggedIn from 'src/layout/IfLoggedIn';
 
 import { BugFragment } from './Bug.generated';
@@ -97,9 +96,8 @@ function Bug({ bug }: Props) {
     isLabelSettingsOpen
       ? setIsLabelSettingsOpen(false)
       : setIsLabelSettingsOpen(true);
-
-    console.log('Label Settings ' + isLabelSettingsOpen);
   }
+
   return (
     <main className={classes.main}>
       <div className={classes.header}>

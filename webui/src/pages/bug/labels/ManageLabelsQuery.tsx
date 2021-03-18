@@ -28,7 +28,7 @@ const LabelQuery: React.FC<Props> = ({ isLabelSettingsOpen, bug }) => {
           G: l.color.G,
           B: l.color.B,
         },
-        isActive: true,
+        isActive: isActive,
       };
     });
   }
@@ -45,7 +45,7 @@ const LabelQuery: React.FC<Props> = ({ isLabelSettingsOpen, bug }) => {
   const bugLabelNames = bugLabels.map((l) => l.name);
   queriedLabels.forEach((l, index) => {
     if (bugLabelNames.includes(l.name)) {
-      queriedLabels.splice(index);
+      queriedLabels.splice(index, 1);
     }
   });
 
