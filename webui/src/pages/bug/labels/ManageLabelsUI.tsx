@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 
+import { AccordionDetails } from '@material-ui/core';
+import AddIcon from '@material-ui/icons/Add';
 import CancelIcon from '@material-ui/icons/Cancel';
 import CheckIcon from '@material-ui/icons/Check';
 
@@ -105,6 +107,7 @@ function ManageLabelsUI({
       } else
         return (
           <li
+            onClick={handleLabelClick}
             className={'labelListelem'}
             style={{
               display: 'flex',
@@ -125,9 +128,21 @@ function ManageLabelsUI({
       list.push(
         <div
           onClick={clickAddLabel}
-          style={{ cursor: 'pointer', border: '1px solid black' }}
+          style={{
+            cursor: 'pointer',
+            border: '1px solid black',
+          }}
         >
-          <p>Create new label "{searchInput}"</p>
+          <p
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              width: '100%',
+              justifyContent: 'space-around',
+            }}
+          >
+            Create new label "{searchInput}" <AddIcon />
+          </p>
         </div>
       );
     return list;
