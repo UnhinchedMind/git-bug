@@ -34,25 +34,28 @@ const LabelQuery: React.FC<Props> = ({ isLabelSettingsOpen, bug }) => {
   }
 
   //Labels attached to specific Bug (active Labels)
-  let bugLabels = createLabelArray(bug.labels, true);
+  const bugLabels = createLabelArray(bug.labels, true);
   //All Queried Labels
-  let queriedLabels = createLabelArray(
+  const queriedLabels = createLabelArray(
     data.repository.validLabels.nodes,
     false
   );
 
-  //(+remove Active BugLabels from QueriedLabels, so theyre not doubled)
+  let labellist = bugLabels;
+
+  //(+add every nonactive Label to labellist)
   const bugLabelNames = bugLabels.map((l) => l.name);
+  console.log(bugLabelNames);
+  console.log(queriedLabels.map((l) => l.name));
   queriedLabels.forEach((l, index) => {
-    if (bugLabelNames.includes(l.name)) {
-      queriedLabels.splice(index, 1);
+    if (!bugLabelNames.includes(l.name)) {
+      labellist.push(l);
     }
   });
 
   return (
     <ManageLabelsUI
-      buglabels={bugLabels}
-      queriedlabels={queriedLabels}
+      labellist={labellist}
       isLabelSettingsOpen={isLabelSettingsOpen}
     />
   );

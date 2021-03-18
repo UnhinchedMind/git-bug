@@ -7,20 +7,15 @@ import CheckIcon from '@material-ui/icons/Check';
 import { Color } from 'src/gqlTypes';
 
 type Props = {
-  buglabels: any;
-  queriedlabels: any;
+  labellist: any;
   isLabelSettingsOpen: boolean;
 };
 
-function ManageLabelsUI({
-  queriedlabels,
-  isLabelSettingsOpen,
-  buglabels,
-}: Props) {
+function ManageLabelsUI({ labellist, isLabelSettingsOpen }: Props) {
   let [searchInput, setSearch] = useState('');
   let [isExisting, setIsExisting] = useState(false);
 
-  let [labels] = useState(buglabels.concat(queriedlabels));
+  let [labels] = useState(labellist);
 
   const onSearchChange = (event: {
     target: { value: React.SetStateAction<string> };
@@ -64,7 +59,7 @@ function ManageLabelsUI({
     //only display searched labels (or all if no search)
     const labelslist = searchLabel(labels, searchInput);
 
-    let list = labelslist.map((label) => {
+    let list = labelslist.map((label, index) => {
       const labelcolor: Color = {
         R: label.color.R,
         G: label.color.G,
@@ -83,6 +78,7 @@ function ManageLabelsUI({
       if (label.isActive) {
         return (
           <li
+            key={index}
             onClick={handleLabelClick}
             className={'labelListelem'}
             style={{
@@ -109,6 +105,7 @@ function ManageLabelsUI({
       } else
         return (
           <li
+            key={index}
             onClick={handleLabelClick}
             className={'labelListelem'}
             style={{
