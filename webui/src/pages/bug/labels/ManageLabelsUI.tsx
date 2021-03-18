@@ -1,26 +1,26 @@
 import React, { useState } from 'react';
 
+import CancelIcon from '@material-ui/icons/Cancel';
+import CheckIcon from '@material-ui/icons/Check';
+
+import { BugFragment } from '../Bug.generated';
 import { Color } from 'src/gqlTypes';
 
 type Props = {
+  buglabels: any;
   queriedlabels: any;
   isLabelSettingsOpen: boolean;
 };
 
-function ManageLabelsUI({ queriedlabels, isLabelSettingsOpen }: Props) {
+function ManageLabelsUI({
+  queriedlabels,
+  isLabelSettingsOpen,
+  buglabels,
+}: Props) {
   let [searchInput, setSearch] = useState('');
   let [isExisting, setIsExisting] = useState(false);
 
-  let [labels] = useState(
-    queriedlabels.map((l: any) => {
-      return {
-        name: l.name,
-        R: l.color.R,
-        G: l.color.G,
-        B: l.color.B,
-      };
-    })
-  );
+  let [labels] = useState(buglabels.concat(queriedlabels));
 
   const onChange = (event: {
     target: { value: React.SetStateAction<string> };
@@ -44,7 +44,7 @@ function ManageLabelsUI({ queriedlabels, isLabelSettingsOpen }: Props) {
     tmp.length > 0 ? setIsExisting(true) : setIsExisting(false);
   }
 
-  function searchLabel(labels: string[], search: string): Array<any> {
+  function searchLabel(labels: any[], search: string): Array<any> {
     if (search === '') return labels;
     return labels.filter((l: any) =>
       l.name.trim().toLowerCase().includes(search.trim().toLowerCase())
@@ -59,9 +59,9 @@ function ManageLabelsUI({ queriedlabels, isLabelSettingsOpen }: Props) {
 
     let list = labelslist.map((label) => {
       const labelcolor: Color = {
-        R: label.R,
-        G: label.G,
-        B: label.B,
+        R: label.color.R,
+        G: label.color.G,
+        B: label.color.B,
       };
       const style = {
         width: '15px',
@@ -70,24 +70,51 @@ function ManageLabelsUI({ queriedlabels, isLabelSettingsOpen }: Props) {
         backgroundColor: _rgb(labelcolor),
         borderRadius: '0.25rem',
         marginRight: '5px',
+        marginLeft: '3px',
       };
 
-      return (
-        <li
-          className={'labelListelem'}
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center',
-            cursor: 'pointer',
-            padding: '3px',
-            border: '1px solid',
-          }}
-        >
-          <div className={'labelcolor'} style={style} />
-          <div className={'labelname'}> {label.name}</div>
-        </li>
-      );
+      if (label.isActive) {
+        return (
+          <li
+            className={'labelListelem'}
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+              cursor: 'pointer',
+              padding: '3px',
+              border: '1px solid',
+            }}
+          >
+            <CheckIcon fontSize={'small'}></CheckIcon>
+            <div className={'labelcolor'} style={style}></div>
+            <div className={'labelname'} style={{ width: '100px' }}>
+              {' '}
+              {label.name}
+            </div>
+            <CancelIcon
+              fontSize={'small'}
+              style={{ justifySelf: 'flex-end' }}
+            ></CancelIcon>
+          </li>
+        );
+      } else
+        return (
+          <li
+            className={'labelListelem'}
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+              cursor: 'pointer',
+              padding: '3px',
+              border: '1px solid',
+            }}
+          >
+            <div className={'labelcolor'} style={style} />
+            <div className={'labelname'}> {label.name}</div>
+          </li>
+        );
     });
 
     if (!isExisting && searchInput !== '')

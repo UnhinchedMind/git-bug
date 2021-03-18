@@ -135,7 +135,10 @@ function Bug({ bug }: Props) {
             {bug.labels.map((label) => (
               <NewLabel label={label} />
             ))}
-            <ManageLabelsQuery isLabelSettingsOpen={isLabelSettingsOpen} />
+            <ManageLabelsQuery
+              bug={bug}
+              isLabelSettingsOpen={isLabelSettingsOpen}
+            />
           </div>
         </div>
       </div>
