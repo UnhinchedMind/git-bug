@@ -1,0 +1,14 @@
+query GetUserById($userId: String!) {
+  repository {
+    identity(prefix: $userId) {
+      id
+      humanId
+      displayName
+      email
+      name
+      avatarUrl
+      isProtected
+      login
+    }
+  }
+}

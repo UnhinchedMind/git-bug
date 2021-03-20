@@ -94,7 +94,7 @@ const CurrentIdentity = () => {
                     <Link
                       color="inherit"
                       className={classes.profileLink}
-                      href="/user"
+                      href={`/user/${user.humanId}`}
                     >
                       Open profile
                     </Link>

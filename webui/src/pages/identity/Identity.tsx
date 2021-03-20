@@ -6,7 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import InfoIcon from '@material-ui/icons/Info';
 import MailOutlineIcon from '@material-ui/icons/MailOutline';
 
-import { useCurrentIdentityQuery } from '../../components/CurrentIdentity/CurrentIdentity.generated';
+import { IdentityFragment } from '../../components/CurrentIdentity/IdentityFragment.generated';
 
 import BugList from './BugList';
 
@@ -51,11 +51,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Identity = () => {
+type Props = {
+  identity: IdentityFragment;
+};
+const Identity = ({ identity }: Props) => {
   const classes = useStyles();
-  const { data } = useCurrentIdentityQuery();
-  const user = data?.repository?.userIdentity;
-  console.log(user);
+  const user = identity;
 
   return (
     <main className={classes.main}>
