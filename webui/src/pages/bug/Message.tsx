@@ -13,6 +13,7 @@ import { CreateFragment } from './MessageCreateFragment.generated';
 const useStyles = makeStyles((theme) => ({
   author: {
     fontWeight: 'bold',
+    color: theme.palette.info.contrastText,
   },
   container: {
     display: 'flex',
