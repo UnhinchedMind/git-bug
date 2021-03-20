@@ -65,6 +65,7 @@ function BugList({ humanId }: Props) {
           </Card>
         );
       })}
+      {bugs?.length === 0 && <p>No authored bugs by this user found.</p>}
     </div>
   );
 }
