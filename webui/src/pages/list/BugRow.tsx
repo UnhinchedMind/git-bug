@@ -8,6 +8,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import CheckCircleOutline from '@material-ui/icons/CheckCircleOutline';
 import ErrorOutline from '@material-ui/icons/ErrorOutline';
 
+import Author from 'src/components/Author';
 import Date from 'src/components/Date';
 import Label from 'src/components/Label';
 import { Status } from 'src/gqlTypes';
@@ -102,7 +103,7 @@ function BugRow({ bug }: Props) {
           <div className={classes.details}>
             {bug.humanId} opened&nbsp;
             <Date date={bug.createdAt} />
-            &nbsp;by {bug.author.displayName}
+            &nbsp;by <Author author={bug.author} />
           </div>
         </div>
       </TableCell>
