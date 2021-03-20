@@ -107,13 +107,6 @@ const Identity = () => {
               {user?.email ? user?.email : '---'}
             </Link>
           </Typography>
-          <FormControlLabel
-            className={classes.control}
-            label="Protected"
-            labelPlacement="end"
-            value={user?.isProtected}
-            control={<Checkbox color="secondary" indeterminate />}
-          />
         </div>
         <Paper className={classes.content}>
           <Typography variant="h5" component="h2">
