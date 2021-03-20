@@ -52,6 +52,9 @@ const useStyles = makeStyles((theme) => ({
   header: {
     ...theme.typography.h4,
   },
+  infoIcon: {
+    verticalAlign: 'bottom',
+  },
 }));
 
 const Identity = () => {
@@ -84,6 +87,7 @@ const Identity = () => {
             <InfoIcon
               fontSize={'small'}
               titleAccess={user?.id ? user?.id : '---'}
+              className={classes.infoIcon}
             />
           </Typography>
           <Typography variant="subtitle2" component="h3">
