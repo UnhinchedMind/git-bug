@@ -1,12 +1,6 @@
 import React from 'react';
 
-import {
-  Checkbox,
-  FormControlLabel,
-  Link,
-  Paper,
-  Typography,
-} from '@material-ui/core';
+import { Link, Paper, Typography } from '@material-ui/core';
 import Avatar from '@material-ui/core/Avatar';
 import { makeStyles } from '@material-ui/core/styles';
 import InfoIcon from '@material-ui/icons/Info';
