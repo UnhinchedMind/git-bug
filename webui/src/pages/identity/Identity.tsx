@@ -19,6 +19,7 @@ const useStyles = makeStyles((theme) => ({
   },
   content: {
     padding: theme.spacing(0.5, 2, 2, 2),
+    wordWrap: 'break-word',
   },
   large: {
     width: 200,
@@ -27,8 +28,10 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: '100%',
     maxHeight: '100%',
   },
+  heading: {
+    marginTop: theme.spacing(3),
+  },
   header: {
-    marginTop: theme.spacing(1),
     ...theme.typography.h4,
   },
   infoIcon: {
@@ -46,11 +49,8 @@ const Identity = ({ identity }: Props) => {
   return (
     <main className={classes.main}>
       <Paper elevation={3} className={classes.content}>
-        <h1 className={classes.header}>
-          {user?.displayName ? user?.displayName : 'none'}
-        </h1>
-        <Grid container direction="row" alignItems="flex-start">
-          <Grid item xs={3}>
+        <Grid spacing={2} container direction="row" alignItems="flex-start">
+          <Grid className={classes.heading} item xs={3}>
             <Avatar
               src={user?.avatarUrl ? user.avatarUrl : undefined}
               className={classes.large}
@@ -59,6 +59,9 @@ const Identity = ({ identity }: Props) => {
             </Avatar>
           </Grid>
           <Grid item>
+            <h1 className={classes.header}>
+              {user?.displayName ? user?.displayName : 'none'}
+            </h1>
             <Typography variant="h5" component="h2">
               Your account
             </Typography>
@@ -91,11 +94,13 @@ const Identity = ({ identity }: Props) => {
               </Typography>
             )}
           </Grid>
+          <Grid item>
+            <Typography variant="h5" component="h2">
+              Bugs authored by {user?.displayName}
+            </Typography>
+            <BugList humanId={user?.humanId ? user?.humanId : ''} />
+          </Grid>
         </Grid>
-        <Typography variant="h5" component="h2">
-          Bugs authored by {user?.displayName}
-        </Typography>
-        <BugList humanId={user?.humanId ? user?.humanId : ''} />
       </Paper>
     </main>
   );
