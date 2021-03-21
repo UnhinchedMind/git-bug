@@ -68,12 +68,7 @@ const useStyles = makeStyles((theme) => ({
     lineHeight: '1.5rem',
     color: theme.palette.text.secondary,
   },
-  labels: {
-    paddingLeft: theme.spacing(1),
-    '& > *': {
-      display: 'inline-block',
-    },
-  },
+  labels: {},
 }));
 
 type Props = {

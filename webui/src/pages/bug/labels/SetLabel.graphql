@@ -1,0 +1,7 @@
+mutation SetLabel($input: ChangeLabelInput) {
+    changeLabels(input: $input) {
+        operation {
+            id
+        }
+    }
+}

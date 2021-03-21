@@ -75,22 +75,9 @@ type Props = {
 };
 
 function Bug({ bug }: Props) {
-  let [searchInput, setSearch] = useState('');
   let [isLabelSettingsOpen, setIsLabelSettingsOpen] = useState(false);
 
-  const onChange = (event: {
-    target: { value: React.SetStateAction<string> };
-  }) => {
-    setSearch(event.target.value);
-  };
   const classes = useStyles();
-
-  function searchLabel(search: string): Array<any> {
-    if (search === '') return bug.labels;
-    return bug.labels.filter((label) =>
-      label.name.toLowerCase().includes(search.toLocaleLowerCase())
-    );
-  }
 
   function clickLabelSettings() {
     isLabelSettingsOpen
