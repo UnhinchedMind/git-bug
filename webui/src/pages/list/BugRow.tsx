@@ -77,6 +77,7 @@ type Props = {
 
 function BugRow({ bug }: Props) {
   const classes = useStyles();
+
   return (
     <TableRow hover>
       <TableCell className={classes.cell}>

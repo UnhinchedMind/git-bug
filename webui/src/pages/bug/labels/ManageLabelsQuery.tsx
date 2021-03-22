@@ -55,6 +55,7 @@ const LabelQuery: React.FC<Props> = ({ isLabelSettingsOpen, bug }) => {
 
   return (
     <ManageLabelsUI
+      bug={bug}
       labellist={labellist}
       isLabelSettingsOpen={isLabelSettingsOpen}
     />

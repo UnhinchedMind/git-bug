@@ -14,6 +14,7 @@ import { BugFragment } from './Bug.generated';
 import CommentForm from './CommentForm';
 import TimelineQuery from './TimelineQuery';
 import ManageLabelsQuery from './labels/ManageLabelsQuery';
+import { useSetLabelMutation } from './labels/SetLabel.generated';
 
 const useStyles = makeStyles((theme) => ({
   main: {
@@ -76,6 +77,28 @@ type Props = {
 
 function Bug({ bug }: Props) {
   let [isLabelSettingsOpen, setIsLabelSettingsOpen] = useState(false);
+  const [setLabel, { loading }] = useSetLabelMutation();
+
+  const submitAddLabel = (name: string) => {
+    setLabel({
+      variables: {
+        input: {
+          prefix: bug.id,
+          added: [name],
+        },
+      },
+    });
+  };
+  const submitRemoveLabel = (name: string) => {
+    setLabel({
+      variables: {
+        input: {
+          prefix: bug.id,
+          Removed: [name],
+        },
+      },
+    });
+  };
 
   const classes = useStyles();
 
@@ -117,9 +140,18 @@ function Bug({ bug }: Props) {
             </IconButton>
           </span>
           <div>
-            {bug.labels.map((label, index) => (
-              <Label key={index} label={label} />
-            ))}
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                flexWrap: 'wrap',
+              }}
+            >
+              {bug.labels.map((label, index) => (
+                <Label key={index} label={label} />
+              ))}
+            </div>
+
             <ManageLabelsQuery
               bug={bug}
               isLabelSettingsOpen={isLabelSettingsOpen}

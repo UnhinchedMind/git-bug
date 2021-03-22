@@ -25,6 +25,7 @@ type Props = {
 function LabelChange({ op }: Props) {
   const { added, removed } = op;
   const classes = useStyles();
+
   return (
     <div className={classes.main}>
       <Author author={op.author} className={classes.author} />

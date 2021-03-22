@@ -4,18 +4,44 @@ import AddIcon from '@material-ui/icons/Add';
 import CancelIcon from '@material-ui/icons/Cancel';
 import CheckIcon from '@material-ui/icons/Check';
 
+import { BugFragment } from '../Bug.generated';
 import { Color } from 'src/gqlTypes';
 
+import { useSetLabelMutation } from './SetLabel.generated';
+
 type Props = {
+  bug: BugFragment;
   labellist: any;
   isLabelSettingsOpen: boolean;
 };
 
-function ManageLabelsUI({ labellist, isLabelSettingsOpen }: Props) {
-  let [searchInput, setSearch] = useState('');
-  let [isExisting, setIsExisting] = useState(false);
+function ManageLabelsUI({ bug, labellist, isLabelSettingsOpen }: Props) {
+  const [searchInput, setSearch] = useState('');
+  const [isExisting, setIsExisting] = useState(false);
+  const [labels, setLabelList] = useState(labellist);
 
-  let [labels] = useState(labellist);
+  const [setLabel, { loading }] = useSetLabelMutation();
+
+  const submitAddLabel = (name: string) => {
+    setLabel({
+      variables: {
+        input: {
+          prefix: bug.id,
+          added: [name],
+        },
+      },
+    });
+  };
+  const submitRemoveLabel = (name: string) => {
+    setLabel({
+      variables: {
+        input: {
+          prefix: bug.id,
+          Removed: [name],
+        },
+      },
+    });
+  };
 
   const onSearchChange = (event: {
     target: { value: React.SetStateAction<string> };
@@ -24,16 +50,15 @@ function ManageLabelsUI({ labellist, isLabelSettingsOpen }: Props) {
     testIfExisting(event.target.value.toString());
   };
 
-  const handleLabelClick = () => {
+  const handleLabelClick = (isActive: boolean, name: string) => {
     console.log('Label in List Clicked');
+    if (isActive) submitRemoveLabel(name);
+    else submitAddLabel(name);
   };
 
-  const handleDelete = () => {
-    console.info('You clicked the delete icon.');
-  };
-
-  const clickAddLabel = () => {
-    console.log('ADD LABEL' + searchInput);
+  const clickAddLabel = (name: string) => {
+    console.log('ADD LABEL' + name);
+    submitAddLabel(name);
   };
 
   //Helperfunction for SearchLabelfunction (to dont be able to add existing labels)
@@ -51,7 +76,7 @@ function ManageLabelsUI({ labellist, isLabelSettingsOpen }: Props) {
     );
   }
 
-  // Construct HTML Elements for all Labels
+  // Construct  Labellist HTML Elements for all Labels
   function getLabellist() {
     const _rgb = (color: Color) =>
       'rgb(' + color.R + ',' + color.G + ',' + color.B + ')';
@@ -79,7 +104,7 @@ function ManageLabelsUI({ labellist, isLabelSettingsOpen }: Props) {
         return (
           <li
             key={index}
-            onClick={handleLabelClick}
+            onClick={() => handleLabelClick(label.isActive, label.name)}
             className={'labelListelem'}
             style={{
               display: 'flex',
@@ -90,8 +115,8 @@ function ManageLabelsUI({ labellist, isLabelSettingsOpen }: Props) {
               border: '1px solid',
             }}
           >
-            <CheckIcon fontSize={'small'}></CheckIcon>
-            <div className={'labelcolor'} style={style}></div>
+            <CheckIcon fontSize={'small'} />
+            <div className={'labelcolor'} style={style} />
             <div className={'labelname'} style={{ width: '100px' }}>
               {' '}
               {label.name}
@@ -99,14 +124,14 @@ function ManageLabelsUI({ labellist, isLabelSettingsOpen }: Props) {
             <CancelIcon
               fontSize={'small'}
               style={{ justifySelf: 'flex-end' }}
-            ></CancelIcon>
+            />
           </li>
         );
       } else
         return (
           <li
             key={index}
-            onClick={handleLabelClick}
+            onClick={() => handleLabelClick(label.isActive, label.name)}
             className={'labelListelem'}
             style={{
               display: 'flex',
@@ -126,7 +151,7 @@ function ManageLabelsUI({ labellist, isLabelSettingsOpen }: Props) {
     if (!isExisting && searchInput !== '')
       list.push(
         <div
-          onClick={clickAddLabel}
+          onClick={() => clickAddLabel(searchInput)}
           style={{
             cursor: 'pointer',
             border: '1px solid black',

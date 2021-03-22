@@ -30,10 +30,6 @@ const createStyle = (color: Color) => ({
   margin: '3px',
 });
 
-const handleDelete = () => {
-  console.info('You clicked the delete icon.');
-};
-
 type Props = { label: LabelFragment };
 function Label({ label }: Props) {
   return (
@@ -41,8 +37,7 @@ function Label({ label }: Props) {
       size={'small'}
       label={label.name}
       style={createStyle(label.color)}
-      onDelete={handleDelete}
-    />
+    ></Chip>
   );
 }
 export default Label;
