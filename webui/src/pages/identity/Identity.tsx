@@ -7,7 +7,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import InfoIcon from '@material-ui/icons/Info';
 import MailOutlineIcon from '@material-ui/icons/MailOutline';
 
-import { IdentityFragment } from '../../components/CurrentIdentity/IdentityFragment.generated';
+import { IdentityFragment } from '../../components/Identity/IdentityFragment.generated';
 
 import BugList from './BugList';
 

@@ -3,7 +3,7 @@ import { RouteComponentProps } from 'react-router-dom';
 
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-import { useGetUserByIdQuery } from '../../components/CurrentIdentity/UserIdentity.generated';
+import { useGetUserByIdQuery } from '../../components/Identity/UserIdentity.generated';
 
 import Identity from './Identity';
 

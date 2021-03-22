@@ -6,7 +6,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import { makeStyles } from '@material-ui/core/styles';
 
 import { LightSwitch } from '../../components/Themer';
-import CurrentIdentity from '../CurrentIdentity/CurrentIdentity';
+import CurrentIdentity from '../Identity/CurrentIdentity';
 
 const useStyles = makeStyles((theme) => ({
   offset: {
