@@ -7,6 +7,7 @@ import CancelIcon from '@material-ui/icons/Cancel';
 import CheckIcon from '@material-ui/icons/Check';
 
 import { BugFragment } from '../Bug.generated';
+import { GetBugDocument } from '../BugQuery.generated';
 import { Color } from 'src/gqlTypes';
 
 import { GetLabelsDocument } from './ManageLabelsQuery.generated';
@@ -36,6 +37,10 @@ function ManageLabelsUI({ bug, labellist, isLabelSettingsOpen }: Props) {
       refetchQueries: [
         // TODO: update the cache instead of refetching
         {
+          query: GetBugDocument,
+          variables: { id: bug.id },
+        },
+        {
           query: GetLabelsDocument,
         },
       ],
@@ -55,6 +60,10 @@ function ManageLabelsUI({ bug, labellist, isLabelSettingsOpen }: Props) {
       },
       refetchQueries: [
         // TODO: update the cache instead of refetching
+        {
+          query: GetBugDocument,
+          variables: { id: bug.id },
+        },
         {
           query: GetLabelsDocument,
         },
@@ -176,7 +185,14 @@ function ManageLabelsUI({ bug, labellist, isLabelSettingsOpen }: Props) {
     // create new Label + Add to Bug
     if (!isExisting && searchInput !== '')
       list.push(
-        <ListItem button key={'search'}>
+        <ListItem
+          button
+          key={'search'}
+          style={{
+            cursor: 'pointer',
+            border: '1px solid black',
+          }}
+        >
           <div
             onClick={() => clickAddLabel(searchInput)}
             style={{
