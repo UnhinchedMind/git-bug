@@ -1,4 +1,4 @@
-query getLabels{
+query GetLabels{
     repository
     {
         validLabels{

@@ -2,6 +2,15 @@ mutation SetLabel($input: ChangeLabelInput) {
     changeLabels(input: $input) {
         operation {
             id
+        },
+        results{
+            status,
+            label{
+                name,
+                color{R}
+                color{G},
+                color{B}
+            }
         }
     }
 }

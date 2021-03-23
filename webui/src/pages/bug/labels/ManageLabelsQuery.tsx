@@ -45,8 +45,6 @@ const LabelQuery: React.FC<Props> = ({ isLabelSettingsOpen, bug }) => {
 
   //(+add every nonactive Label to labellist)
   const bugLabelNames = bugLabels.map((l) => l.name);
-  console.log(bugLabelNames);
-  console.log(queriedLabels.map((l) => l.name));
   queriedLabels.forEach((l, index) => {
     if (!bugLabelNames.includes(l.name)) {
       labellist.push(l);

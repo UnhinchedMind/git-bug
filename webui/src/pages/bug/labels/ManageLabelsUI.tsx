@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 
+import { ListItem } from '@material-ui/core';
+import List from '@material-ui/core/List';
 import AddIcon from '@material-ui/icons/Add';
 import CancelIcon from '@material-ui/icons/Cancel';
 import CheckIcon from '@material-ui/icons/Check';
@@ -7,6 +9,7 @@ import CheckIcon from '@material-ui/icons/Check';
 import { BugFragment } from '../Bug.generated';
 import { Color } from 'src/gqlTypes';
 
+import { GetLabelsDocument } from './ManageLabelsQuery.generated';
 import { useSetLabelMutation } from './SetLabel.generated';
 
 type Props = {
@@ -18,9 +21,9 @@ type Props = {
 function ManageLabelsUI({ bug, labellist, isLabelSettingsOpen }: Props) {
   const [searchInput, setSearch] = useState('');
   const [isExisting, setIsExisting] = useState(false);
-  const [labels, setLabelList] = useState(labellist);
+  const [labels] = useState(labellist);
 
-  const [setLabel, { loading }] = useSetLabelMutation();
+  const [setLabel] = useSetLabelMutation();
 
   const submitAddLabel = (name: string) => {
     setLabel({
@@ -30,6 +33,16 @@ function ManageLabelsUI({ bug, labellist, isLabelSettingsOpen }: Props) {
           added: [name],
         },
       },
+      refetchQueries: [
+        // TODO: update the cache instead of refetching
+        {
+          query: GetLabelsDocument,
+        },
+      ],
+      awaitRefetchQueries: true,
+    }).then((res) => {
+      console.log('added');
+      console.log(res.data?.changeLabels.results[0]!.label!);
     });
   };
   const submitRemoveLabel = (name: string) => {
@@ -40,6 +53,16 @@ function ManageLabelsUI({ bug, labellist, isLabelSettingsOpen }: Props) {
           Removed: [name],
         },
       },
+      refetchQueries: [
+        // TODO: update the cache instead of refetching
+        {
+          query: GetLabelsDocument,
+        },
+      ],
+      awaitRefetchQueries: true,
+    }).then((res) => {
+      console.log('removed');
+      console.log(res.data?.changeLabels.results[0]!.label!);
     });
   };
 
@@ -51,14 +74,13 @@ function ManageLabelsUI({ bug, labellist, isLabelSettingsOpen }: Props) {
   };
 
   const handleLabelClick = (isActive: boolean, name: string) => {
-    console.log('Label in List Clicked');
     if (isActive) submitRemoveLabel(name);
     else submitAddLabel(name);
   };
 
   const clickAddLabel = (name: string) => {
-    console.log('ADD LABEL' + name);
     submitAddLabel(name);
+    setSearch('');
   };
 
   //Helperfunction for SearchLabelfunction (to dont be able to add existing labels)
@@ -101,8 +123,10 @@ function ManageLabelsUI({ bug, labellist, isLabelSettingsOpen }: Props) {
       };
 
       if (label.isActive) {
+        //deactivate / remove Label from Bug
         return (
-          <li
+          <ListItem
+            button
             key={index}
             onClick={() => handleLabelClick(label.isActive, label.name)}
             className={'labelListelem'}
@@ -125,11 +149,13 @@ function ManageLabelsUI({ bug, labellist, isLabelSettingsOpen }: Props) {
               fontSize={'small'}
               style={{ justifySelf: 'flex-end' }}
             />
-          </li>
+          </ListItem>
         );
-      } else
+      } //activate Label
+      else
         return (
-          <li
+          <ListItem
+            button
             key={index}
             onClick={() => handleLabelClick(label.isActive, label.name)}
             className={'labelListelem'}
@@ -144,30 +170,32 @@ function ManageLabelsUI({ bug, labellist, isLabelSettingsOpen }: Props) {
           >
             <div className={'labelcolor'} style={style} />
             <div className={'labelname'}> {label.name}</div>
-          </li>
+          </ListItem>
         );
     });
-
+    // create new Label + Add to Bug
     if (!isExisting && searchInput !== '')
       list.push(
-        <div
-          onClick={() => clickAddLabel(searchInput)}
-          style={{
-            cursor: 'pointer',
-            border: '1px solid black',
-          }}
-        >
-          <p
+        <ListItem button key={'search'}>
+          <div
+            onClick={() => clickAddLabel(searchInput)}
             style={{
-              display: 'flex',
-              alignItems: 'center',
-              width: '100%',
-              justifyContent: 'space-around',
+              cursor: 'pointer',
+              border: '1px solid black',
             }}
           >
-            Create new label "{searchInput}" <AddIcon />
-          </p>
-        </div>
+            <p
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                width: '100%',
+                justifyContent: 'space-around',
+              }}
+            >
+              Create new label "{searchInput}" <AddIcon />
+            </p>
+          </div>
+        </ListItem>
       );
     return list;
   }
@@ -187,14 +215,9 @@ function ManageLabelsUI({ bug, labellist, isLabelSettingsOpen }: Props) {
             placeholder={'Filter Labels'}
           />
         </div>
-        <ul
-          style={{
-            listStyle: 'none',
-            paddingLeft: '0',
-          }}
-        >
+        <List style={{ maxHeight: 200, overflow: 'auto' }}>
           {getLabellist()}
-        </ul>
+        </List>
       </div>
     );
   } else return null;
