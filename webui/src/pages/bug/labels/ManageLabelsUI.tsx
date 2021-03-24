@@ -49,7 +49,14 @@ function ManageLabelsUI({ bug, labellist, isLabelSettingsOpen }: Props) {
       .then((result) => {
         const results = result.data?.changeLabels?.results;
         const newLabels = results?.map((x) => x?.label);
-        setLabels(labels?.concat(newLabels));
+        setLabels(
+          labels?.concat(newLabels).map((l: any) => {
+            if (l.name === name) {
+              l.isActive ? (l.isActive = false) : (l.isActive = true);
+            }
+            return l;
+          })
+        );
       })
       .catch((e) => console.log(e));
   };
