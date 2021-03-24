@@ -45,7 +45,13 @@ function ManageLabelsUI({ bug, labellist, isLabelSettingsOpen }: Props) {
         },
       ],
       awaitRefetchQueries: true,
-    }).catch((e) => console.log(e));
+    })
+      .then((result) => {
+        const results = result.data?.changeLabels?.results;
+        const newLabels = results?.map((x) => x?.label);
+        setLabels(labels?.concat(newLabels));
+      })
+      .catch((e) => console.log(e));
   };
 
   const submitRemoveLabel = (name: string) => {
