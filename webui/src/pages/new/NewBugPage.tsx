@@ -65,7 +65,7 @@ function NewBugPage() {
   }
 
   function isFormValid() {
-    return issueTitle.length > 0 && issueComment.length > 0 ? true : false;
+    return issueTitle.length > 0;
   }
 
   if (loading) return <div>Loading...</div>;
