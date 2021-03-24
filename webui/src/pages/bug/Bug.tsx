@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 
+import { IconButton } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import SettingsIcon from '@material-ui/icons/Settings';
 
 import BugTitleForm from 'src/components/BugTitleForm/BugTitleForm';
 import IfLoggedIn from 'src/components/IfLoggedIn/IfLoggedIn';
@@ -9,6 +11,7 @@ import Label from 'src/components/Label';
 import { BugFragment } from './Bug.generated';
 import CommentForm from './CommentForm';
 import TimelineQuery from './TimelineQuery';
+import LabelMenu from './labels/LabelMenu';
 
 /**
  * Css in JS Styles
@@ -94,7 +97,9 @@ function Bug({ bug }: Props) {
           </IfLoggedIn>
         </div>
         <div className={classes.rightSidebar}>
-          <span className={classes.rightSidebarTitle}>Labels</span>
+          <span className={classes.rightSidebarTitle}>
+            <LabelMenu bug={bug} />
+          </span>
           <ul className={classes.labelList}>
             {bug.labels.length === 0 && (
               <span className={classes.noLabel}>None yet</span>
