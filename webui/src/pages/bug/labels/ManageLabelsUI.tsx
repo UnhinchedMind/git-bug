@@ -22,12 +22,12 @@ type Props = {
 function ManageLabelsUI({ bug, labellist, isLabelSettingsOpen }: Props) {
   const [searchInput, setSearch] = useState('');
   const [isExisting, setIsExisting] = useState(false);
-  const [labels] = useState(labellist);
+  const [labels, setLabels] = useState(labellist);
 
-  const [setLabel] = useSetLabelMutation();
+  const [setLabelMutation] = useSetLabelMutation();
 
   const submitAddLabel = (name: string) => {
-    setLabel({
+    setLabelMutation({
       variables: {
         input: {
           prefix: bug.id,
@@ -45,13 +45,21 @@ function ManageLabelsUI({ bug, labellist, isLabelSettingsOpen }: Props) {
         },
       ],
       awaitRefetchQueries: true,
-    }).then((res) => {
-      console.log('added');
-      console.log(res.data?.changeLabels.results[0]!.label!);
-    });
+    })
+      .then((res) => {
+        console.log('added');
+        console.log(res.data?.changeLabels.results[0]!.label!);
+        /*  setLabel(
+          labels.map((l: any) => {
+            if (l.name === name) l.isActive = true;
+            return l;
+          })
+        ); */
+      })
+      .catch((e) => console.log(e));
   };
   const submitRemoveLabel = (name: string) => {
-    setLabel({
+    setLabelMutation({
       variables: {
         input: {
           prefix: bug.id,
@@ -69,10 +77,18 @@ function ManageLabelsUI({ bug, labellist, isLabelSettingsOpen }: Props) {
         },
       ],
       awaitRefetchQueries: true,
-    }).then((res) => {
-      console.log('removed');
-      console.log(res.data?.changeLabels.results[0]!.label!);
-    });
+    })
+      .then((res) => {
+        console.log('removed');
+        console.log(res.data?.changeLabels.results[0]!.label!);
+        /*   setLabel(
+          labels.map((l: any) => {
+            if (l.name === name) l.isActive = false;
+            return l;
+          })
+        ); */
+      })
+      .catch((e) => console.log(e));
   };
 
   const onSearchChange = (event: {
@@ -80,11 +96,20 @@ function ManageLabelsUI({ bug, labellist, isLabelSettingsOpen }: Props) {
   }) => {
     setSearch(event.target.value);
     testIfExisting(event.target.value.toString());
+    console.log(labels);
   };
 
   const handleLabelClick = (isActive: boolean, name: string) => {
     if (isActive) submitRemoveLabel(name);
     else submitAddLabel(name);
+    setLabels(
+      labels.map((l: any) => {
+        if (l.name === name) {
+          l.isActive ? (l.isActive = false) : (l.isActive = true);
+        }
+        return l;
+      })
+    );
   };
 
   const clickAddLabel = (name: string) => {
