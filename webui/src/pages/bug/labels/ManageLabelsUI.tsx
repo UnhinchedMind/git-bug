@@ -45,19 +45,9 @@ function ManageLabelsUI({ bug, labellist, isLabelSettingsOpen }: Props) {
         },
       ],
       awaitRefetchQueries: true,
-    })
-      .then((res) => {
-        console.log('added');
-        console.log(res.data?.changeLabels.results[0]!.label!);
-        /*  setLabel(
-          labels.map((l: any) => {
-            if (l.name === name) l.isActive = true;
-            return l;
-          })
-        ); */
-      })
-      .catch((e) => console.log(e));
+    }).catch((e) => console.log(e));
   };
+
   const submitRemoveLabel = (name: string) => {
     setLabelMutation({
       variables: {
@@ -77,18 +67,7 @@ function ManageLabelsUI({ bug, labellist, isLabelSettingsOpen }: Props) {
         },
       ],
       awaitRefetchQueries: true,
-    })
-      .then((res) => {
-        console.log('removed');
-        console.log(res.data?.changeLabels.results[0]!.label!);
-        /*   setLabel(
-          labels.map((l: any) => {
-            if (l.name === name) l.isActive = false;
-            return l;
-          })
-        ); */
-      })
-      .catch((e) => console.log(e));
+    }).catch((e) => console.log(e));
   };
 
   const onSearchChange = (event: {
@@ -96,7 +75,6 @@ function ManageLabelsUI({ bug, labellist, isLabelSettingsOpen }: Props) {
   }) => {
     setSearch(event.target.value);
     testIfExisting(event.target.value.toString());
-    console.log(labels);
   };
 
   const handleLabelClick = (isActive: boolean, name: string) => {
@@ -213,29 +191,20 @@ function ManageLabelsUI({ bug, labellist, isLabelSettingsOpen }: Props) {
         <ListItem
           button
           key={'search'}
+          onClick={() => clickAddLabel(searchInput)}
+          className={'labelListelem'}
           style={{
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
             cursor: 'pointer',
-            border: '1px solid black',
+            padding: '3px',
+            border: '1px solid',
+            background: 'rgb(139, 195, 74)',
+            justifyContent: 'space-around',
           }}
         >
-          <div
-            onClick={() => clickAddLabel(searchInput)}
-            style={{
-              cursor: 'pointer',
-              border: '1px solid black',
-            }}
-          >
-            <p
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                width: '100%',
-                justifyContent: 'space-around',
-              }}
-            >
-              Create new label "{searchInput}" <AddIcon />
-            </p>
-          </div>
+          Create new label "{searchInput}" <AddIcon />
         </ListItem>
       );
     return list;
