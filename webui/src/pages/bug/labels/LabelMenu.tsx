@@ -274,6 +274,7 @@ function LabelMenu({ bug }: Props) {
       })
         .then((res) => {
           console.log(res);
+          setBugLabelNames(selectedLabels);
         })
         .catch((e) => console.log(e));
     }
@@ -313,6 +314,7 @@ function LabelMenu({ bug }: Props) {
         //   setBugLabelNames(bug.labels.map((l) => l.name));
         console.log('buglabelnames.concat');
         console.log(name);
+        //  setBugLabelNames(bug.labels.map((l) => l.name));
         setBugLabelNames(bugLabelNames.concat(name));
         console.log(result);
       })
