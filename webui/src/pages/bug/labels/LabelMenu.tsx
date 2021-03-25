@@ -210,30 +210,31 @@ type Props = {
 };
 function LabelMenu({ bug }: Props) {
   const { data: labelsData } = useListLabelsQuery();
-  const [setLabelMutation] = useSetLabelMutation();
-  const [selectedLabels, setSelectedLabels] = useState(
-    bug.labels.map((l) => l.name)
-  );
   const [bugLabelNames, setBugLabelNames] = useState(
     bug.labels.map((l) => l.name)
   );
+
+  const [setLabelMutation] = useSetLabelMutation();
+
+  const [selectedLabels, setSelectedLabels] = useState(
+    bug.labels.map((l) => l.name)
+  );
+
   //const bugLabelNames = bug.labels.map((l) => l.name);
 
   function toggleLabel(key: string, active: boolean) {
-    const labels: string[] = active
+    /* const labels: string[] = active
       ? selectedLabels.filter((label) => label !== key)
       : selectedLabels.concat([key]);
-    setSelectedLabels(labels);
-
-    /*setLabelMutation({
-      variables: {
-        input: {
-          prefix: bug.id,
-          added: active ? [] : [key],
-          Removed: active ? [key] : [],
-        },
-      },
-    }).catch((e) => console.log(e));*/
+    setSelectedLabels(labels); */
+    console.log('toggle: key = ' + key + ' active = ' + active);
+    console.log('selected labels:' + selectedLabels);
+    console.log(selectedLabels);
+    active
+      ? setSelectedLabels(selectedLabels.filter((label) => label !== key))
+      : setSelectedLabels(selectedLabels.concat([key]));
+    console.log('selected labels after:' + selectedLabels);
+    console.log(selectedLabels);
   }
 
   function diff(oldState: string[], newState: string[]) {
@@ -275,13 +276,14 @@ function LabelMenu({ bug }: Props) {
         .then((res) => {
           console.log(res);
           setBugLabelNames(selectedLabels);
+          console.log(selectedLabels);
         })
         .catch((e) => console.log(e));
     }
   };
 
   function isActive(key: string) {
-    return bugLabelNames.includes(key);
+    return selectedLabels.includes(key);
   }
 
   function createNewLabel(name: string) {
