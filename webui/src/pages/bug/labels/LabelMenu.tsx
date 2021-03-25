@@ -71,6 +71,7 @@ const useStyles = makeStyles((theme) => ({
   },
   labelcolor: {
     width: '15px',
+    padding: '1px',
     height: '15px',
     display: 'flex',
     backgroundColor: 'blue',
@@ -81,6 +82,12 @@ const useStyles = makeStyles((theme) => ({
   labelsheader: {
     display: 'flex',
     flexDirection: 'row',
+  },
+  menuRow: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    flexWrap: 'wrap',
   },
 }));
 
@@ -173,24 +180,28 @@ function FilterDropdown({
           .filter((d) => d[1].toLowerCase().includes(filter.toLowerCase()))
           .map(([key, value, color]) => (
             <MenuItem
+              style={{ whiteSpace: 'normal', wordBreak: 'break-all' }}
               onClick={() => {
                 toggleLabel(key, itemActive(key));
               }}
               key={key}
               className={itemActive(key) ? classes.itemActive : undefined}
             >
-              {itemActive(key) ? <CheckIcon fontSize={'small'} /> : null}
-              <div
-                className={classes.labelcolor}
-                style={createStyle(color)}
-              ></div>
-              {value}
+              <div className={classes.menuRow}>
+                {itemActive(key) ? <CheckIcon fontSize={'small'} /> : null}
+                <div
+                  className={classes.labelcolor}
+                  style={createStyle(color)}
+                ></div>
+                {value}
+              </div>
             </MenuItem>
           ))}
         {filter !== '' &&
           dropdown.filter((d) => d[1].toLowerCase() === filter.toLowerCase())
             .length <= 0 && (
             <MenuItem
+              style={{ whiteSpace: 'normal', wordBreak: 'break-all' }}
               onClick={() => {
                 onNewItem(filter);
                 setFilter('');
@@ -220,30 +231,15 @@ function LabelMenu({ bug }: Props) {
     bug.labels.map((l) => l.name)
   );
 
-  //const bugLabelNames = bug.labels.map((l) => l.name);
-
   function toggleLabel(key: string, active: boolean) {
-    /* const labels: string[] = active
-      ? selectedLabels.filter((label) => label !== key)
-      : selectedLabels.concat([key]);
-    setSelectedLabels(labels); */
-    console.log('toggle: key = ' + key + ' active = ' + active);
-    console.log('selected labels:' + selectedLabels);
-    console.log(selectedLabels);
     active
       ? setSelectedLabels(selectedLabels.filter((label) => label !== key))
       : setSelectedLabels(selectedLabels.concat([key]));
-    console.log('selected labels after:' + selectedLabels);
-    console.log(selectedLabels);
   }
 
   function diff(oldState: string[], newState: string[]) {
     const added = newState.filter((x) => !oldState.includes(x));
     const removed = oldState.filter((x) => !newState.includes(x));
-    console.log('NEWSTATE:');
-    console.log(newState);
-    console.log('OLDSTATE:');
-    console.log(oldState);
     return {
       added: added,
       removed: removed,
@@ -252,8 +248,16 @@ function LabelMenu({ bug }: Props) {
 
   const changeBugLabels = () => {
     const labels = diff(bugLabelNames, selectedLabels);
-    console.log('CHANGE     labels');
-    console.log(labels);
+    console.log('BEFORE--------------------------------');
+    console.log('selectedLabels');
+    console.log(selectedLabels);
+    console.log('bugLabels');
+    console.log(bugLabelNames);
+    console.log('labels.added');
+    console.log(labels.added);
+    console.log('labels.removed');
+    console.log(labels.removed);
+    console.log('------------------------------------');
     if (labels.added.length > 0 || labels.removed.length > 0) {
       setLabelMutation({
         variables: {
@@ -276,9 +280,13 @@ function LabelMenu({ bug }: Props) {
         awaitRefetchQueries: true,
       })
         .then((res) => {
-          console.log(res);
           setBugLabelNames(selectedLabels);
+          console.log('AFTER-------------------------------');
+          console.log('selectedLabels');
           console.log(selectedLabels);
+          console.log('bugLabels');
+          console.log(bugLabelNames);
+          console.log('------------------------------------');
         })
         .catch((e) => console.log(e));
     }
@@ -310,17 +318,16 @@ function LabelMenu({ bug }: Props) {
     })
       .then((result) => {
         // setSelectedLabels(bug.labels.map((l) => l.name));
-        console.log('selectedlabels.concat');
-        console.log(name);
-        console.log(selectedLabels);
+
+        setSelectedLabels(selectedLabels.concat([name]));
         setSelectedLabels(selectedLabels.concat(name));
-        console.log(selectedLabels);
+        console.log('SELECTED' + selectedLabels);
         //   setBugLabelNames(bug.labels.map((l) => l.name));
-        console.log('buglabelnames.concat');
-        console.log(name);
+
         //  setBugLabelNames(bug.labels.map((l) => l.name));
+        setBugLabelNames(bugLabelNames.concat([name]));
         setBugLabelNames(bugLabelNames.concat(name));
-        console.log(result);
+
         changeBugLabels();
       })
       .catch((e) => console.log('createnewLabelError' + e));

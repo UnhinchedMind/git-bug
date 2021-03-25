@@ -54,9 +54,6 @@ const useStyles = makeStyles((theme) => ({
     listStyle: 'none',
     padding: 0,
     margin: 0,
-    display: 'flex',
-    flexDirection: 'row',
-    flexWrap: 'wrap',
   },
   label: {
     marginTop: theme.spacing(0.1),
