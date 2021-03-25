@@ -1,8 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-import { IconButton } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import SettingsIcon from '@material-ui/icons/Settings';
 
 import BugTitleForm from 'src/components/BugTitleForm/BugTitleForm';
 import IfLoggedIn from 'src/components/IfLoggedIn/IfLoggedIn';
@@ -56,13 +54,13 @@ const useStyles = makeStyles((theme) => ({
     listStyle: 'none',
     padding: 0,
     margin: 0,
+    display: 'flex',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
   },
   label: {
-    marginTop: theme.spacing(1),
-    marginBottom: theme.spacing(1),
-    '& > *': {
-      display: 'block',
-    },
+    marginTop: theme.spacing(0.1),
+    marginBottom: theme.spacing(0.1),
   },
   noLabel: {
     ...theme.typography.body2,
