@@ -107,6 +107,10 @@ function FilterDropdown({
     searchRef && searchRef.current && searchRef.current.focus();
   }, [filter]);
 
+  const clickCreateLabel = (name: string) => {
+    console.log('create ' + name);
+  };
+
   return (
     <>
       <div className={classes.labelsheader}>
@@ -173,6 +177,13 @@ function FilterDropdown({
               {value}
             </MenuItem>
           ))}
+        {filter !== '' &&
+          dropdown.filter((d) => d[1].toLowerCase() === filter.toLowerCase())
+            .length <= 0 && (
+            <MenuItem onClick={() => clickCreateLabel(filter)}>
+              Create new label '{filter}'
+            </MenuItem>
+          )}
       </Menu>
     </>
   );
