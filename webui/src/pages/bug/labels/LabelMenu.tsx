@@ -239,13 +239,17 @@ function LabelMenu({ bug }: Props) {
   function diff(oldState: string[], newState: string[]) {
     const added = newState.filter((x) => !oldState.includes(x));
     const removed = oldState.filter((x) => !newState.includes(x));
+    console.log('NEWSTATE:');
+    console.log(newState);
+    console.log('OLDSTATE:');
+    console.log(oldState);
     return {
       added: added,
       removed: removed,
     };
   }
 
-  const changeBugLabels = (selectedLabels: string[]) => {
+  const changeBugLabels = () => {
     const labels = diff(bugLabelNames, selectedLabels);
     if (labels.added.length > 0 || labels.removed.length > 0) {
       setLabelMutation({
@@ -267,7 +271,11 @@ function LabelMenu({ bug }: Props) {
           },
         ],
         awaitRefetchQueries: true,
-      }).catch((e) => console.log(e));
+      })
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((e) => console.log(e));
     }
   };
 
@@ -297,12 +305,18 @@ function LabelMenu({ bug }: Props) {
     })
       .then((result) => {
         // setSelectedLabels(bug.labels.map((l) => l.name));
-        // setSelectedLabels(bug.labels.map((l) => l.name));
-        selectedLabels.concat(name);
-        setBugLabelNames(bug.labels.map((l) => l.name));
+        console.log('selectedlabels.concat');
+        console.log(name);
+        console.log(selectedLabels);
+        setSelectedLabels(selectedLabels.concat(name));
+        console.log(selectedLabels);
+        //   setBugLabelNames(bug.labels.map((l) => l.name));
+        console.log('buglabelnames.concat');
+        console.log(name);
+        setBugLabelNames(bugLabelNames.concat(name));
         console.log(result);
       })
-      .catch((e) => console.log(e));
+      .catch((e) => console.log('createnewLabelError' + e));
   }
 
   let labels: any = [];
