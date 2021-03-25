@@ -252,6 +252,8 @@ function LabelMenu({ bug }: Props) {
 
   const changeBugLabels = () => {
     const labels = diff(bugLabelNames, selectedLabels);
+    console.log('CHANGE     labels');
+    console.log(labels);
     if (labels.added.length > 0 || labels.removed.length > 0) {
       setLabelMutation({
         variables: {
@@ -319,6 +321,7 @@ function LabelMenu({ bug }: Props) {
         //  setBugLabelNames(bug.labels.map((l) => l.name));
         setBugLabelNames(bugLabelNames.concat(name));
         console.log(result);
+        changeBugLabels();
       })
       .catch((e) => console.log('createnewLabelError' + e));
   }
