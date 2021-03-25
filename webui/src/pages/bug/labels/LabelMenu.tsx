@@ -24,7 +24,7 @@ type FilterDropdownProps = {
   icon?: React.ComponentType<SvgIconProps>;
   hasFilter?: boolean;
   itemActive: (key: string) => boolean;
-  onClose: () => void;
+  onClose: (selectedItems: string[]) => void;
   toggleLabel: (key: string, active: boolean) => void;
 } & React.ButtonHTMLAttributes<HTMLButtonElement>;
 
@@ -138,7 +138,10 @@ function FilterDropdown({
         open={open}
         onClose={() => {
           setOpen(false);
-          onClose();
+          const selectedLabels = dropdown
+            .map(([key]) => (itemActive(key) ? key : ''))
+            .filter((entry) => entry !== '');
+          onClose(selectedLabels);
         }}
         onExited={() => setFilter('')}
         anchorEl={buttonRef.current}
@@ -200,29 +203,47 @@ type Props = {
 function LabelMenu({ bug }: Props) {
   const { data: labelsData } = useListLabelsQuery();
   const [setLabelMutation] = useSetLabelMutation();
-  const [selectedLabels, selectLabel] = useState([]);
+  const [selectedLabels, setSelectedLabels] = useState(
+    bug.labels.map((l) => l.name)
+  );
 
   function toggleLabel(key: string, active: boolean) {
     console.log(key + ' |' + active);
-  }
-
-  const changeBugLabels = () => {
+    const labels: string[] = active
+      ? selectedLabels.filter((label) => label !== key)
+      : selectedLabels.concat([key]);
+    console.log('changed selection ' + labels);
+    setSelectedLabels(labels);
     /*setLabelMutation({
       variables: {
         input: {
           prefix: bug.id,
-          added: add,
-          Removed: remove,
+          added: active ? [] : [key],
+          Removed: active ? [key] : [],
         },
       },
-    }).catch((e) => console.log(e)); */
+    }).catch((e) => console.log(e));*/
+  }
+
+  const changeBugLabels = (selectedLabels: string[]) => {
+    console.log('selected: ' + selectedLabels);
+    /*setLabelMutation({
+      variables: {
+        input: {
+          prefix: bug.id,
+          added: [],
+          Removed: [],
+        },
+      },
+    }).catch((e) => console.log(e));*/
   };
 
   const bugLabels = bug.labels;
   const bugLabelNames = bugLabels.map((l) => l.name);
 
   function isActive(key: string) {
-    return bugLabelNames.includes(key);
+    return selectedLabels.includes(key);
+    //return bugLabelNames.includes(key);
   }
 
   let labels: any = [];
