@@ -190,6 +190,7 @@ function FilterDropdown({
               onClick={() => {
                 onNewItem(filter);
                 setFilter('');
+                setOpen(false);
               }}
             >
               Create new label '{filter}'
