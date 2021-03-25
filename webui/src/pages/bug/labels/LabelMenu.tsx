@@ -161,6 +161,10 @@ function FilterDropdown({
           />
         )}
         {dropdown
+          .sort(function (x, y) {
+            // true values first
+            return itemActive(x[1]) === itemActive(y[1]) ? 0 : x ? -1 : 1;
+          })
           .filter((d) => d[1].toLowerCase().includes(filter.toLowerCase()))
           .map(([key, value, color]) => (
             <MenuItem
