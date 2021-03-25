@@ -140,6 +140,7 @@ function FilterDropdown({
           setOpen(false);
           onClose();
         }}
+        onExited={() => setFilter('')}
         anchorEl={buttonRef.current}
         PaperProps={{
           style: {
