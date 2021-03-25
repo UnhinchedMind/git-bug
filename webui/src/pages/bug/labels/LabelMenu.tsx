@@ -73,6 +73,10 @@ const useStyles = makeStyles((theme) => ({
     marginRight: '5px',
     marginLeft: '3px',
   },
+  labelsheader: {
+    display: 'flex',
+    flexDirection: 'row',
+  },
 }));
 
 const _rgb = (color: Color) =>
@@ -105,14 +109,17 @@ function FilterDropdown({
 
   return (
     <>
-      Labels
-      <IconButton
-        ref={buttonRef}
-        onClick={() => setOpen(!open)}
-        className={classes.element}
-      >
-        <SettingsIcon fontSize={'small'} />
-      </IconButton>
+      <div className={classes.labelsheader}>
+        Labels
+        <IconButton
+          ref={buttonRef}
+          onClick={() => setOpen(!open)}
+          className={classes.element}
+        >
+          <SettingsIcon fontSize={'small'} />
+        </IconButton>
+      </div>
+
       <Menu
         getContentAnchorEl={null}
         ref={searchRef}
