@@ -28,7 +28,7 @@ type FilterDropdownProps = {
   icon?: React.ComponentType<SvgIconProps>;
   hasFilter?: boolean;
   itemActive: (key: string) => boolean;
-  onClose: (selectedItems: string[]) => void;
+  onClose: () => void;
   toggleLabel: (key: string, active: boolean) => void;
   onNewItem: (name: string) => void;
 } & React.ButtonHTMLAttributes<HTMLButtonElement>;
@@ -146,10 +146,7 @@ function FilterDropdown({
         open={open}
         onClose={() => {
           setOpen(false);
-          const selectedLabels = dropdown
-            .map(([key]) => (itemActive(key) ? key : ''))
-            .filter((entry) => entry !== '');
-          onClose(selectedLabels);
+          onClose();
         }}
         onExited={() => setFilter('')}
         anchorEl={buttonRef.current}
@@ -191,7 +188,7 @@ function FilterDropdown({
                 <div
                   className={classes.labelcolor}
                   style={createStyle(color)}
-                ></div>
+                />
                 {value}
               </div>
             </MenuItem>
@@ -223,20 +220,26 @@ function LabelMenu({ bug }: Props) {
   const [bugLabelNames, setBugLabelNames] = useState(
     bug.labels.map((l) => l.name)
   );
-
-  const [setLabelMutation] = useSetLabelMutation();
-
   const [selectedLabels, setSelectedLabels] = useState(
     bug.labels.map((l) => l.name)
   );
 
+  const [setLabelMutation] = useSetLabelMutation();
+
   function toggleLabel(key: string, active: boolean) {
-    active
-      ? setSelectedLabels(selectedLabels.filter((label) => label !== key))
-      : setSelectedLabels(selectedLabels.concat([key]));
+    const labels: string[] = active
+      ? selectedLabels.filter((label) => label !== key)
+      : selectedLabels.concat([key]);
+    setSelectedLabels(labels);
+    console.log('toggle (selected)');
+    console.log(labels);
   }
 
   function diff(oldState: string[], newState: string[]) {
+    console.log('oldState / Buglabels');
+    console.log(oldState);
+    console.log('newState / Selected');
+    console.log(newState);
     const added = newState.filter((x) => !oldState.includes(x));
     const removed = oldState.filter((x) => !newState.includes(x));
     return {
@@ -247,16 +250,8 @@ function LabelMenu({ bug }: Props) {
 
   const changeBugLabels = () => {
     const labels = diff(bugLabelNames, selectedLabels);
-    console.log('BEFORE--------------------------------');
-    console.log('selectedLabels');
-    console.log(selectedLabels);
-    console.log('bugLabels');
-    console.log(bugLabelNames);
-    console.log('labels.added');
-    console.log(labels.added);
-    console.log('labels.removed');
-    console.log(labels.removed);
-    console.log('------------------------------------');
+    console.log('changeBugLabels');
+    console.log(labels);
     if (labels.added.length > 0 || labels.removed.length > 0) {
       setLabelMutation({
         variables: {
@@ -279,13 +274,8 @@ function LabelMenu({ bug }: Props) {
         awaitRefetchQueries: true,
       })
         .then((res) => {
+          console.log(res);
           setBugLabelNames(selectedLabels);
-          console.log('AFTER-------------------------------');
-          console.log('selectedLabels');
-          console.log(selectedLabels);
-          console.log('bugLabels');
-          console.log(bugLabelNames);
-          console.log('------------------------------------');
         })
         .catch((e) => console.log(e));
     }
@@ -296,6 +286,7 @@ function LabelMenu({ bug }: Props) {
   }
 
   function createNewLabel(name: string) {
+    console.log('CREATE NEW LABEL');
     setLabelMutation({
       variables: {
         input: {
@@ -315,17 +306,13 @@ function LabelMenu({ bug }: Props) {
       ],
       awaitRefetchQueries: true,
     })
-      .then((result) => {
-        // setSelectedLabels(bug.labels.map((l) => l.name));
+      .then((res) => {
+        console.log(res);
 
-        setSelectedLabels(selectedLabels.concat([name]));
-        setSelectedLabels(selectedLabels.concat(name));
-        console.log('SELECTED' + selectedLabels);
-        //   setBugLabelNames(bug.labels.map((l) => l.name));
+        const tmp = selectedLabels.concat([name]);
 
-        //  setBugLabelNames(bug.labels.map((l) => l.name));
-        setBugLabelNames(bugLabelNames.concat([name]));
-        setBugLabelNames(bugLabelNames.concat(name));
+        setSelectedLabels(tmp);
+        setBugLabelNames(tmp);
 
         changeBugLabels();
       })
