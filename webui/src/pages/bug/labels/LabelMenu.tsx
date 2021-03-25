@@ -71,7 +71,6 @@ const useStyles = makeStyles((theme) => ({
   },
   labelcolor: {
     width: '15px',
-    padding: '1px',
     height: '15px',
     display: 'flex',
     backgroundColor: 'blue',
