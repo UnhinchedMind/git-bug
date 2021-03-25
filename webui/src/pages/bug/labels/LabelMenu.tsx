@@ -206,6 +206,7 @@ function LabelMenu({ bug }: Props) {
   const [selectedLabels, setSelectedLabels] = useState(
     bug.labels.map((l) => l.name)
   );
+  const bugLabelNames = bug.labels.map((l) => l.name);
 
   function toggleLabel(key: string, active: boolean) {
     console.log(key + ' |' + active);
@@ -225,21 +226,30 @@ function LabelMenu({ bug }: Props) {
     }).catch((e) => console.log(e));*/
   }
 
+  function diff(oldState: string[], newState: string[]) {
+    const added = newState.filter((x) => !oldState.includes(x));
+    const removed = oldState.filter((x) => !newState.includes(x));
+    console.log('added: ' + added);
+    console.log('removed: ' + removed);
+    return {
+      added: added,
+      removed: removed,
+    };
+  }
+
   const changeBugLabels = (selectedLabels: string[]) => {
     console.log('selected: ' + selectedLabels);
-    /*setLabelMutation({
+    const labels = diff(bugLabelNames, selectedLabels);
+    setLabelMutation({
       variables: {
         input: {
           prefix: bug.id,
-          added: [],
-          Removed: [],
+          added: labels.added,
+          Removed: labels.removed,
         },
       },
-    }).catch((e) => console.log(e));*/
+    }).catch((e) => console.log(e));
   };
-
-  const bugLabels = bug.labels;
-  const bugLabelNames = bugLabels.map((l) => l.name);
 
   function isActive(key: string) {
     return selectedLabels.includes(key);
