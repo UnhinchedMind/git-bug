@@ -6,14 +6,17 @@ import MenuItem from '@material-ui/core/MenuItem';
 import { SvgIconProps } from '@material-ui/core/SvgIcon';
 import TextField from '@material-ui/core/TextField';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
+import { darken } from '@material-ui/core/styles/colorManipulator';
+import CheckIcon from '@material-ui/icons/Check';
 import SettingsIcon from '@material-ui/icons/Settings';
 
+import { Color } from '../../../gqlTypes';
 import { useListLabelsQuery } from '../../list/ListLabels.generated';
 import { BugFragment } from '../Bug.generated';
 
 import { useSetLabelMutation } from './SetLabel.generated';
 
-type DropdownTuple = [string, string];
+type DropdownTuple = [string, string, Color];
 
 type FilterDropdownProps = {
   children: React.ReactNode;
@@ -61,7 +64,25 @@ const useStyles = makeStyles((theme) => ({
   icon: {
     paddingRight: theme.spacing(0.5),
   },
+  labelcolor: {
+    width: '15px',
+    height: '15px',
+    display: 'flex',
+    backgroundColor: 'blue',
+    borderRadius: '0.25rem',
+    marginRight: '5px',
+    marginLeft: '3px',
+  },
 }));
+
+const _rgb = (color: Color) =>
+  'rgb(' + color.R + ',' + color.G + ',' + color.B + ')';
+
+// Create a style object from the label RGB colors
+const createStyle = (color: Color) => ({
+  backgroundColor: _rgb(color),
+  borderBottomColor: darken(_rgb(color), 0.2),
+});
 
 function FilterDropdown({
   children,
@@ -129,7 +150,7 @@ function FilterDropdown({
         )}
         {dropdown
           .filter((d) => d[1].toLowerCase().includes(filter.toLowerCase()))
-          .map(([key, value]) => (
+          .map(([key, value, color]) => (
             <MenuItem
               onClick={() => {
                 toggleLabel(key, itemActive(key));
@@ -137,6 +158,11 @@ function FilterDropdown({
               key={key}
               className={itemActive(key) ? classes.itemActive : undefined}
             >
+              {itemActive(key) ? <CheckIcon fontSize={'small'} /> : null}
+              <div
+                className={classes.labelcolor}
+                style={createStyle(color)}
+              ></div>
               {value}
             </MenuItem>
           ))}
@@ -185,6 +211,7 @@ function LabelMenu({ bug }: Props) {
     labels = labelsData.repository.validLabels.nodes.map((node) => [
       node.name,
       node.name,
+      node.color,
     ]);
   }
 
