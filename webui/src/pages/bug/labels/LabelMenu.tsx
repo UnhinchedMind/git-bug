@@ -281,7 +281,7 @@ function LabelMenu({ bug }: Props) {
   };
 
   function isActive(key: string) {
-    return selectedLabels.includes(key);
+    return bugLabelNames.includes(key);
   }
 
   function createNewLabel(name: string) {
