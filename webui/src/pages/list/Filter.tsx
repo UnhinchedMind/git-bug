@@ -216,7 +216,7 @@ function FilterDropdown({
                 <div
                   className={classes.labelcolor}
                   style={createStyle(color)}
-                ></div>
+                />
               )}
               {value}
             </MenuItem>
