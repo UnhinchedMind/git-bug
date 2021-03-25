@@ -214,13 +214,17 @@ function LabelMenu({ bug }: Props) {
   const [selectedLabels, setSelectedLabels] = useState(
     bug.labels.map((l) => l.name)
   );
-  const bugLabelNames = bug.labels.map((l) => l.name);
+  const [bugLabelNames, setBugLabelNames] = useState(
+    bug.labels.map((l) => l.name)
+  );
+  //const bugLabelNames = bug.labels.map((l) => l.name);
 
   function toggleLabel(key: string, active: boolean) {
     const labels: string[] = active
       ? selectedLabels.filter((label) => label !== key)
       : selectedLabels.concat([key]);
     setSelectedLabels(labels);
+
     /*setLabelMutation({
       variables: {
         input: {
@@ -290,8 +294,15 @@ function LabelMenu({ bug }: Props) {
         },
       ],
       awaitRefetchQueries: true,
-    }).catch((e) => console.log(e));
-    selectedLabels.concat([name]);
+    })
+      .then((result) => {
+        // setSelectedLabels(bug.labels.map((l) => l.name));
+        // setSelectedLabels(bug.labels.map((l) => l.name));
+        selectedLabels.concat(name);
+        setBugLabelNames(bug.labels.map((l) => l.name));
+        console.log(result);
+      })
+      .catch((e) => console.log(e));
   }
 
   let labels: any = [];
