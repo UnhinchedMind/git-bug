@@ -26,6 +26,7 @@ type FilterDropdownProps = {
   itemActive: (key: string) => boolean;
   onClose: (selectedItems: string[]) => void;
   toggleLabel: (key: string, active: boolean) => void;
+  onNewItem: (name: string) => void;
 } & React.ButtonHTMLAttributes<HTMLButtonElement>;
 
 const CustomTextField = withStyles((theme) => ({
@@ -96,6 +97,7 @@ function FilterDropdown({
   itemActive,
   onClose,
   toggleLabel,
+  onNewItem,
 }: FilterDropdownProps) {
   const [open, setOpen] = useState(false);
   const [filter, setFilter] = useState<string>('');
@@ -106,10 +108,6 @@ function FilterDropdown({
   useEffect(() => {
     searchRef && searchRef.current && searchRef.current.focus();
   }, [filter]);
-
-  const clickCreateLabel = (name: string) => {
-    console.log('create ' + name);
-  };
 
   return (
     <>
@@ -188,7 +186,12 @@ function FilterDropdown({
         {filter !== '' &&
           dropdown.filter((d) => d[1].toLowerCase() === filter.toLowerCase())
             .length <= 0 && (
-            <MenuItem onClick={() => clickCreateLabel(filter)}>
+            <MenuItem
+              onClick={() => {
+                onNewItem(filter);
+                setFilter('');
+              }}
+            >
               Create new label '{filter}'
             </MenuItem>
           )}
@@ -209,11 +212,9 @@ function LabelMenu({ bug }: Props) {
   const bugLabelNames = bug.labels.map((l) => l.name);
 
   function toggleLabel(key: string, active: boolean) {
-    console.log(key + ' |' + active);
     const labels: string[] = active
       ? selectedLabels.filter((label) => label !== key)
       : selectedLabels.concat([key]);
-    console.log('changed selection ' + labels);
     setSelectedLabels(labels);
     /*setLabelMutation({
       variables: {
@@ -229,8 +230,6 @@ function LabelMenu({ bug }: Props) {
   function diff(oldState: string[], newState: string[]) {
     const added = newState.filter((x) => !oldState.includes(x));
     const removed = oldState.filter((x) => !newState.includes(x));
-    console.log('added: ' + added);
-    console.log('removed: ' + removed);
     return {
       added: added,
       removed: removed,
@@ -238,22 +237,34 @@ function LabelMenu({ bug }: Props) {
   }
 
   const changeBugLabels = (selectedLabels: string[]) => {
-    console.log('selected: ' + selectedLabels);
     const labels = diff(bugLabelNames, selectedLabels);
-    setLabelMutation({
-      variables: {
-        input: {
-          prefix: bug.id,
-          added: labels.added,
-          Removed: labels.removed,
+    if (labels.added.length > 0 || labels.removed.length > 0) {
+      setLabelMutation({
+        variables: {
+          input: {
+            prefix: bug.id,
+            added: labels.added,
+            Removed: labels.removed,
+          },
         },
-      },
-    }).catch((e) => console.log(e));
+      }).catch((e) => console.log(e));
+    }
   };
 
   function isActive(key: string) {
     return selectedLabels.includes(key);
-    //return bugLabelNames.includes(key);
+  }
+
+  function createNewLabel(name: string) {
+    setLabelMutation({
+      variables: {
+        input: {
+          prefix: bug.id,
+          added: [name],
+        },
+      },
+    }).catch((e) => console.log(e));
+    selectedLabels.concat([name]);
   }
 
   let labels: any = [];
@@ -275,6 +286,7 @@ function LabelMenu({ bug }: Props) {
       itemActive={isActive}
       toggleLabel={toggleLabel}
       dropdown={labels}
+      onNewItem={createNewLabel}
       hasFilter
     >
       Labels
