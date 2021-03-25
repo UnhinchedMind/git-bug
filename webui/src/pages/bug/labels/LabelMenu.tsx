@@ -11,8 +11,12 @@ import CheckIcon from '@material-ui/icons/Check';
 import SettingsIcon from '@material-ui/icons/Settings';
 
 import { Color } from '../../../gqlTypes';
-import { useListLabelsQuery } from '../../list/ListLabels.generated';
+import {
+  ListLabelsDocument,
+  useListLabelsQuery,
+} from '../../list/ListLabels.generated';
 import { BugFragment } from '../Bug.generated';
+import { GetBugDocument } from '../BugQuery.generated';
 
 import { useSetLabelMutation } from './SetLabel.generated';
 
@@ -248,6 +252,17 @@ function LabelMenu({ bug }: Props) {
             Removed: labels.removed,
           },
         },
+        refetchQueries: [
+          // TODO: update the cache instead of refetching
+          {
+            query: GetBugDocument,
+            variables: { id: bug.id },
+          },
+          {
+            query: ListLabelsDocument,
+          },
+        ],
+        awaitRefetchQueries: true,
       }).catch((e) => console.log(e));
     }
   };
@@ -264,6 +279,17 @@ function LabelMenu({ bug }: Props) {
           added: [name],
         },
       },
+      refetchQueries: [
+        // TODO: update the cache instead of refetching
+        {
+          query: GetBugDocument,
+          variables: { id: bug.id },
+        },
+        {
+          query: ListLabelsDocument,
+        },
+      ],
+      awaitRefetchQueries: true,
     }).catch((e) => console.log(e));
     selectedLabels.concat([name]);
   }
