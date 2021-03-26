@@ -250,7 +250,7 @@ function LabelMenu({ bug }: Props) {
   }
 
   const changeBugLabels = (
-    bugLabels = bugLabelNames,
+    bugLabels = bug.labels.map((l) => l.name),
     selectedLabel = selectedLabels
   ) => {
     const labels = diff(bugLabels, selectedLabel);
@@ -319,7 +319,7 @@ function LabelMenu({ bug }: Props) {
         console.log(tmp);
         console.log('tmp');
         setSelectedLabels(tmp);
-        setBugLabelNames(tmp);
+        setBugLabelNames(bugLabelNames.concat([name]));
 
         changeBugLabels(bugLabelNames.concat([name]), tmp);
       })
