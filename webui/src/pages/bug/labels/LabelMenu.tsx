@@ -226,6 +226,7 @@ function LabelMenu({ bug }: Props) {
 
   const [setLabelMutation] = useSetLabelMutation();
 
+  useEffect(() => {});
   function toggleLabel(key: string, active: boolean) {
     const labels: string[] = active
       ? selectedLabels.filter((label) => label !== key)
@@ -248,10 +249,15 @@ function LabelMenu({ bug }: Props) {
     };
   }
 
-  const changeBugLabels = () => {
-    const labels = diff(bugLabelNames, selectedLabels);
+  const changeBugLabels = (
+    bugLabels = bugLabelNames,
+    selectedLabel = selectedLabels
+  ) => {
+    const labels = diff(bugLabels, selectedLabel);
     console.log('changeBugLabels');
     console.log(labels);
+    console.log('bugLabelNames');
+    console.log(bugLabelNames);
     if (labels.added.length > 0 || labels.removed.length > 0) {
       setLabelMutation({
         variables: {
@@ -310,11 +316,12 @@ function LabelMenu({ bug }: Props) {
         console.log(res);
 
         const tmp = selectedLabels.concat([name]);
-
+        console.log(tmp);
+        console.log('tmp');
         setSelectedLabels(tmp);
         setBugLabelNames(tmp);
 
-        changeBugLabels();
+        changeBugLabels(bugLabelNames.concat([name]), tmp);
       })
       .catch((e) => console.log('createnewLabelError' + e));
   }
