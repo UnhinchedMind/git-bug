@@ -38,5 +38,4 @@ module.exports = {
   settings: {
     'import/internal-regex': '^src/',
   },
-  ignorePatterns: ['**/*.generated.tsx'],
 };
