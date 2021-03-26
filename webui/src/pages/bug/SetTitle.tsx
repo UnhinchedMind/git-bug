@@ -14,6 +14,7 @@ const useStyles = makeStyles((theme) => ({
   },
   author: {
     fontWeight: 'bold',
+    color: theme.palette.text.primary,
   },
   before: {
     fontWeight: 'bold',
