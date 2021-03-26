@@ -82,9 +82,9 @@ function Header() {
         <Toolbar>
           <Link to="/" className={classes.appTitle}>
             <img
-              src="/logo.svg" 
-              className={classes.logo} 
-              alt="git-bug logo" 
+              src="/logo.svg"
+              className={classes.logo}
+              alt="git-bug logo"
             />
             git-bug
           </Link>
