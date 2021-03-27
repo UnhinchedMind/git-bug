@@ -5,20 +5,20 @@
 # NOTE:
 #   This should be the FIRST property in this file,
 #   other properties shall follow!
-root = true
+#root = true
 
-[*]
-indent_style = space
-charset = utf-8
-trim_trailing_whitespace = true
-end_of_line = lf
-insert_final_newline = true
-
-[*.md]
-trim_trailing_whitespace = false
-
-[{m,M,GNUm}akefile]
-indent_style = tab
-
-[*.{js,json,yml}]
-indent_size = 2
+#[*]
+#indent_style = space
+#charset = utf-8
+#trim_trailing_whitespace = true
+#end_of_line = lf
+#insert_final_newline = true
+#
+#[*.md]
+#trim_trailing_whitespace = false
+#
+#[{m,M,GNUm}akefile]
+#indent_style = tab
+#
+#[*.{js,json,yml}]
+#indent_size = 2
