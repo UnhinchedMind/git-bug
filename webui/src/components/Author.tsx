@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 
 import MAvatar from '@material-ui/core/Avatar';
 import Link from '@material-ui/core/Link';
@@ -14,7 +15,7 @@ type Props = AuthoredFragment & {
 const Author = ({ author, ...props }: Props) => {
   return (
     <Tooltip title={`Goto the ${author.displayName}'s profile.`}>
-      <Link {...props} href={`/user/${author.humanId}`}>
+      <Link {...props} component={RouterLink} to={`/user/${author.humanId}`}>
         {author.displayName}
       </Link>
     </Tooltip>

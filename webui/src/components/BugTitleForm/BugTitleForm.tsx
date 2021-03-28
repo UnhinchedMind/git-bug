@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 import { Button, makeStyles, Typography } from '@material-ui/core';
 
@@ -161,7 +162,8 @@ function BugTitleForm({ bug }: Props) {
                 className={classes.greenButton}
                 size="small"
                 variant="contained"
-                href="/new"
+                component={Link}
+                to="/new"
               >
                 New bug
               </Button>
