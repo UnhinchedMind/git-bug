@@ -90,7 +90,9 @@ const Identity = ({ identity }: Props) => {
                 }}
               >
                 <MailOutlineIcon />
-                <Link href={'mailto:' + user?.email} color={'inherit'} />
+                <Link href={'mailto:' + user?.email} color={'inherit'}>
+                  {user?.email}
+                </Link>
               </Typography>
             )}
           </Grid>

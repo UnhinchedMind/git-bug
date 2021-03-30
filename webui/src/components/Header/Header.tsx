@@ -36,6 +36,9 @@ const useStyles = makeStyles((theme) => ({
     height: '42px',
     marginRight: theme.spacing(2),
   },
+  errorTab: {
+    display: 'none',
+  },
 }));
 
 function a11yProps(index: any) {
@@ -76,6 +79,20 @@ function Header() {
     setTab(newTabValue);
   };
 
+  // Prefents error of invalid tab selection in <Tabs>
+  function getValidTab(path: string) {
+    switch (path) {
+      case '/':
+        return '/';
+      case '/code':
+        return '/code';
+      case '/settings':
+        return '/settings';
+      default:
+        return false;
+    }
+  }
+
   return (
     <>
       <AppBar position="fixed" className={classes.appBar}>
@@ -94,7 +111,7 @@ function Header() {
       <div className={classes.offset} />
       <Tabs
         centered
-        value={selectedTab}
+        value={getValidTab(selectedTab)}
         onChange={handleTabClick}
         aria-label="nav tabs"
       >
