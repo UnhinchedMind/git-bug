@@ -214,6 +214,7 @@ function MessageHistoryDialog({ bugId, commentId, open, onClose }: Props) {
         {history?.map((edit, index) => (
           <Accordion
             square
+            key={index}
             expanded={expanded === 'panel' + index}
             onChange={handleChange('panel' + index)}
           >
