@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 
 import { Card, Divider, Link, Typography } from '@material-ui/core';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -47,7 +48,8 @@ function BugList({ humanId }: Props) {
             <Typography variant="overline" component="h2">
               <Link
                 className={classes.bugLink}
-                href={'/bug/' + bug.id}
+                component={RouterLink}
+                to={'/bug/' + bug.id}
                 color={'inherit'}
               >
                 {bug.title}
