@@ -110,7 +110,7 @@ function BugRow({ bug }: Props) {
           <div className={classes.details}>
             {bug.humanId} opened&nbsp;
             <Date date={bug.createdAt} />
-            &nbsp;by
+            &nbsp;by&nbsp;
             <Author className={classes.details} author={bug.author} />
           </div>
         </div>

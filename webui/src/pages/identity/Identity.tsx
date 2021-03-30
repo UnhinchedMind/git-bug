@@ -21,9 +21,12 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(0.5, 2, 2, 2),
     wordWrap: 'break-word',
   },
+  userData: {
+    marginLeft: theme.spacing(2),
+  },
   large: {
-    width: 200,
-    height: 200,
+    minWidth: 200,
+    minHeight: 200,
     margin: 'auto',
     maxWidth: '100%',
     maxHeight: '100%',
@@ -49,8 +52,8 @@ const Identity = ({ identity }: Props) => {
   return (
     <main className={classes.main}>
       <Paper elevation={3} className={classes.content}>
-        <Grid spacing={2} container direction="row" alignItems="flex-start">
-          <Grid className={classes.heading} item xs={3}>
+        <Grid spacing={2} container direction="row">
+          <Grid className={classes.heading} item>
             <Avatar
               src={user?.avatarUrl ? user.avatarUrl : undefined}
               className={classes.large}
@@ -65,38 +68,42 @@ const Identity = ({ identity }: Props) => {
             <Typography variant="h5" component="h2">
               Your account
             </Typography>
-            <Typography variant="subtitle2" component="h2">
-              Name: {user?.name ? user?.name : '---'}
-            </Typography>
-            <Typography variant="subtitle2" component="h3">
-              Id (truncated): {user?.humanId ? user?.humanId : '---'}
-              <InfoIcon
-                fontSize={'small'}
-                titleAccess={user?.id ? user?.id : '---'}
-                className={classes.infoIcon}
-              />
-            </Typography>
-            <Typography variant="subtitle2" component="h3">
-              Login: {user?.login ? user?.login : '---'}
-            </Typography>
-            {user?.email && (
-              <Typography
-                variant="subtitle2"
-                component="h3"
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  flexWrap: 'wrap',
-                }}
-              >
-                <MailOutlineIcon />
-                <Link href={'mailto:' + user?.email} color={'inherit'}>
-                  {user?.email}
-                </Link>
+            <div className={classes.userData}>
+              <Typography variant="subtitle2" component="h2">
+                Name: {user?.name ? user?.name : '---'}
               </Typography>
-            )}
+              <Typography variant="subtitle2" component="h3">
+                Id (truncated): {user?.humanId ? user?.humanId : '---'}
+                <InfoIcon
+                  fontSize={'small'}
+                  titleAccess={user?.id ? user?.id : '---'}
+                  className={classes.infoIcon}
+                />
+              </Typography>
+              <Typography variant="subtitle2" component="h3">
+                Login: {user?.login ? user?.login : '---'}
+              </Typography>
+              {user?.email && (
+                <Typography
+                  variant="subtitle2"
+                  component="h3"
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    flexWrap: 'wrap',
+                  }}
+                >
+                  <MailOutlineIcon />
+                  <Link href={'mailto:' + user?.email} color={'inherit'}>
+                    {user?.email}
+                  </Link>
+                </Typography>
+              )}
+            </div>
           </Grid>
-          <Grid item>
+        </Grid>
+        <Grid container>
+          <Grid item xs={12}>
             <Typography variant="h5" component="h2">
               Bugs authored by {user?.displayName}
             </Typography>

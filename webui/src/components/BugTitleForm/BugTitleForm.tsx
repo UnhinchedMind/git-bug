@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 import { Button, makeStyles, Typography } from '@material-ui/core';
 
@@ -51,6 +52,10 @@ const useStyles = makeStyles((theme) => ({
   saveButton: {
     marginRight: theme.spacing(1),
   },
+  author: {
+    fontWeight: 'bold',
+    color: theme.palette.text.secondary,
+  },
 }));
 
 interface Props {
@@ -78,6 +83,10 @@ function BugTitleForm({ bug }: Props) {
 
   function submitNewTitle() {
     if (!isFormValid()) return;
+    if (bug.title === issueTitleInput.value) {
+      cancelChange();
+      return;
+    }
     setTitle({
       variables: {
         input: {
@@ -106,7 +115,7 @@ function BugTitleForm({ bug }: Props) {
 
   function editableBugTitle() {
     return (
-      <form className={classes.headerTitle} onSubmit={submitNewTitle}>
+      <form className={classes.headerTitle}>
         <BugTitleInput
           inputRef={(node) => {
             issueTitleInput = node;
@@ -123,7 +132,7 @@ function BugTitleForm({ bug }: Props) {
             className={classes.saveButton}
             size="small"
             variant="contained"
-            type="submit"
+            onClick={() => submitNewTitle()}
             disabled={issueTitle.length === 0}
           >
             Save
@@ -157,7 +166,8 @@ function BugTitleForm({ bug }: Props) {
                 className={classes.greenButton}
                 size="small"
                 variant="contained"
-                href="/new"
+                component={Link}
+                to="/new"
               >
                 New bug
               </Button>
@@ -176,7 +186,7 @@ function BugTitleForm({ bug }: Props) {
       {bugTitleEdition ? editableBugTitle() : readonlyBugTitle()}
       <div className="classes.headerSubtitle">
         <Typography color={'textSecondary'}>
-          <Author author={bug.author} />
+          <Author author={bug.author} className={classes.author} />
           {' opened this bug '}
           <Date date={bug.createdAt} />
         </Typography>
