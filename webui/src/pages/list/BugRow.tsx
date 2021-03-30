@@ -101,7 +101,7 @@ function BugRow({ bug }: Props) {
               {bug.labels.length > 0 && (
                 <span className={classes.labels}>
                   {bug.labels.map((l) => (
-                    <Label key={l.name} label={l} />
+                    <Label key={l.name} label={l} maxWidth="40ch" />
                   ))}
                 </span>
               )}
