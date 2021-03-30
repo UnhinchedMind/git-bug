@@ -36,6 +36,9 @@ const useStyles = makeStyles((theme) => ({
     height: '42px',
     marginRight: theme.spacing(2),
   },
+  errorTab: {
+    display: 'none',
+  },
 }));
 
 function a11yProps(index: any) {

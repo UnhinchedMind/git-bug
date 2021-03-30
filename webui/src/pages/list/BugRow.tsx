@@ -72,9 +72,6 @@ const useStyles = makeStyles((theme) => ({
   },
   labels: {
     paddingLeft: theme.spacing(1),
-    '& > *': {
-      display: 'inline-block',
-    },
   },
   commentCount: {
     fontSize: '1rem',
@@ -104,7 +101,7 @@ function BugRow({ bug }: Props) {
               {bug.labels.length > 0 && (
                 <span className={classes.labels}>
                   {bug.labels.map((l) => (
-                    <Label key={l.name} label={l} />
+                    <Label key={l.name} label={l} maxWidth="40ch" />
                   ))}
                 </span>
               )}
