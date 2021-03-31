@@ -14,6 +14,28 @@ services:
       - ${ISSUE_REPOSITORY:-playground-issue-repository-volume}:/repository
       - ${KEYRING:-git-bug-bridge-keyring-volume}:/root/.config/git-bug/keyring
 
+  old-webui:
+    build:
+      context: .
+      target: webui-dependencies
+    entrypoint: ["npm"]
+    command: ["start"]
+    expose:
+      - "3000"
+    ports:
+      - "3000:3000"
+    environment:
+      REACT_APP_PROXY: "http://backend:3001"
+    depends_on:
+      - backend
+    working_dir: /src/webui
+    volumes:
+      - ./old-webui:/src/webui
+      # Will overshadow the node_modules of the container host with the
+      # preinstalled node_modules of the webui. This shall prevent host
+      # dependend node_modules to be used inside the container.
+      - node_modules:/src/webui/node_modules
+
   dev-webui:
     build:
       context: .
