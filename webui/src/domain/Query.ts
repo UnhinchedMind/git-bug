@@ -1,7 +1,9 @@
 /**
  * QuotedString represents a string which will be encapsulated with quotes if
- * the string contains any whitespace.
- * E.g. `abc def` will become `"abc def"` while `abcdef` will stay `abcdef`.
+ * the string contains any whitespace. If the string is already quoted with
+ * single quotes '', replace the quotes with double quotes "".
+ * E.g. `abc def` will become `"abc def"` while `abcdef` will stay the same
+ * `abcdef`, and `'abc def'` will become `"abc def"`.
  */
 class QuotedString {
   readonly value: string;
@@ -11,9 +13,18 @@ class QuotedString {
 
   toString(): string {
     const hasWhitespace = RegExp(/\s+/g).test(this.value);
-    const isQuoted = RegExp(/^('.*'|".*")$/).test(this.value);
+    const isSingleQuoted = RegExp(/^'.*'$/).test(this.value);
+    const isDoubleQuoted = RegExp(/^".*"$/).test(this.value);
+    const isQuoted = isSingleQuoted && isDoubleQuoted;
     const quote = (value: string) => `"${value}"`;
-    return (hasWhitespace && !isQuoted) ?  quote(this.value) : this.value;
+    const requote = (value: string) => value.replace(/^'(.*)'$/g, `"$1"`);
+    if (isSingleQuoted) {
+      return requote(this.value);
+    }
+    if (hasWhitespace && !isQuoted) {
+      return quote(this.value)
+    }
+    return this.value;
   }
 }
 
@@ -46,10 +57,12 @@ type Query = {
 //    author: [new QuotedString("abc abc")]
 //  }
 //}
-console.log(new QuotedString("abc abc"));
+
+//TODO ApplyFilter, SetFilter, AddFilter, ToggleFilter, ToggleParam, SetParam
 
 function Parse(query: string): Query {
   return {};
 }
 
 export default Parse;
+export { QuotedString };
