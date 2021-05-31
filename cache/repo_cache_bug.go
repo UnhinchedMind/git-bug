@@ -197,7 +197,7 @@ func (c *RepoCache) evictIfNeeded() {
 
 // ResolveBugExcerptPrefix retrieve a BugExcerpt matching an id prefix. It fails if multiple
 // bugs match.
-func (c *RepoCache) ResolveBugExcerptPrefix(prefix string) (*BugExcerpt, error) {
+func (c *RepoCache) ResolveBugExcerptPrefix(prefix entity.Id) (*BugExcerpt, error) {
 	return c.ResolveBugExcerptMatcher(func(excerpt *BugExcerpt) bool {
 		return excerpt.Id.HasPrefix(prefix)
 	})
@@ -205,7 +205,7 @@ func (c *RepoCache) ResolveBugExcerptPrefix(prefix string) (*BugExcerpt, error) 
 
 // ResolveBugPrefix retrieve a bug matching an id prefix. It fails if multiple
 // bugs match.
-func (c *RepoCache) ResolveBugPrefix(prefix string) (*BugCache, error) {
+func (c *RepoCache) ResolveBugPrefix(prefix entity.Id) (*BugCache, error) {
 	return c.ResolveBugMatcher(func(excerpt *BugExcerpt) bool {
 		return excerpt.Id.HasPrefix(prefix)
 	})
@@ -263,7 +263,7 @@ func (c *RepoCache) resolveBugMatcher(f func(*BugExcerpt) bool) (entity.Id, erro
 // ResolveComment search for a Bug/Comment combination matching the merged
 // bug/comment Id prefix. Returns the Bug containing the Comment and the Comment's
 // Id.
-func (c *RepoCache) ResolveComment(prefix string) (*BugCache, entity.CombinedId, error) {
+func (c *RepoCache) ResolveComment(prefix entity.CombinedId) (*BugCache, entity.CombinedId, error) {
 	bugPrefix, _ := entity.SeparateIds(prefix)
 	bugCandidate := make([]entity.Id, 0, 5)
 
@@ -498,7 +498,7 @@ func (c *RepoCache) NewBugRaw(author *IdentityCache, unixTime int64, title strin
 }
 
 // RemoveBug removes a bug from the cache and repo given a bug id prefix
-func (c *RepoCache) RemoveBug(prefix string) error {
+func (c *RepoCache) RemoveBug(prefix entity.Id) error {
 	c.muBug.RLock()
 
 	b, err := c.ResolveBugPrefix(prefix)

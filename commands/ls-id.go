@@ -2,6 +2,8 @@ package commands
 
 import (
 	"github.com/spf13/cobra"
+
+	"github.com/MichaelMure/git-bug/entity"
 )
 
 func newLsIdCommand() *cobra.Command {
@@ -26,7 +28,7 @@ func runLsId(env *Env, args []string) error {
 	}
 
 	for _, id := range env.backend.AllBugsIds() {
-		if prefix == "" || id.HasPrefix(prefix) {
+		if prefix == "" || id.HasPrefix(entity.Id(prefix)) {
 			env.out.Println(id)
 		}
 	}

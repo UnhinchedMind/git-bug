@@ -28,7 +28,7 @@ var ErrNoValidId = errors.New("you must provide a bug id or use the \"select\" c
 func ResolveBug(repo *cache.RepoCache, args []string) (*cache.BugCache, []string, error) {
 	// At first, try to use the first argument as a bug prefix
 	if len(args) > 0 {
-		b, err := repo.ResolveBugPrefix(args[0])
+		b, err := repo.ResolveBugPrefix(entity.Id(args[0]))
 
 		if err == nil {
 			return b, args[1:], nil

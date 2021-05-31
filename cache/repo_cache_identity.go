@@ -132,7 +132,7 @@ func (c *RepoCache) ResolveIdentity(id entity.Id) (*IdentityCache, error) {
 
 // ResolveIdentityExcerptPrefix retrieve a IdentityExcerpt matching an id prefix.
 // It fails if multiple identities match.
-func (c *RepoCache) ResolveIdentityExcerptPrefix(prefix string) (*IdentityExcerpt, error) {
+func (c *RepoCache) ResolveIdentityExcerptPrefix(prefix entity.Id) (*IdentityExcerpt, error) {
 	return c.ResolveIdentityExcerptMatcher(func(excerpt *IdentityExcerpt) bool {
 		return excerpt.Id.HasPrefix(prefix)
 	})
@@ -140,7 +140,7 @@ func (c *RepoCache) ResolveIdentityExcerptPrefix(prefix string) (*IdentityExcerp
 
 // ResolveIdentityPrefix retrieve an Identity matching an id prefix.
 // It fails if multiple identities match.
-func (c *RepoCache) ResolveIdentityPrefix(prefix string) (*IdentityCache, error) {
+func (c *RepoCache) ResolveIdentityPrefix(prefix entity.Id) (*IdentityCache, error) {
 	return c.ResolveIdentityMatcher(func(excerpt *IdentityExcerpt) bool {
 		return excerpt.Id.HasPrefix(prefix)
 	})

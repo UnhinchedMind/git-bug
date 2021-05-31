@@ -86,7 +86,7 @@ func (repoResolver) AllBugs(_ context.Context, obj *models.Repository, after *st
 }
 
 func (repoResolver) Bug(_ context.Context, obj *models.Repository, prefix string) (models.BugWrapper, error) {
-	excerpt, err := obj.Repo.ResolveBugExcerptPrefix(prefix)
+	excerpt, err := obj.Repo.ResolveBugExcerptPrefix(entity.Id(prefix))
 	if err != nil {
 		return nil, err
 	}
@@ -145,7 +145,7 @@ func (repoResolver) AllIdentities(_ context.Context, obj *models.Repository, aft
 }
 
 func (repoResolver) Identity(_ context.Context, obj *models.Repository, prefix string) (models.IdentityWrapper, error) {
-	excerpt, err := obj.Repo.ResolveIdentityExcerptPrefix(prefix)
+	excerpt, err := obj.Repo.ResolveIdentityExcerptPrefix(entity.Id(prefix))
 	if err != nil {
 		return nil, err
 	}

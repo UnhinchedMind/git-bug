@@ -41,7 +41,9 @@ func newCommentEditCommand() *cobra.Command {
 }
 
 func runCommentEdit(env *Env, opts commentEditOptions, args []string) error {
-	b, commentId, err := env.backend.ResolveComment(args[0])
+	//TODO Is args[0] the correct CombinedId or do I first have to construct
+	//the right one? Not that args[0] is actually the OperationId.
+	b, commentId, err := env.backend.ResolveComment(entity.CombinedId(args[0]))
 	if err != nil {
 		return err
 	}
@@ -68,8 +70,8 @@ func runCommentEdit(env *Env, opts commentEditOptions, args []string) error {
 		}
 	}
 
-	_, id := entity.SeparateIds(string(commentId))
-	_, err = b.EditComment(entity.Id(id), opts.message)
+	_, opId := entity.SeparateIds(commentId)
+	_, err = b.EditComment(opId, opts.message)
 	if err != nil {
 		return err
 	}

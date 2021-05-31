@@ -223,7 +223,7 @@ func (gi *gitlabImporter) ensureNote(repo *cache.RepoCache, b *cache.BugCache, n
 		// we should check for "changed the description" notes and compare issue texts
 		// TODO: Check only one time and ignore next 'description change' within one issue
 		if errResolve == cache.ErrNoMatchingOp && issue.Description != firstComment.Message {
-			_, commentId := entity.SeparateIds(string(firstComment.Id()))
+			_, commentId := entity.SeparateIds(firstComment.Id())
 			// comment edition
 			op, err := b.EditCommentRaw(
 				author,
@@ -272,7 +272,7 @@ func (gi *gitlabImporter) ensureNote(repo *cache.RepoCache, b *cache.BugCache, n
 			return err
 		}
 
-		_, commentId := entity.SeparateIds(string(comment.Id()))
+		_, commentId := entity.SeparateIds(comment.Id())
 		// compare local bug comment with the new note body
 		if comment.Message != cleanText {
 			// comment edition

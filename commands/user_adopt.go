@@ -2,6 +2,8 @@ package commands
 
 import (
 	"github.com/spf13/cobra"
+
+	"github.com/MichaelMure/git-bug/entity"
 )
 
 func newUserAdoptCommand() *cobra.Command {
@@ -23,7 +25,7 @@ func newUserAdoptCommand() *cobra.Command {
 func runUserAdopt(env *Env, args []string) error {
 	prefix := args[0]
 
-	i, err := env.backend.ResolveIdentityPrefix(prefix)
+	i, err := env.backend.ResolveIdentityPrefix(entity.Id(prefix))
 	if err != nil {
 		return err
 	}

@@ -14,6 +14,7 @@ import (
 	"github.com/MichaelMure/git-bug/bridge/core"
 	"github.com/MichaelMure/git-bug/bridge/core/auth"
 	"github.com/MichaelMure/git-bug/cache"
+	"github.com/MichaelMure/git-bug/entity"
 )
 
 type bridgeAuthAddTokenOptions struct {
@@ -90,7 +91,7 @@ func runBridgeAuthAddToken(env *Env, opts bridgeAuthAddTokenOptions, args []stri
 	if opts.user == "" {
 		user, err = env.backend.GetUserIdentity()
 	} else {
-		user, err = env.backend.ResolveIdentityPrefix(opts.user)
+		user, err = env.backend.ResolveIdentityPrefix(entity.Id(opts.user))
 	}
 	if err != nil {
 		return err

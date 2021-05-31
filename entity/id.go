@@ -38,8 +38,8 @@ func (i Id) Human() string {
 	return fmt.Sprintf(format, i)
 }
 
-func (i Id) HasPrefix(prefix string) bool {
-	return strings.HasPrefix(string(i), prefix)
+func (i Id) HasPrefix(prefix Id) bool {
+	return strings.HasPrefix(string(i), string(prefix))
 }
 
 // UnmarshalGQL implement the Unmarshaler interface for gqlgen

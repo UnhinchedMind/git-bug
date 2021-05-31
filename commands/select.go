@@ -6,6 +6,7 @@ import (
 	"github.com/spf13/cobra"
 
 	_select "github.com/MichaelMure/git-bug/commands/select"
+	"github.com/MichaelMure/git-bug/entity"
 )
 
 func newSelectCommand() *cobra.Command {
@@ -43,7 +44,7 @@ func runSelect(env *Env, args []string) error {
 
 	prefix := args[0]
 
-	b, err := env.backend.ResolveBugPrefix(prefix)
+	b, err := env.backend.ResolveBugPrefix(entity.Id(prefix))
 	if err != nil {
 		return err
 	}

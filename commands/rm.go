@@ -3,6 +3,7 @@ package commands
 import (
 	"errors"
 
+	"github.com/MichaelMure/git-bug/entity"
 	"github.com/spf13/cobra"
 )
 
@@ -30,7 +31,7 @@ func runRm(env *Env, args []string) (err error) {
 		return errors.New("you must provide a bug prefix to remove")
 	}
 
-	err = env.backend.RemoveBug(args[0])
+	err = env.backend.RemoveBug(entity.Id(args[0]))
 
 	if err != nil {
 		return

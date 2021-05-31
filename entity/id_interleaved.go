@@ -26,8 +26,8 @@ func (ci CombinedId) Human() string {
 	return fmt.Sprintf(format, ci)
 }
 
-func (ci CombinedId) HasPrefix(prefix string) bool {
-	return strings.HasPrefix(string(ci), prefix)
+func (ci CombinedId) HasPrefix(prefix CombinedId) bool {
+	return strings.HasPrefix(string(ci), string(prefix))
 }
 
 // UnmarshalGQL implement the Unmarshaler interface for gqlgen
@@ -115,7 +115,7 @@ func CombineIds(primary Id, secondary Id) CombinedId {
 
 // SeparateIds extract primary and secondary prefix from an arbitrary length prefix
 // of an Id created with CombineIds.
-func SeparateIds(prefix string) (primaryPrefix string, secondaryPrefix string) {
+func SeparateIds(prefix CombinedId) (primaryPrefix Id, secondaryPrefix Id) {
 	var primary strings.Builder
 	var secondary strings.Builder
 
@@ -128,5 +128,5 @@ func SeparateIds(prefix string) (primaryPrefix string, secondaryPrefix string) {
 		}
 	}
 
-	return primary.String(), secondary.String()
+	return Id(primary.String()), Id(secondary.String())
 }

@@ -27,7 +27,7 @@ func (r mutationResolver) getRepo(ref *string) (*cache.RepoCache, error) {
 	return r.cache.DefaultRepo()
 }
 
-func (r mutationResolver) getBug(repoRef *string, bugPrefix string) (*cache.RepoCache, *cache.BugCache, error) {
+func (r mutationResolver) getBug(repoRef *string, bugPrefix entity.Id) (*cache.RepoCache, *cache.BugCache, error) {
 	repo, err := r.getRepo(repoRef)
 	if err != nil {
 		return nil, nil, err
@@ -69,7 +69,7 @@ func (r mutationResolver) NewBug(ctx context.Context, input models.NewBugInput) 
 }
 
 func (r mutationResolver) AddComment(ctx context.Context, input models.AddCommentInput) (*models.AddCommentPayload, error) {
-	repo, b, err := r.getBug(input.RepoRef, input.Prefix)
+	repo, b, err := r.getBug(input.RepoRef, entity.Id(input.Prefix))
 	if err != nil {
 		return nil, err
 	}
@@ -101,7 +101,7 @@ func (r mutationResolver) AddComment(ctx context.Context, input models.AddCommen
 }
 
 func (r mutationResolver) AddCommentAndClose(ctx context.Context, input models.AddCommentAndCloseBugInput) (*models.AddCommentAndCloseBugPayload, error) {
-	repo, b, err := r.getBug(input.RepoRef, input.Prefix)
+	repo, b, err := r.getBug(input.RepoRef, entity.Id(input.Prefix))
 	if err != nil {
 		return nil, err
 	}
@@ -139,7 +139,7 @@ func (r mutationResolver) AddCommentAndClose(ctx context.Context, input models.A
 }
 
 func (r mutationResolver) AddCommentAndReopen(ctx context.Context, input models.AddCommentAndReopenBugInput) (*models.AddCommentAndReopenBugPayload, error) {
-	repo, b, err := r.getBug(input.RepoRef, input.Prefix)
+	repo, b, err := r.getBug(input.RepoRef, entity.Id(input.Prefix))
 	if err != nil {
 		return nil, err
 	}
@@ -177,7 +177,7 @@ func (r mutationResolver) AddCommentAndReopen(ctx context.Context, input models.
 }
 
 func (r mutationResolver) EditComment(ctx context.Context, input models.EditCommentInput) (*models.EditCommentPayload, error) {
-	repo, b, err := r.getBug(input.RepoRef, input.Prefix)
+	repo, b, err := r.getBug(input.RepoRef, entity.Id(input.Prefix))
 	if err != nil {
 		return nil, err
 	}
@@ -211,7 +211,7 @@ func (r mutationResolver) EditComment(ctx context.Context, input models.EditComm
 }
 
 func (r mutationResolver) ChangeLabels(ctx context.Context, input *models.ChangeLabelInput) (*models.ChangeLabelPayload, error) {
-	repo, b, err := r.getBug(input.RepoRef, input.Prefix)
+	repo, b, err := r.getBug(input.RepoRef, entity.Id(input.Prefix))
 	if err != nil {
 		return nil, err
 	}
@@ -251,7 +251,7 @@ func (r mutationResolver) ChangeLabels(ctx context.Context, input *models.Change
 }
 
 func (r mutationResolver) OpenBug(ctx context.Context, input models.OpenBugInput) (*models.OpenBugPayload, error) {
-	repo, b, err := r.getBug(input.RepoRef, input.Prefix)
+	repo, b, err := r.getBug(input.RepoRef, entity.Id(input.Prefix))
 	if err != nil {
 		return nil, err
 	}
@@ -279,7 +279,7 @@ func (r mutationResolver) OpenBug(ctx context.Context, input models.OpenBugInput
 }
 
 func (r mutationResolver) CloseBug(ctx context.Context, input models.CloseBugInput) (*models.CloseBugPayload, error) {
-	repo, b, err := r.getBug(input.RepoRef, input.Prefix)
+	repo, b, err := r.getBug(input.RepoRef, entity.Id(input.Prefix))
 	if err != nil {
 		return nil, err
 	}
@@ -307,7 +307,7 @@ func (r mutationResolver) CloseBug(ctx context.Context, input models.CloseBugInp
 }
 
 func (r mutationResolver) SetTitle(ctx context.Context, input models.SetTitleInput) (*models.SetTitlePayload, error) {
-	repo, b, err := r.getBug(input.RepoRef, input.Prefix)
+	repo, b, err := r.getBug(input.RepoRef, entity.Id(input.Prefix))
 	if err != nil {
 		return nil, err
 	}

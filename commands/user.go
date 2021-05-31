@@ -7,6 +7,7 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/MichaelMure/git-bug/cache"
+	"github.com/MichaelMure/git-bug/entity"
 )
 
 type userOptions struct {
@@ -47,7 +48,7 @@ func runUser(env *Env, opts userOptions, args []string) error {
 	var id *cache.IdentityCache
 	var err error
 	if len(args) == 1 {
-		id, err = env.backend.ResolveIdentityPrefix(args[0])
+		id, err = env.backend.ResolveIdentityPrefix(entity.Id(args[0]))
 	} else {
 		id, err = env.backend.GetUserIdentity()
 	}

@@ -274,8 +274,8 @@ func editCommentWithEditor(bug *cache.BugCache, target entity.CombinedId, preMes
 	} else if message == preMessage {
 		ui.msgPopup.Activate(msgPopupErrorTitle, "No changes found, aborting.")
 	} else {
-		_, opId := entity.SeparateIds(string(target))
-		_, err := bug.EditComment(entity.Id(opId), text.Cleanup(message))
+		_, opId := entity.SeparateIds(target)
+		_, err := bug.EditComment(opId, text.Cleanup(message))
 		if err != nil {
 			return err
 		}
