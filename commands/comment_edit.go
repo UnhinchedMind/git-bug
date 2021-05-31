@@ -3,6 +3,7 @@ package commands
 import (
 	"github.com/spf13/cobra"
 
+	"github.com/MichaelMure/git-bug/entity"
 	"github.com/MichaelMure/git-bug/input"
 )
 
@@ -67,7 +68,8 @@ func runCommentEdit(env *Env, opts commentEditOptions, args []string) error {
 		}
 	}
 
-	_, err = b.EditComment(commentId, opts.message)
+	_, id := entity.SeparateIds(string(commentId))
+	_, err = b.EditComment(entity.Id(id), opts.message)
 	if err != nil {
 		return err
 	}
