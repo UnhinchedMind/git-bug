@@ -62,14 +62,14 @@ func TestCache(t *testing.T) {
 	require.NoError(t, err)
 	_, err = cache.ResolveIdentityExcerpt(iden1.Id())
 	require.NoError(t, err)
-	_, err = cache.ResolveIdentityPrefix(iden1.Id().String()[:10])
+	_, err = cache.ResolveIdentityPrefix(iden1.Id()[:10])
 	require.NoError(t, err)
 
 	_, err = cache.ResolveBug(bug1.Id())
 	require.NoError(t, err)
 	_, err = cache.ResolveBugExcerpt(bug1.Id())
 	require.NoError(t, err)
-	_, err = cache.ResolveBugPrefix(bug1.Id().String()[:10])
+	_, err = cache.ResolveBugPrefix(bug1.Id()[:10])
 	require.NoError(t, err)
 
 	// Querying
@@ -100,14 +100,14 @@ func TestCache(t *testing.T) {
 	require.NoError(t, err)
 	_, err = cache.ResolveIdentityExcerpt(iden1.Id())
 	require.NoError(t, err)
-	_, err = cache.ResolveIdentityPrefix(iden1.Id().String()[:10])
+	_, err = cache.ResolveIdentityPrefix(iden1.Id()[:10])
 	require.NoError(t, err)
 
 	_, err = cache.ResolveBug(bug1.Id())
 	require.NoError(t, err)
 	_, err = cache.ResolveBugExcerpt(bug1.Id())
 	require.NoError(t, err)
-	_, err = cache.ResolveBugPrefix(bug1.Id().String()[:10])
+	_, err = cache.ResolveBugPrefix(bug1.Id()[:10])
 	require.NoError(t, err)
 }
 
@@ -210,7 +210,7 @@ func TestRemove(t *testing.T) {
 	_, err = repoCache.Fetch("remoteB")
 	require.NoError(t, err)
 
-	err = repoCache.RemoveBug(b1.Id().String())
+	err = repoCache.RemoveBug(b1.Id())
 	require.NoError(t, err)
 	assert.Equal(t, 1, len(repoCache.bugs))
 	assert.Equal(t, 1, len(repoCache.bugExcerpts))

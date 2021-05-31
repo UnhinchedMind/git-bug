@@ -15,22 +15,22 @@ func TestInterleaved(t *testing.T) {
 	require.Equal(t, expectedId, interleaved)
 
 	// full length
-	splitPrimary, splitSecondary := SeparateIds(interleaved.String())
+	splitPrimary, splitSecondary := SeparateIds(interleaved)
 	require.Equal(t, string(primary[:50]), splitPrimary)
 	require.Equal(t, string(secondary[:14]), splitSecondary)
 
 	// partial
-	splitPrimary, splitSecondary = SeparateIds(string(expectedId[:7]))
+	splitPrimary, splitSecondary = SeparateIds(expectedId[:7])
 	require.Equal(t, string(primary[:4]), splitPrimary)
 	require.Equal(t, string(secondary[:3]), splitSecondary)
 
 	// partial
-	splitPrimary, splitSecondary = SeparateIds(string(expectedId[:10]))
+	splitPrimary, splitSecondary = SeparateIds(expectedId[:10])
 	require.Equal(t, string(primary[:6]), splitPrimary)
 	require.Equal(t, string(secondary[:4]), splitSecondary)
 
 	// partial
-	splitPrimary, splitSecondary = SeparateIds(string(expectedId[:16]))
+	splitPrimary, splitSecondary = SeparateIds(expectedId[:16])
 	require.Equal(t, string(primary[:11]), splitPrimary)
 	require.Equal(t, string(secondary[:5]), splitSecondary)
 }
