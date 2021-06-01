@@ -645,16 +645,17 @@ func (sb *showBug) edit(g *gocui.Gui, v *gocui.View) error {
 		return nil
 	}
 
-	op, err := snap.SearchTimelineItem(entity.CombinedId(sb.selected))
+	item, err := snap.SearchTimelineItem(entity.CombinedId(sb.selected))
 	if err != nil {
 		return err
 	}
 
-	switch op := op.(type) {
+	_, opId := entity.SeparateIds(item.Id())
+	switch item := item.(type) {
 	case *bug.AddCommentTimelineItem:
-		return editCommentWithEditor(sb.bug, op.Id(), op.Message)
+		return editCommentWithEditor(sb.bug, opId, item.Message)
 	case *bug.CreateTimelineItem:
-		return editCommentWithEditor(sb.bug, op.Id(), op.Message)
+		return editCommentWithEditor(sb.bug, opId, item.Message)
 	case *bug.LabelChangeTimelineItem:
 		return sb.editLabels(g, snap)
 	}

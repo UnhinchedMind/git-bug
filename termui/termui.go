@@ -250,7 +250,7 @@ func addCommentWithEditor(bug *cache.BugCache) error {
 	return errTerminateMainloop
 }
 
-func editCommentWithEditor(bug *cache.BugCache, target entity.CombinedId, preMessage string) error {
+func editCommentWithEditor(bug *cache.BugCache, target entity.Id, preMessage string) error {
 	// This is somewhat hacky.
 	// As there is no way to pause gocui, run the editor and restart gocui,
 	// we have to stop it entirely and start a new one later.
@@ -274,8 +274,7 @@ func editCommentWithEditor(bug *cache.BugCache, target entity.CombinedId, preMes
 	} else if message == preMessage {
 		ui.msgPopup.Activate(msgPopupErrorTitle, "No changes found, aborting.")
 	} else {
-		_, opId := entity.SeparateIds(target)
-		_, err := bug.EditComment(opId, text.Cleanup(message))
+		_, err := bug.EditComment(target, text.Cleanup(message))
 		if err != nil {
 			return err
 		}

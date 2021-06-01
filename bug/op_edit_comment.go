@@ -35,10 +35,23 @@ func (op *EditCommentOperation) Apply(snapshot *Snapshot) {
 	// crypto signature are needed.
 
 	// Recreate the Comment Id to match on
+	fmt.Println("LOG: SnapshotId:", snapshot.Id())
+	fmt.Println("LOG: op.TargetId:", op.Target)
 	commentId := entity.CombineIds(snapshot.Id(), op.Target)
+	fmt.Println("LOG: Created commentId:", commentId)
 
 	var target TimelineItem
 	for i, item := range snapshot.Timeline {
+		fmt.Println("LOG: Timeline item id:", item.Id())
+		//TODO the commentId will never match the timeline item id as the
+		//timelineitem is is op.Target but the commentId is target interleaved
+		//with the bug id!
+		// - Maybe interleave timelineid with snapshot (here)?
+		// - Or separate TimelineId for check...
+		//TODO The timelineitem id is already interleaved with the snapshot id
+		//TODO EditCommentOperation must take a CombinedId as target! But this
+		//conflicts micheals andere here
+		//https://github.com/MichaelMure/git-bug/issues/653#issuecomment-826707391
 		if item.Id() == commentId {
 			target = snapshot.Timeline[i]
 			break
@@ -46,6 +59,7 @@ func (op *EditCommentOperation) Apply(snapshot *Snapshot) {
 	}
 
 	if target == nil {
+		fmt.Println("LOG: Edit is a noop!")
 		// Target not found, edit is a no-op
 		return
 	}
@@ -91,6 +105,7 @@ func (op *EditCommentOperation) Validate() error {
 	}
 
 	if err := op.Target.Validate(); err != nil {
+		fmt.Println("LOG: Validate:", op.Target)
 		return errors.Wrap(err, "target hash is invalid")
 	}
 
