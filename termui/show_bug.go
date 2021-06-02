@@ -650,7 +650,10 @@ func (sb *showBug) edit(g *gocui.Gui, v *gocui.View) error {
 		return err
 	}
 
-	_, opId := entity.SeparateIds(item.Id())
+	bugId, opId := entity.SeparateIds(item.Id())
+	fmt.Println("LOG: SB SnapshotId:", item.Id())
+	fmt.Println("LOG: SB bugId:", bugId)
+	fmt.Println("LOG: SB opId:", opId)
 	switch item := item.(type) {
 	case *bug.AddCommentTimelineItem:
 		return editCommentWithEditor(sb.bug, opId, item.Message)

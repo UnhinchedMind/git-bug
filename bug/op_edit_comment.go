@@ -52,7 +52,18 @@ func (op *EditCommentOperation) Apply(snapshot *Snapshot) {
 		//TODO EditCommentOperation must take a CombinedId as target! But this
 		//conflicts micheals andere here
 		//https://github.com/MichaelMure/git-bug/issues/653#issuecomment-826707391
-		if item.Id() == commentId {
+
+		//NOTE show_bug.go sparateId only affects the TermUI, not the WebUI!
+		//NOTE GOT THE ERROR!!!
+		//The timeline id (idem.ID) does not match commentId, as commentId
+		//does not correctly reconstruct. Strange is, that the op.TargetId
+		//shouldn't be the Timeline id, as the timeline id is already split...
+		//(see HEAD commit)
+		// SnapshotId: 54bc19b8fae02b4b15dfc5a6d1e7c1ca3ff133de86ef03ab79fb4968dced11a8
+		// op.TargetId: 5544bbc19cb8fa1e02b94b15bdfc58a6d1fe7c1aca3fef1330de862ef03bab79
+		// Created commentId: 5545b4c194b8fabe02bb4b15cdfc51a6d19e7c1cca3fbf1338de86fef03aab79
+		// Timeline item id: 5544bbc19cb8fa1e02b94b15bdfc58a6d1fe7c1aca3fef1330de862ef03bab79
+		if item.Id().HasPrefix(commentId) {
 			target = snapshot.Timeline[i]
 			break
 		}

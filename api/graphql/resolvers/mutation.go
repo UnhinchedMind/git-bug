@@ -187,10 +187,13 @@ func (r mutationResolver) EditComment(ctx context.Context, input models.EditComm
 		return nil, err
 	}
 
+	//NOTE target is here the comment id (a timeline item id) so must
+	//split to op id.
+	_, opId := entity.SeparateIds(entity.CombinedId(input.Target))
 	op, err := b.EditCommentRaw(
 		author,
 		time.Now().Unix(),
-		entity.Id(input.Target),
+		opId,
 		text.Cleanup(input.Message),
 		nil,
 	)

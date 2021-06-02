@@ -53,6 +53,9 @@ function EditCommentForm({ bug, comment, onCancel, onPostSubmit }: Props) {
   const classes = useStyles({ loading });
   const form = useRef<HTMLFormElement>(null);
 
+  console.log('bugId:', bug.id);
+  console.log('commentId:', comment.id);
+
   const submit = () => {
     editComment({
       variables: {
