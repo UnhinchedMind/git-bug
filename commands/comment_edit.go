@@ -70,7 +70,19 @@ func runCommentEdit(env *Env, opts commentEditOptions, args []string) error {
 		}
 	}
 
-	_, opId := entity.SeparateIds(commentId)
+	_, opIdPrefix := entity.SeparateIds(commentId)
+	// TODO extract the find logic to EditCommentOperation where the TermUI
+	// etc would also benefit of it. Unfortunatly using snapshot.Operations
+	// results in nil dereference error...
+	var opId entity.Id
+	// Find the full operation id via the prefix
+	for _, operation := range b.Snapshot().Operations {
+		if operation.Id().HasPrefix(opIdPrefix) {
+			opId = operation.Id()
+			break
+		}
+	}
+
 	_, err = b.EditComment(opId, opts.message)
 	if err != nil {
 		return err
