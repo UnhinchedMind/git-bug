@@ -187,9 +187,22 @@ func (r mutationResolver) EditComment(ctx context.Context, input models.EditComm
 		return nil, err
 	}
 
-	//NOTE target is here the comment id (a timeline item id) so must
-	//split to op id.
-	_, opId := entity.SeparateIds(entity.CombinedId(input.Target))
+	// NOTE target is here the comment id (a timeline item id) so must
+	// split to get the operation id prefix.
+	_, opIdPrefix := entity.SeparateIds(entity.CombinedId(input.Target))
+
+	// TODO extract the find logic to EditCommentOperation where the TermUI
+	// etc would also benefit of it. Unfortunatly using snapshot.Operations
+	// results in nil dereference error...
+	var opId entity.Id
+	// Find the full operation id via the prefix
+	for _, operation := range b.Snapshot().Operations {
+		if operation.Id().HasPrefix(opIdPrefix) {
+			opId = operation.Id()
+			break
+		}
+	}
+
 	op, err := b.EditCommentRaw(
 		author,
 		time.Now().Unix(),

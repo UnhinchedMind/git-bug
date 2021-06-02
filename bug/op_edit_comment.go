@@ -35,42 +35,17 @@ func (op *EditCommentOperation) Apply(snapshot *Snapshot) {
 	// crypto signature are needed.
 
 	// Recreate the Comment Id to match on
-	fmt.Println("LOG: SnapshotId:", snapshot.Id())
-	fmt.Println("LOG: op.TargetId:", op.Target)
 	commentId := entity.CombineIds(snapshot.Id(), op.Target)
-	fmt.Println("LOG: Created commentId:", commentId)
 
 	var target TimelineItem
 	for i, item := range snapshot.Timeline {
-		fmt.Println("LOG: Timeline item id:", item.Id())
-		//TODO the commentId will never match the timeline item id as the
-		//timelineitem is is op.Target but the commentId is target interleaved
-		//with the bug id!
-		// - Maybe interleave timelineid with snapshot (here)?
-		// - Or separate TimelineId for check...
-		//TODO The timelineitem id is already interleaved with the snapshot id
-		//TODO EditCommentOperation must take a CombinedId as target! But this
-		//conflicts micheals andere here
-		//https://github.com/MichaelMure/git-bug/issues/653#issuecomment-826707391
-
-		//NOTE show_bug.go sparateId only affects the TermUI, not the WebUI!
-		//NOTE GOT THE ERROR!!!
-		//The timeline id (idem.ID) does not match commentId, as commentId
-		//does not correctly reconstruct. Strange is, that the op.TargetId
-		//shouldn't be the Timeline id, as the timeline id is already split...
-		//(see HEAD commit)
-		// SnapshotId: 54bc19b8fae02b4b15dfc5a6d1e7c1ca3ff133de86ef03ab79fb4968dced11a8
-		// op.TargetId: 5544bbc19cb8fa1e02b94b15bdfc58a6d1fe7c1aca3fef1330de862ef03bab79
-		// Created commentId: 5545b4c194b8fabe02bb4b15cdfc51a6d19e7c1cca3fbf1338de86fef03aab79
-		// Timeline item id: 5544bbc19cb8fa1e02b94b15bdfc58a6d1fe7c1aca3fef1330de862ef03bab79
-		if item.Id().HasPrefix(commentId) {
+		if item.Id() == commentId {
 			target = snapshot.Timeline[i]
 			break
 		}
 	}
 
 	if target == nil {
-		fmt.Println("LOG: Edit is a noop!")
 		// Target not found, edit is a no-op
 		return
 	}
@@ -116,7 +91,6 @@ func (op *EditCommentOperation) Validate() error {
 	}
 
 	if err := op.Target.Validate(); err != nil {
-		fmt.Println("LOG: Validate:", op.Target)
 		return errors.Wrap(err, "target hash is invalid")
 	}
 
