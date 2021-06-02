@@ -650,7 +650,19 @@ func (sb *showBug) edit(g *gocui.Gui, v *gocui.View) error {
 		return err
 	}
 
-	_, opId := entity.SeparateIds(item.Id())
+	_, opIdPrefix := entity.SeparateIds(item.Id())
+	// TODO extract the find logic to EditCommentOperation where the TermUI
+	// etc would also benefit of it. Unfortunatly using snapshot.Operations
+	// results in nil dereference error...
+	var opId entity.Id
+	// Find the full operation id via the prefix
+	for _, operation := range snap.Operations {
+		if operation.Id().HasPrefix(opIdPrefix) {
+			opId = operation.Id()
+			break
+		}
+	}
+
 	switch item := item.(type) {
 	case *bug.AddCommentTimelineItem:
 		return editCommentWithEditor(sb.bug, opId, item.Message)
