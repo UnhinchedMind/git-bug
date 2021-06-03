@@ -187,10 +187,22 @@ func (r mutationResolver) EditComment(ctx context.Context, input models.EditComm
 		return nil, err
 	}
 
+	// NOTE input.Target is here the comment id (a timeline item id) so must
+	// split the id, to get the operation id prefix.
+	_, opIdPrefix := entity.SeparateIds(string(input.Target))
+	var opId entity.Id
+	// Find the full operation id via the prefix
+	for _, operation := range b.Snapshot().Operations {
+		if operation.Id().HasPrefix(opIdPrefix) {
+			opId = operation.Id()
+			break
+		}
+	}
+
 	op, err := b.EditCommentRaw(
 		author,
 		time.Now().Unix(),
-		entity.Id(input.Target),
+		opId,
 		text.Cleanup(input.Message),
 		nil,
 	)

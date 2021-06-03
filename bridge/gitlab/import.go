@@ -217,17 +217,29 @@ func (gi *gitlabImporter) ensureNote(repo *cache.RepoCache, b *cache.BugCache, n
 
 	case NOTE_DESCRIPTION_CHANGED:
 		issue := gi.iterator.IssueValue()
+		snap := b.Snapshot()
+		firstComment := snap.Comments[0]
 
-		firstComment := b.Snapshot().Comments[0]
 		// since gitlab doesn't provide the issue history
 		// we should check for "changed the description" notes and compare issue texts
 		// TODO: Check only one time and ignore next 'description change' within one issue
 		if errResolve == cache.ErrNoMatchingOp && issue.Description != firstComment.Message {
 			// comment edition
+
+			_, opIdPrefix := entity.SeparateIds(string(firstComment.Id()))
+			var opId entity.Id
+			// Find the full operation id via the extracted prefix
+			for _, operation := range snap.Operations {
+				if operation.Id().HasPrefix(opIdPrefix) {
+					opId = operation.Id()
+					break
+				}
+			}
+
 			op, err := b.EditCommentRaw(
 				author,
 				note.UpdatedAt.Unix(),
-				firstComment.Id(),
+				opId,
 				text.Cleanup(issue.Description),
 				map[string]string{
 					metaKeyGitlabId: gitlabID,
@@ -265,10 +277,23 @@ func (gi *gitlabImporter) ensureNote(repo *cache.RepoCache, b *cache.BugCache, n
 
 		// if comment was already exported
 
-		// search for last comment update
-		comment, err := b.Snapshot().SearchComment(id)
+		//NOTE Is the result of ResolveOperation realy a comment id or an
+		// operation id? Asking because id is retrieved via
+		// b.ResolveOperationWithMetadata(metaKeyGitlabId, gitlabID)
+		// which should return an operation id?
+		comment, err := b.Snapshot().SearchComment(entity.CombinedId(id))
 		if err != nil {
 			return err
+		}
+
+		_, opIdPrefix := entity.SeparateIds(string(comment.Id()))
+		var opId entity.Id
+		// Find the full operation id via the extracted prefix
+		for _, operation := range b.Snapshot().Operations {
+			if operation.Id().HasPrefix(opIdPrefix) {
+				opId = operation.Id()
+				break
+			}
 		}
 
 		// compare local bug comment with the new note body
@@ -277,7 +302,7 @@ func (gi *gitlabImporter) ensureNote(repo *cache.RepoCache, b *cache.BugCache, n
 			op, err := b.EditCommentRaw(
 				author,
 				note.UpdatedAt.Unix(),
-				comment.Id(),
+				opId,
 				cleanText,
 				nil,
 			)
