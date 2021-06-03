@@ -54,9 +54,9 @@ RUN /app/src/git-bug add \
         with a test user so you don't have to. If you want to use your \
         own issue-repository instead of this \"playground\", hop over to the \
         git-bug ReadMe at \
-        https://github.com/GlancingMind/git-bug/#small-exceptions or if you \
+        https://github.com/GlancingMind/git-bug/tree/docker-automated-build-latest#small-exceptions or if you \
         used docker-compose take a look at the webui-ReadMe right over \
-        here: https://github.com/GlancingMind/git-bug/webui/Readme.md"
+        here: https://github.com/GlancingMind/git-bug/tree/docker-automated-build-latest/webui#readme"
 
 #############################################
 FROM busybox AS release
