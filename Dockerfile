@@ -40,18 +40,11 @@ RUN git init
 RUN git config --local user.name $ISSUE_REPO_USER_NAME
 RUN git config --local user.email $ISSUE_REPO_USER_EMAIL
 
-# NOTE: Git-Bug currently only supports the interactive creation of an user.
-# To still create a user, the username, email and avatar is piped to the
-# git-bug process.
-# As git-bug input-prompt reads a whole 4096 byte buffer at ones, every value
-# must be to the length. Otherwise the first prompt (username) will eat up all
-# other given values, which will lead to an EOF fpor the second prompt (email).
-# See the answere to the question: reading-input-from-stdin-in-golang
-# over at https://stackoverflow.com/a/45914294
-RUN printf "%-4096.4096s\n%-4096.4096s\n%-4096.4096s\n" \
-    $ISSUE_REPO_USER_NAME \
-    $ISSUE_REPO_USER_EMAIL \
-    '' | /app/src/git-bug user create
+# Create the required user identity for git-bug
+RUN /app/src/git-bug user create \
+    --non-interactive \
+    --name  $ISSUE_REPO_USER_NAME \
+    --email $ISSUE_REPO_USER_EMAIL
 
 # Add an issue to the repository.
 RUN /app/src/git-bug add \
