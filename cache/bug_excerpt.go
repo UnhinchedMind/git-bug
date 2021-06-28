@@ -77,7 +77,7 @@ func NewBugExcerpt(b bug.Interface, snap *bug.Snapshot) *BugExcerpt {
 		Labels:            snap.Labels,
 		Actors:            actorsIds,
 		Participants:      participantsIds,
-		Title:             snap.Title,
+		Title:             snap.Title(),
 		LenComments:       len(snap.Comments),
 		CreateMetadata:    b.FirstOp().AllMetadata(),
 	}

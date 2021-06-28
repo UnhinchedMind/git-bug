@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/MichaelMure/go-term-text"
+	text "github.com/MichaelMure/go-term-text"
 	"github.com/awesome-gocui/gocui"
 
 	"github.com/MichaelMure/git-bug/bug"
@@ -225,7 +225,7 @@ func (sb *showBug) renderMain(g *gocui.Gui, mainView *gocui.View) error {
 
 	bugHeader := fmt.Sprintf("[%s] %s\n\n[%s] %s opened this bug on %s%s",
 		colors.Cyan(snap.Id().Human()),
-		colors.Bold(snap.Title),
+		colors.Bold(snap.Title()),
 		colors.Yellow(snap.Status),
 		colors.Magenta(snap.Author.DisplayName()),
 		snap.CreateTime.Format(timeLayout),

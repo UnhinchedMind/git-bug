@@ -171,7 +171,7 @@ func (l *loadedBug) Status() bug.Status {
 }
 
 func (l *loadedBug) Title() string {
-	return l.Snapshot.Title
+	return l.Snapshot.Title()
 }
 
 func (l *loadedBug) Comments() ([]bug.Comment, error) {

@@ -542,7 +542,7 @@ func (c *RepoCache) addBugToSearchIndex(snap *bug.Snapshot) error {
 		searchableBug.Text = append(searchableBug.Text, normalize(comment.Message))
 	}
 
-	searchableBug.Text = append(searchableBug.Text, normalize(snap.Title))
+	searchableBug.Text = append(searchableBug.Text, normalize(snap.Title()))
 
 	index, err := c.repo.GetBleveIndex("bug")
 	if err != nil {

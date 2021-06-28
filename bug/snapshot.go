@@ -13,7 +13,7 @@ type Snapshot struct {
 	id entity.Id
 
 	Status       Status
-	Title        string
+	title        string
 	Comments     []Comment
 	Labels       []Label
 	Author       identity.Interface
@@ -33,6 +33,11 @@ func (snap *Snapshot) Id() entity.Id {
 		panic("no id")
 	}
 	return snap.id
+}
+
+// Return the bugs title
+func (snap *Snapshot) Title() string {
+	return snap.title
 }
 
 // Return the last time a bug was modified
@@ -69,6 +74,11 @@ func (snap *Snapshot) SearchComment(id entity.Id) (*Comment, error) {
 	}
 
 	return nil, fmt.Errorf("comment item not found")
+}
+
+// Change current title to the new title
+func (snap *Snapshot) changeTitleTo(newTitle string) {
+	snap.title = newTitle
 }
 
 // append the operation author to the actors list

@@ -25,7 +25,7 @@ func (op *SetTitleOperation) Id() entity.Id {
 }
 
 func (op *SetTitleOperation) Apply(snapshot *Snapshot) {
-	snapshot.Title = op.Title
+	snapshot.changeTitleTo(op.Title)
 	snapshot.addActor(op.Author_)
 
 	item := &SetTitleTimelineItem{

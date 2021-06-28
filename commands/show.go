@@ -85,7 +85,7 @@ func runShow(env *Env, opts showOptions, args []string) error {
 		case "status":
 			env.out.Printf("%s\n", snap.Status)
 		case "title":
-			env.out.Printf("%s\n", snap.Title)
+			env.out.Printf("%s\n", snap.Title())
 		default:
 			return fmt.Errorf("\nUnsupported field: %s\n", opts.fields)
 		}
@@ -110,7 +110,7 @@ func showDefaultFormatter(env *Env, snapshot *bug.Snapshot) error {
 	env.out.Printf("%s [%s] %s\n\n",
 		colors.Cyan(snapshot.Id().Human()),
 		colors.Yellow(snapshot.Status),
-		snapshot.Title,
+		snapshot.Title(),
 	)
 
 	env.out.Printf("%s opened this issue %s\n",
@@ -218,7 +218,7 @@ func showJsonFormatter(env *Env, snapshot *bug.Snapshot) error {
 		EditTime:   NewJSONTime(snapshot.EditTime(), 0),
 		Status:     snapshot.Status.String(),
 		Labels:     snapshot.Labels,
-		Title:      snapshot.Title,
+		Title:      snapshot.Title(),
 		Author:     NewJSONIdentity(snapshot.Author),
 	}
 
@@ -248,7 +248,7 @@ func showOrgModeFormatter(env *Env, snapshot *bug.Snapshot) error {
 	env.out.Printf("%s [%s] %s\n",
 		snapshot.Id().Human(),
 		snapshot.Status,
-		snapshot.Title,
+		snapshot.Title(),
 	)
 
 	env.out.Printf("* Author: %s\n",

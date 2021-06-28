@@ -49,11 +49,9 @@ func (op *CreateOperation) Apply(snapshot *Snapshot) {
 	}
 
 	snapshot.id = op.Id()
-
 	snapshot.addActor(op.Author_)
 	snapshot.addParticipant(op.Author_)
-
-	snapshot.Title = op.Title
+	snapshot.changeTitleTo(op.Title)
 
 	comment := Comment{
 		id:       entity.CombineIds(snapshot.Id(), op.Id()),
