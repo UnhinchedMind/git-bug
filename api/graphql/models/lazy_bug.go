@@ -167,7 +167,7 @@ func (l *loadedBug) LastEdit() time.Time {
 }
 
 func (l *loadedBug) Status() bug.Status {
-	return l.Snapshot.Status
+	return l.Snapshot.Status()
 }
 
 func (l *loadedBug) Title() string {

@@ -73,7 +73,7 @@ func NewBugExcerpt(b bug.Interface, snap *bug.Snapshot) *BugExcerpt {
 		EditLamportTime:   b.EditLamportTime(),
 		CreateUnixTime:    b.FirstOp().Time().Unix(),
 		EditUnixTime:      snap.EditTime().Unix(),
-		Status:            snap.Status,
+		Status:            snap.Status(),
 		Labels:            snap.Labels,
 		Actors:            actorsIds,
 		Participants:      participantsIds,

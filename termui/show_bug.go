@@ -226,7 +226,7 @@ func (sb *showBug) renderMain(g *gocui.Gui, mainView *gocui.View) error {
 	bugHeader := fmt.Sprintf("[%s] %s\n\n[%s] %s opened this bug on %s%s",
 		colors.Cyan(snap.Id().Human()),
 		colors.Bold(snap.Title()),
-		colors.Yellow(snap.Status),
+		colors.Yellow(snap.Status()),
 		colors.Magenta(snap.Author.DisplayName()),
 		snap.CreateTime.Format(timeLayout),
 		edited,
@@ -622,7 +622,7 @@ func (sb *showBug) setTitle(g *gocui.Gui, v *gocui.View) error {
 }
 
 func (sb *showBug) toggleOpenClose(g *gocui.Gui, v *gocui.View) error {
-	switch sb.bug.Snapshot().Status {
+	switch sb.bug.Snapshot().Status() {
 	case bug.OpenStatus:
 		_, err := sb.bug.Close()
 		return err

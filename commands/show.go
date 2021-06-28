@@ -83,7 +83,7 @@ func runShow(env *Env, opts showOptions, args []string) error {
 		case "shortId":
 			env.out.Printf("%s\n", snap.Id().Human())
 		case "status":
-			env.out.Printf("%s\n", snap.Status)
+			env.out.Printf("%s\n", snap.Status())
 		case "title":
 			env.out.Printf("%s\n", snap.Title())
 		default:
@@ -109,7 +109,7 @@ func showDefaultFormatter(env *Env, snapshot *bug.Snapshot) error {
 	// Header
 	env.out.Printf("%s [%s] %s\n\n",
 		colors.Cyan(snapshot.Id().Human()),
-		colors.Yellow(snapshot.Status),
+		colors.Yellow(snapshot.Status()),
 		snapshot.Title(),
 	)
 
@@ -216,7 +216,7 @@ func showJsonFormatter(env *Env, snapshot *bug.Snapshot) error {
 		HumanId:    snapshot.Id().Human(),
 		CreateTime: NewJSONTime(snapshot.CreateTime, 0),
 		EditTime:   NewJSONTime(snapshot.EditTime(), 0),
-		Status:     snapshot.Status.String(),
+		Status:     snapshot.Status().String(),
 		Labels:     snapshot.Labels,
 		Title:      snapshot.Title(),
 		Author:     NewJSONIdentity(snapshot.Author),
@@ -247,7 +247,7 @@ func showOrgModeFormatter(env *Env, snapshot *bug.Snapshot) error {
 	// Header
 	env.out.Printf("%s [%s] %s\n",
 		snapshot.Id().Human(),
-		snapshot.Status,
+		snapshot.Status(),
 		snapshot.Title(),
 	)
 

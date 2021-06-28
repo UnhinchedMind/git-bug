@@ -12,7 +12,7 @@ import (
 type Snapshot struct {
 	id entity.Id
 
-	Status       Status
+	status       Status
 	title        string
 	Comments     []Comment
 	Labels       []Label
@@ -33,6 +33,11 @@ func (snap *Snapshot) Id() entity.Id {
 		panic("no id")
 	}
 	return snap.id
+}
+
+// Return the bugs status
+func (snap *Snapshot) Status() Status {
+	return snap.status
 }
 
 // Return the bugs title
@@ -74,6 +79,11 @@ func (snap *Snapshot) SearchComment(id entity.Id) (*Comment, error) {
 	}
 
 	return nil, fmt.Errorf("comment item not found")
+}
+
+// Change current status to the new status
+func (snap *Snapshot) setStatusTo(newStatus Status) {
+	snap.status = newStatus
 }
 
 // Change current title to the new title
