@@ -72,10 +72,12 @@ func (op *EditCommentOperation) Apply(snapshot *Snapshot) {
 
 	// Updating the corresponding comment
 
-	for i := range snapshot.Comments {
-		if snapshot.Comments[i].Id() == commentId {
-			snapshot.Comments[i].Message = op.Message
-			snapshot.Comments[i].Files = op.Files
+	//TODO use snapshot.SearchComment instead of iteration
+	//TODO put *editComment* in snapshot or add *edit* to Comment interface?
+	for i := range snapshot.Comments() {
+		if snapshot.Comments()[i].Id() == commentId {
+			snapshot.Comments()[i].Message = op.Message
+			snapshot.Comments()[i].Files = op.Files
 			break
 		}
 	}

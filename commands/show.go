@@ -50,7 +50,7 @@ func runShow(env *Env, opts showOptions, args []string) error {
 
 	snap := b.Snapshot()
 
-	if len(snap.Comments) == 0 {
+	if len(snap.Comments()) == 0 {
 		return errors.New("invalid bug: no comment")
 	}
 
@@ -155,7 +155,7 @@ func showDefaultFormatter(env *Env, snapshot *bug.Snapshot) error {
 	// Comments
 	indent := "  "
 
-	for i, comment := range snapshot.Comments {
+	for i, comment := range snapshot.Comments() {
 		var message string
 		env.out.Printf("%s%s #%d %s <%s>\n\n",
 			indent,
@@ -232,8 +232,8 @@ func showJsonFormatter(env *Env, snapshot *bug.Snapshot) error {
 		jsonBug.Participants[i] = NewJSONIdentity(element)
 	}
 
-	jsonBug.Comments = make([]JSONComment, len(snapshot.Comments))
-	for i, comment := range snapshot.Comments {
+	jsonBug.Comments = make([]JSONComment, len(snapshot.Comments()))
+	for i, comment := range snapshot.Comments() {
 		jsonBug.Comments[i] = NewJSONComment(comment)
 	}
 
@@ -304,7 +304,7 @@ func showOrgModeFormatter(env *Env, snapshot *bug.Snapshot) error {
 
 	env.out.Printf("* Comments:\n")
 
-	for i, comment := range snapshot.Comments {
+	for i, comment := range snapshot.Comments() {
 		var message string
 		env.out.Printf("** #%d %s\n",
 			i, comment.Author.DisplayName())

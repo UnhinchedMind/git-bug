@@ -40,7 +40,7 @@ func TestCreate(t *testing.T) {
 	expected := Snapshot{
 		id:    create.Id(),
 		title: "title",
-		Comments: []Comment{
+		comments: []Comment{
 			comment,
 		},
 		Author:       rene,

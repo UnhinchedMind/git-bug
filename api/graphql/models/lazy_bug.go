@@ -97,7 +97,7 @@ func (lb *lazyBug) Comments() ([]bug.Comment, error) {
 	if err != nil {
 		return nil, err
 	}
-	return lb.snap.Comments, nil
+	return lb.snap.Comments(), nil
 }
 
 func (lb *lazyBug) Labels() []bug.Label {
@@ -175,7 +175,7 @@ func (l *loadedBug) Title() string {
 }
 
 func (l *loadedBug) Comments() ([]bug.Comment, error) {
-	return l.Snapshot.Comments, nil
+	return l.Snapshot.Comments(), nil
 }
 
 func (l *loadedBug) Labels() []bug.Label {

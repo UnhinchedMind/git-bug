@@ -60,7 +60,7 @@ func (op *CreateOperation) Apply(snapshot *Snapshot) {
 		UnixTime: timestamp.Timestamp(op.UnixTime),
 	}
 
-	snapshot.Comments = []Comment{comment}
+	snapshot.appendComment(comment)
 	snapshot.Author = op.Author_
 	snapshot.CreateTime = op.Time()
 

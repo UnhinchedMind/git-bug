@@ -14,7 +14,7 @@ type Snapshot struct {
 
 	status       Status
 	title        string
-	Comments     []Comment
+	comments     []Comment
 	Labels       []Label
 	Author       identity.Interface
 	Actors       []identity.Interface
@@ -45,6 +45,11 @@ func (snap *Snapshot) Title() string {
 	return snap.title
 }
 
+// Return the bugs attached comments
+func (snap *Snapshot) Comments() []Comment {
+	return snap.comments
+}
+
 // Return the last time a bug was modified
 func (snap *Snapshot) EditTime() time.Time {
 	if len(snap.Operations) == 0 {
@@ -72,7 +77,7 @@ func (snap *Snapshot) SearchTimelineItem(id entity.Id) (TimelineItem, error) {
 
 // SearchComment will search for a comment matching the given hash
 func (snap *Snapshot) SearchComment(id entity.Id) (*Comment, error) {
-	for _, c := range snap.Comments {
+	for _, c := range snap.comments {
 		if c.id == id {
 			return &c, nil
 		}
@@ -89,6 +94,11 @@ func (snap *Snapshot) setStatusTo(newStatus Status) {
 // Change current title to the new title
 func (snap *Snapshot) changeTitleTo(newTitle string) {
 	snap.title = newTitle
+}
+
+// Append the supplied comment to the snapshots comments
+func (snap *Snapshot) appendComment(comment Comment) {
+	snap.comments = append(snap.comments, comment)
 }
 
 // append the operation author to the actors list

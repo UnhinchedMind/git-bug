@@ -39,7 +39,7 @@ func (op *AddCommentOperation) Apply(snapshot *Snapshot) {
 		UnixTime: timestamp.Timestamp(op.UnixTime),
 	}
 
-	snapshot.Comments = append(snapshot.Comments, comment)
+	snapshot.appendComment(comment)
 
 	item := &AddCommentTimelineItem{
 		CommentTimelineItem: NewCommentTimelineItem(comment),
