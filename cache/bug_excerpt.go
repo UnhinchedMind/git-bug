@@ -57,8 +57,8 @@ func (l LegacyAuthorExcerpt) DisplayName() string {
 }
 
 func NewBugExcerpt(b bug.Interface, snap *bug.Snapshot) *BugExcerpt {
-	participantsIds := make([]entity.Id, 0, len(snap.Participants))
-	for _, participant := range snap.Participants {
+	participantsIds := make([]entity.Id, 0, len(snap.Participants()))
+	for _, participant := range snap.Participants() {
 		participantsIds = append(participantsIds, participant.Id())
 	}
 

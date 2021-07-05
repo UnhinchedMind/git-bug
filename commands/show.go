@@ -77,7 +77,7 @@ func runShow(env *Env, opts showOptions, args []string) error {
 				env.out.Printf("%s\n", a.DisplayName())
 			}
 		case "participants":
-			for _, p := range snap.Participants {
+			for _, p := range snap.Participants() {
 				env.out.Printf("%s\n", p.DisplayName())
 			}
 		case "shortId":
@@ -146,9 +146,10 @@ func showDefaultFormatter(env *Env, snapshot *bug.Snapshot) error {
 	)
 
 	// Participants
-	var participants = make([]string, len(snapshot.Participants))
-	for i := range snapshot.Participants {
-		participants[i] = snapshot.Participants[i].DisplayName()
+	//TODO can I replace the index here?
+	var participants = make([]string, len(snapshot.Participants()))
+	for i := range snapshot.Participants() {
+		participants[i] = snapshot.Participants()[i].DisplayName()
 	}
 
 	env.out.Printf("participants: %s\n\n",
@@ -230,8 +231,8 @@ func showJsonFormatter(env *Env, snapshot *bug.Snapshot) error {
 		jsonBug.Actors[i] = NewJSONIdentity(element)
 	}
 
-	jsonBug.Participants = make([]JSONIdentity, len(snapshot.Participants))
-	for i, element := range snapshot.Participants {
+	jsonBug.Participants = make([]JSONIdentity, len(snapshot.Participants()))
+	for i, element := range snapshot.Participants() {
 		jsonBug.Participants[i] = NewJSONIdentity(element)
 	}
 
@@ -293,8 +294,8 @@ func showOrgModeFormatter(env *Env, snapshot *bug.Snapshot) error {
 	)
 
 	// Participants
-	var participants = make([]string, len(snapshot.Participants))
-	for i, participant := range snapshot.Participants {
+	var participants = make([]string, len(snapshot.Participants()))
+	for i, participant := range snapshot.Participants() {
 		participants[i] = fmt.Sprintf("%s %s",
 			participant.Id().Human(),
 			participant.DisplayName(),

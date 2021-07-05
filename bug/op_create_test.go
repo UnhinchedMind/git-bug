@@ -44,7 +44,7 @@ func TestCreate(t *testing.T) {
 			comment,
 		},
 		author:       rene,
-		Participants: []identity.Interface{rene},
+		participants: []identity.Interface{rene},
 		actors:       []identity.Interface{rene},
 		CreateTime:   create.Time(),
 		Timeline: []TimelineItem{
