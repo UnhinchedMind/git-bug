@@ -74,7 +74,7 @@ func NewBugExcerpt(b bug.Interface, snap *bug.Snapshot) *BugExcerpt {
 		CreateUnixTime:    b.FirstOp().Time().Unix(),
 		EditUnixTime:      snap.EditTime().Unix(),
 		Status:            snap.Status(),
-		Labels:            snap.Labels,
+		Labels:            snap.Labels(),
 		Actors:            actorsIds,
 		Participants:      participantsIds,
 		Title:             snap.Title(),

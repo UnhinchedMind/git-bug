@@ -69,7 +69,7 @@ func runShow(env *Env, opts showOptions, args []string) error {
 		case "id":
 			env.out.Printf("%s\n", snap.Id())
 		case "labels":
-			for _, l := range snap.Labels {
+			for _, l := range snap.Labels() {
 				env.out.Printf("%s\n", l.String())
 			}
 		case "actors":
@@ -123,9 +123,11 @@ func showDefaultFormatter(env *Env, snapshot *bug.Snapshot) error {
 	)
 
 	// Labels
-	var labels = make([]string, len(snapshot.Labels))
-	for i := range snapshot.Labels {
-		labels[i] = string(snapshot.Labels[i])
+	var labels = make([]string, len(snapshot.Labels()))
+	//TODO can I replace the index here?
+	//TODO What about using Label::String() instead of string()?
+	for i := range snapshot.Labels() {
+		labels[i] = string(snapshot.Labels()[i])
 	}
 
 	env.out.Printf("labels: %s\n",
@@ -217,7 +219,7 @@ func showJsonFormatter(env *Env, snapshot *bug.Snapshot) error {
 		CreateTime: NewJSONTime(snapshot.CreateTime, 0),
 		EditTime:   NewJSONTime(snapshot.EditTime(), 0),
 		Status:     snapshot.Status().String(),
-		Labels:     snapshot.Labels,
+		Labels:     snapshot.Labels(),
 		Title:      snapshot.Title(),
 		Author:     NewJSONIdentity(snapshot.Author),
 	}
@@ -264,8 +266,8 @@ func showOrgModeFormatter(env *Env, snapshot *bug.Snapshot) error {
 	)
 
 	// Labels
-	var labels = make([]string, len(snapshot.Labels))
-	for i, label := range snapshot.Labels {
+	var labels = make([]string, len(snapshot.Labels()))
+	for i, label := range snapshot.Labels() {
 		labels[i] = string(label)
 	}
 

@@ -427,8 +427,8 @@ func (sb *showBug) renderSidebar(g *gocui.Gui, sideView *gocui.View) error {
 
 	sb.sideSelectableView = nil
 
-	labelStr := make([]string, len(snap.Labels))
-	for i, l := range snap.Labels {
+	labelStr := make([]string, len(snap.Labels()))
+	for i, l := range snap.Labels() {
 		lc := l.Color()
 		lc256 := lc.Term256()
 		labelStr[i] = lc256.Escape() + "◼ " + lc256.Unescape() + l.String()

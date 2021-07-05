@@ -179,7 +179,7 @@ func (l *loadedBug) Comments() ([]bug.Comment, error) {
 }
 
 func (l *loadedBug) Labels() []bug.Label {
-	return l.Snapshot.Labels
+	return l.Snapshot.Labels()
 }
 
 func (l *loadedBug) Author() (IdentityWrapper, error) {
