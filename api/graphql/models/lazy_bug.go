@@ -141,7 +141,7 @@ func (lb *lazyBug) Timeline() ([]bug.TimelineItem, error) {
 	if err != nil {
 		return nil, err
 	}
-	return lb.snap.Timeline, nil
+	return lb.snap.Timeline(), nil
 }
 
 func (lb *lazyBug) Operations() ([]bug.Operation, error) {
@@ -207,7 +207,7 @@ func (l *loadedBug) CreatedAt() time.Time {
 }
 
 func (l *loadedBug) Timeline() ([]bug.TimelineItem, error) {
-	return l.Snapshot.Timeline, nil
+	return l.Snapshot.Timeline(), nil
 }
 
 func (l *loadedBug) Operations() ([]bug.Operation, error) {

@@ -33,7 +33,7 @@ func (op *SetStatusOperation) Apply(snapshot *Snapshot) {
 		Status:   op.Status,
 	}
 
-	snapshot.Timeline = append(snapshot.Timeline, item)
+	snapshot.timeline = append(snapshot.timeline, item)
 }
 
 func (op *SetStatusOperation) Validate() error {

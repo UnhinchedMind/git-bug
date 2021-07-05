@@ -216,7 +216,7 @@ func (sb *showBug) renderMain(g *gocui.Gui, mainView *gocui.View) error {
 
 	sb.mainSelectableView = nil
 
-	createTimelineItem := snap.Timeline[0].(*bug.CreateTimelineItem)
+	createTimelineItem := snap.Timeline()[0].(*bug.CreateTimelineItem)
 
 	edited := ""
 	if createTimelineItem.Edited() {
@@ -241,7 +241,7 @@ func (sb *showBug) renderMain(g *gocui.Gui, mainView *gocui.View) error {
 	_, _ = fmt.Fprint(v, bugHeader)
 	y0 += lines + 1
 
-	for _, op := range snap.Timeline {
+	for _, op := range snap.Timeline() {
 		viewName := op.Id().String()
 
 		// TODO: me might skip the rendering of blocks that are outside of the view

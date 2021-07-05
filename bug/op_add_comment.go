@@ -45,7 +45,7 @@ func (op *AddCommentOperation) Apply(snapshot *Snapshot) {
 		CommentTimelineItem: NewCommentTimelineItem(comment),
 	}
 
-	snapshot.Timeline = append(snapshot.Timeline, item)
+	snapshot.timeline = append(snapshot.timeline, item)
 }
 
 func (op *AddCommentOperation) GetFiles() []repository.Hash {

@@ -64,7 +64,7 @@ func (op *CreateOperation) Apply(snapshot *Snapshot) {
 	snapshot.author = op.Author_
 	snapshot.CreateTime = op.Time()
 
-	snapshot.Timeline = []TimelineItem{
+	snapshot.timeline = []TimelineItem{
 		&CreateTimelineItem{
 			CommentTimelineItem: NewCommentTimelineItem(comment),
 		},

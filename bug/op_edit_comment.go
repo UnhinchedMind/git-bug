@@ -38,9 +38,9 @@ func (op *EditCommentOperation) Apply(snapshot *Snapshot) {
 	commentId := entity.CombineIds(snapshot.Id(), op.Target)
 
 	var target TimelineItem
-	for i, item := range snapshot.Timeline {
+	for i, item := range snapshot.timeline {
 		if item.Id() == commentId {
-			target = snapshot.Timeline[i]
+			target = snapshot.timeline[i]
 			break
 		}
 	}

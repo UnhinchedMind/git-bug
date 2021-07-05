@@ -36,7 +36,7 @@ func (op *SetTitleOperation) Apply(snapshot *Snapshot) {
 		Was:      op.Was,
 	}
 
-	snapshot.Timeline = append(snapshot.Timeline, item)
+	snapshot.timeline = append(snapshot.timeline, item)
 }
 
 func (op *SetTitleOperation) Validate() error {

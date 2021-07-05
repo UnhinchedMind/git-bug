@@ -67,7 +67,7 @@ AddLoop:
 		Removed:  op.Removed,
 	}
 
-	snapshot.Timeline = append(snapshot.Timeline, item)
+	snapshot.timeline = append(snapshot.timeline, item)
 }
 
 func (op *LabelChangeOperation) Validate() error {

@@ -21,7 +21,7 @@ type Snapshot struct {
 	participants []identity.Interface
 	CreateTime   time.Time
 
-	Timeline []TimelineItem
+	timeline []TimelineItem
 
 	Operations []Operation
 }
@@ -70,6 +70,11 @@ func (snap *Snapshot) Participants() []identity.Interface {
 	return snap.participants
 }
 
+// Return the bugs timeline
+func (snap *Snapshot) Timeline() []TimelineItem {
+	return snap.timeline
+}
+
 // Return the last time a bug was modified
 func (snap *Snapshot) EditTime() time.Time {
 	if len(snap.Operations) == 0 {
@@ -86,9 +91,9 @@ func (snap *Snapshot) GetCreateMetadata(key string) (string, bool) {
 
 // SearchTimelineItem will search in the timeline for an item matching the given hash
 func (snap *Snapshot) SearchTimelineItem(id entity.Id) (TimelineItem, error) {
-	for i := range snap.Timeline {
-		if snap.Timeline[i].Id() == id {
-			return snap.Timeline[i], nil
+	for i := range snap.timeline {
+		if snap.timeline[i].Id() == id {
+			return snap.timeline[i], nil
 		}
 	}
 
