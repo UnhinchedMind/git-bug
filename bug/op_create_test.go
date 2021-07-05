@@ -43,7 +43,7 @@ func TestCreate(t *testing.T) {
 		comments: []Comment{
 			comment,
 		},
-		Author:       rene,
+		author:       rene,
 		Participants: []identity.Interface{rene},
 		Actors:       []identity.Interface{rene},
 		CreateTime:   create.Time(),

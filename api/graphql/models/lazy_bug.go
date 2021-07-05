@@ -183,7 +183,7 @@ func (l *loadedBug) Labels() []bug.Label {
 }
 
 func (l *loadedBug) Author() (IdentityWrapper, error) {
-	return NewLoadedIdentity(l.Snapshot.Author), nil
+	return NewLoadedIdentity(l.Snapshot.Author()), nil
 }
 
 func (l *loadedBug) Actors() ([]IdentityWrapper, error) {

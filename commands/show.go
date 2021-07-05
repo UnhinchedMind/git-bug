@@ -57,9 +57,9 @@ func runShow(env *Env, opts showOptions, args []string) error {
 	if opts.fields != "" {
 		switch opts.fields {
 		case "author":
-			env.out.Printf("%s\n", snap.Author.DisplayName())
+			env.out.Printf("%s\n", snap.Author().DisplayName())
 		case "authorEmail":
-			env.out.Printf("%s\n", snap.Author.Email())
+			env.out.Printf("%s\n", snap.Author().Email())
 		case "createTime":
 			env.out.Printf("%s\n", snap.CreateTime.String())
 		case "lastEdit":
@@ -114,7 +114,7 @@ func showDefaultFormatter(env *Env, snapshot *bug.Snapshot) error {
 	)
 
 	env.out.Printf("%s opened this issue %s\n",
-		colors.Magenta(snapshot.Author.DisplayName()),
+		colors.Magenta(snapshot.Author().DisplayName()),
 		snapshot.CreateTime.String(),
 	)
 
@@ -221,7 +221,7 @@ func showJsonFormatter(env *Env, snapshot *bug.Snapshot) error {
 		Status:     snapshot.Status().String(),
 		Labels:     snapshot.Labels(),
 		Title:      snapshot.Title(),
-		Author:     NewJSONIdentity(snapshot.Author),
+		Author:     NewJSONIdentity(snapshot.Author()),
 	}
 
 	jsonBug.Actors = make([]JSONIdentity, len(snapshot.Actors))
@@ -254,7 +254,7 @@ func showOrgModeFormatter(env *Env, snapshot *bug.Snapshot) error {
 	)
 
 	env.out.Printf("* Author: %s\n",
-		snapshot.Author.DisplayName(),
+		snapshot.Author().DisplayName(),
 	)
 
 	env.out.Printf("* Creation Time: %s\n",

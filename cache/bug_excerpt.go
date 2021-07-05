@@ -82,9 +82,9 @@ func NewBugExcerpt(b bug.Interface, snap *bug.Snapshot) *BugExcerpt {
 		CreateMetadata:    b.FirstOp().AllMetadata(),
 	}
 
-	switch snap.Author.(type) {
+	switch snap.Author().(type) {
 	case *identity.Identity, *identity.IdentityStub, *IdentityCache:
-		e.AuthorId = snap.Author.Id()
+		e.AuthorId = snap.Author().Id()
 	default:
 		panic("unhandled identity type")
 	}

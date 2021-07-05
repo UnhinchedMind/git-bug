@@ -16,7 +16,7 @@ type Snapshot struct {
 	title        string
 	comments     []Comment
 	labels       []Label
-	Author       identity.Interface
+	author       identity.Interface
 	Actors       []identity.Interface
 	Participants []identity.Interface
 	CreateTime   time.Time
@@ -53,6 +53,11 @@ func (snap *Snapshot) Comments() []Comment {
 // Return the bugs assigned labels
 func (snap *Snapshot) Labels() []Label {
 	return snap.labels
+}
+
+// Return the bugs author
+func (snap *Snapshot) Author() identity.Interface {
+	return snap.author
 }
 
 // Return the last time a bug was modified

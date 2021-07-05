@@ -227,7 +227,7 @@ func (sb *showBug) renderMain(g *gocui.Gui, mainView *gocui.View) error {
 		colors.Cyan(snap.Id().Human()),
 		colors.Bold(snap.Title()),
 		colors.Yellow(snap.Status()),
-		colors.Magenta(snap.Author.DisplayName()),
+		colors.Magenta(snap.Author().DisplayName()),
 		snap.CreateTime.Format(timeLayout),
 		edited,
 	)
