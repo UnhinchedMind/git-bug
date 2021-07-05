@@ -34,7 +34,7 @@ func runComment(env *Env, args []string) error {
 
 	snap := b.Snapshot()
 
-	for i, comment := range snap.Comments {
+	for i, comment := range snap.Comments() {
 		if i != 0 {
 			env.out.Println()
 		}

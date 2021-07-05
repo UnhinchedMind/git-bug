@@ -38,9 +38,9 @@ func (op *EditCommentOperation) Apply(snapshot *Snapshot) {
 	commentId := entity.CombineIds(snapshot.Id(), op.Target)
 
 	var target TimelineItem
-	for i, item := range snapshot.Timeline {
+	for i, item := range snapshot.timeline {
 		if item.Id() == commentId {
-			target = snapshot.Timeline[i]
+			target = snapshot.timeline[i]
 			break
 		}
 	}
@@ -72,10 +72,12 @@ func (op *EditCommentOperation) Apply(snapshot *Snapshot) {
 
 	// Updating the corresponding comment
 
-	for i := range snapshot.Comments {
-		if snapshot.Comments[i].Id() == commentId {
-			snapshot.Comments[i].Message = op.Message
-			snapshot.Comments[i].Files = op.Files
+	//TODO use snapshot.SearchComment instead of iteration
+	//TODO put *editComment* in snapshot or add *edit* to Comment interface?
+	for i := range snapshot.Comments() {
+		if snapshot.Comments()[i].Id() == commentId {
+			snapshot.Comments()[i].Message = op.Message
+			snapshot.Comments()[i].Files = op.Files
 			break
 		}
 	}

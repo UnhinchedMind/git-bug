@@ -31,30 +31,32 @@ func (op *LabelChangeOperation) Apply(snapshot *Snapshot) {
 
 	// Add in the set
 AddLoop:
+	//TODO extract this in a separate methode
 	for _, added := range op.Added {
-		for _, label := range snapshot.Labels {
+		for _, label := range snapshot.labels {
 			if label == added {
 				// Already exist
 				continue AddLoop
 			}
 		}
 
-		snapshot.Labels = append(snapshot.Labels, added)
+		snapshot.labels = append(snapshot.labels, added)
 	}
 
 	// Remove in the set
+	//TODO extract this in a separate methode
 	for _, removed := range op.Removed {
-		for i, label := range snapshot.Labels {
+		for i, label := range snapshot.labels {
 			if label == removed {
-				snapshot.Labels[i] = snapshot.Labels[len(snapshot.Labels)-1]
-				snapshot.Labels = snapshot.Labels[:len(snapshot.Labels)-1]
+				snapshot.labels[i] = snapshot.labels[len(snapshot.labels)-1]
+				snapshot.labels = snapshot.labels[:len(snapshot.labels)-1]
 			}
 		}
 	}
 
 	// Sort
-	sort.Slice(snapshot.Labels, func(i, j int) bool {
-		return string(snapshot.Labels[i]) < string(snapshot.Labels[j])
+	sort.Slice(snapshot.labels, func(i, j int) bool {
+		return string(snapshot.labels[i]) < string(snapshot.labels[j])
 	})
 
 	item := &LabelChangeTimelineItem{
@@ -65,7 +67,7 @@ AddLoop:
 		Removed:  op.Removed,
 	}
 
-	snapshot.Timeline = append(snapshot.Timeline, item)
+	snapshot.timeline = append(snapshot.timeline, item)
 }
 
 func (op *LabelChangeOperation) Validate() error {
@@ -164,7 +166,7 @@ func ChangeLabels(b Interface, author identity.Interface, unixTime int64, add, r
 		}
 
 		// check that the label doesn't already exist
-		if labelExist(snap.Labels, label) {
+		if labelExist(snap.labels, label) {
 			results = append(results, LabelChangeResult{Label: label, Status: LabelChangeAlreadySet})
 			continue
 		}
@@ -183,7 +185,7 @@ func ChangeLabels(b Interface, author identity.Interface, unixTime int64, add, r
 		}
 
 		// check that the label actually exist
-		if !labelExist(snap.Labels, label) {
+		if !labelExist(snap.labels, label) {
 			results = append(results, LabelChangeResult{Label: label, Status: LabelChangeDoesntExist})
 			continue
 		}

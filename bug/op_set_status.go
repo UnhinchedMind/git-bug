@@ -23,7 +23,7 @@ func (op *SetStatusOperation) Id() entity.Id {
 }
 
 func (op *SetStatusOperation) Apply(snapshot *Snapshot) {
-	snapshot.Status = op.Status
+	snapshot.setStatusTo(op.Status)
 	snapshot.addActor(op.Author_)
 
 	item := &SetStatusTimelineItem{
@@ -33,7 +33,7 @@ func (op *SetStatusOperation) Apply(snapshot *Snapshot) {
 		Status:   op.Status,
 	}
 
-	snapshot.Timeline = append(snapshot.Timeline, item)
+	snapshot.timeline = append(snapshot.timeline, item)
 }
 
 func (op *SetStatusOperation) Validate() error {

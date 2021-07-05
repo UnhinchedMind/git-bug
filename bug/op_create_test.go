@@ -39,15 +39,15 @@ func TestCreate(t *testing.T) {
 
 	expected := Snapshot{
 		id:    create.Id(),
-		Title: "title",
-		Comments: []Comment{
+		title: "title",
+		comments: []Comment{
 			comment,
 		},
-		Author:       rene,
-		Participants: []identity.Interface{rene},
-		Actors:       []identity.Interface{rene},
+		author:       rene,
+		participants: []identity.Interface{rene},
+		actors:       []identity.Interface{rene},
 		CreateTime:   create.Time(),
-		Timeline: []TimelineItem{
+		timeline: []TimelineItem{
 			&CreateTimelineItem{
 				CommentTimelineItem: NewCommentTimelineItem(comment),
 			},

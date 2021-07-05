@@ -39,13 +39,13 @@ func (op *AddCommentOperation) Apply(snapshot *Snapshot) {
 		UnixTime: timestamp.Timestamp(op.UnixTime),
 	}
 
-	snapshot.Comments = append(snapshot.Comments, comment)
+	snapshot.appendComment(comment)
 
 	item := &AddCommentTimelineItem{
 		CommentTimelineItem: NewCommentTimelineItem(comment),
 	}
 
-	snapshot.Timeline = append(snapshot.Timeline, item)
+	snapshot.timeline = append(snapshot.timeline, item)
 }
 
 func (op *AddCommentOperation) GetFiles() []repository.Hash {

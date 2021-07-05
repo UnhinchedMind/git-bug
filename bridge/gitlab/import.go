@@ -218,7 +218,7 @@ func (gi *gitlabImporter) ensureNote(repo *cache.RepoCache, b *cache.BugCache, n
 	case NOTE_DESCRIPTION_CHANGED:
 		issue := gi.iterator.IssueValue()
 
-		firstComment := b.Snapshot().Comments[0]
+		firstComment := b.Snapshot().Comments()[0]
 		// since gitlab doesn't provide the issue history
 		// we should check for "changed the description" notes and compare issue texts
 		// TODO: Check only one time and ignore next 'description change' within one issue
