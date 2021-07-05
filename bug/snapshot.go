@@ -17,7 +17,7 @@ type Snapshot struct {
 	comments     []Comment
 	labels       []Label
 	author       identity.Interface
-	Actors       []identity.Interface
+	actors       []identity.Interface
 	Participants []identity.Interface
 	CreateTime   time.Time
 
@@ -58,6 +58,11 @@ func (snap *Snapshot) Labels() []Label {
 // Return the bugs author
 func (snap *Snapshot) Author() identity.Interface {
 	return snap.author
+}
+
+// Return the bugs actors
+func (snap *Snapshot) Actors() []identity.Interface {
+	return snap.actors
 }
 
 // Return the last time a bug was modified
@@ -113,13 +118,13 @@ func (snap *Snapshot) appendComment(comment Comment) {
 
 // append the operation author to the actors list
 func (snap *Snapshot) addActor(actor identity.Interface) {
-	for _, a := range snap.Actors {
+	for _, a := range snap.actors {
 		if actor.Id() == a.Id() {
 			return
 		}
 	}
 
-	snap.Actors = append(snap.Actors, actor)
+	snap.actors = append(snap.actors, actor)
 }
 
 // append the operation author to the participants list
@@ -155,7 +160,7 @@ func (snap *Snapshot) HasAnyParticipant(ids ...entity.Id) bool {
 
 // HasActor return true if the id is a actor
 func (snap *Snapshot) HasActor(id entity.Id) bool {
-	for _, p := range snap.Actors {
+	for _, p := range snap.actors {
 		if p.Id() == id {
 			return true
 		}

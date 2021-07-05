@@ -62,8 +62,8 @@ func NewBugExcerpt(b bug.Interface, snap *bug.Snapshot) *BugExcerpt {
 		participantsIds = append(participantsIds, participant.Id())
 	}
 
-	actorsIds := make([]entity.Id, 0, len(snap.Actors))
-	for _, actor := range snap.Actors {
+	actorsIds := make([]entity.Id, 0, len(snap.Actors()))
+	for _, actor := range snap.Actors() {
 		actorsIds = append(actorsIds, actor.Id())
 	}
 

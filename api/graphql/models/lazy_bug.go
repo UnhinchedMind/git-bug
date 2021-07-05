@@ -187,8 +187,8 @@ func (l *loadedBug) Author() (IdentityWrapper, error) {
 }
 
 func (l *loadedBug) Actors() ([]IdentityWrapper, error) {
-	res := make([]IdentityWrapper, len(l.Snapshot.Actors))
-	for i, actor := range l.Snapshot.Actors {
+	res := make([]IdentityWrapper, len(l.Snapshot.Actors()))
+	for i, actor := range l.Snapshot.Actors() {
 		res[i] = NewLoadedIdentity(actor)
 	}
 	return res, nil
